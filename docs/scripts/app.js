@@ -39,72 +39,28 @@
       previousCleanup();
     }
 
-    if (prefersReducedMotion.matches || typeof window.Lenis !== 'function') {
-      if (state.initialScrollBehavior !== null) {
-        if (state.initialScrollBehavior === '') {
-          document.documentElement.style.removeProperty('scroll-behavior');
-        } else {
-          document.documentElement.style.scrollBehavior = state.initialScrollBehavior;
-        }
-        state.initialScrollBehavior = null;
-      }
-      state.lenis = null;
-      return;
-    }
+    state.lenis = null;
+    state.lenisCleanup = null;
+    state.lenisRafId = null;
 
     if (state.initialScrollBehavior === null) {
       state.initialScrollBehavior = document.documentElement.style.scrollBehavior || '';
     }
-    document.documentElement.style.scrollBehavior = 'auto';
 
-    const easing = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -1.35 * t));
-    const lenis = new window.Lenis({
-      autoRaf: false,
-      duration: 1.1,
-      easing,
-      smoothWheel: true,
-      smoothTouch: false,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.05,
-    });
-    state.lenis = lenis;
-
-    const syncScrollTrigger = () => {
-      if (typeof window.ScrollTrigger !== 'undefined') {
-        window.ScrollTrigger.update();
-      }
-    };
-
-    if (typeof lenis.on === 'function') {
-      lenis.on('scroll', syncScrollTrigger);
+    if (prefersReducedMotion.matches) {
+      document.documentElement.style.scrollBehavior = 'auto';
+      return;
     }
 
-    const raf = (time) => {
-      lenis.raf(time);
-      state.lenisRafId = window.requestAnimationFrame(raf);
-    };
+    if (state.initialScrollBehavior) {
+      document.documentElement.style.scrollBehavior = state.initialScrollBehavior;
+    } else {
+      document.documentElement.style.removeProperty('scroll-behavior');
+    }
 
-    state.lenisRafId = window.requestAnimationFrame(raf);
-
-    state.lenisCleanup = () => {
-      if (typeof lenis.off === 'function') {
-        lenis.off('scroll', syncScrollTrigger);
-      }
-      if (state.lenisRafId) {
-        window.cancelAnimationFrame(state.lenisRafId);
-        state.lenisRafId = null;
-      }
-      lenis.destroy();
-      state.lenis = null;
-      state.lenisCleanup = null;
-      if (state.initialScrollBehavior === '') {
-        document.documentElement.style.removeProperty('scroll-behavior');
-      } else {
-        document.documentElement.style.scrollBehavior = state.initialScrollBehavior || '';
-      }
-      state.initialScrollBehavior = null;
-    };
-    state.cleanupFns.push(state.lenisCleanup);
+    if (typeof window.ScrollTrigger !== 'undefined') {
+      window.ScrollTrigger.update();
+    }
   }
 
   function applyTheme(theme) {
