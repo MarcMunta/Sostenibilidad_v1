@@ -1,0 +1,545 @@
+(function () {
+  const hasGSAP = typeof window.gsap !== 'undefined';
+  const hasScrollTrigger = typeof window.ScrollTrigger !== 'undefined';
+  const prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const state = {
+    timelines: [],
+    observers: [],
+    cleanups: [],
+    flipButtons: new Set(),
+    flipHandlers: new WeakMap(),
+  };
+
+  const splitCache = new WeakSet();
+
+  function registerTimeline(timeline) {
+    if (timeline && typeof timeline.kill === 'function') {
+      state.timelines.push(timeline);
+    }
+    return timeline;
+  }
+
+  function registerObserver(observer) {
+    if (observer && typeof observer.disconnect === 'function') {
+      state.observers.push(observer);
+    }
+    return observer;
+  }
+
+  function registerCleanup(fn) {
+    if (typeof fn === 'function') {
+      state.cleanups.push(fn);
+    }
+    return fn;
+  }
+
+  function splitText(element) {
+    if (!element || splitCache.has(element)) {
+      return [];
+    }
+
+    const text = (element.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!text) {
+      return [];
+    }
+
+    const fragment = document.createDocumentFragment();
+    const words = text.split(' ');
+    const spans = [];
+
+    words.forEach((word, index) => {
+      const span = document.createElement('span');
+      span.className = 'split-word';
+      span.textContent = word;
+      fragment.appendChild(span);
+      spans.push(span);
+
+      if (index < words.length - 1) {
+        fragment.appendChild(document.createTextNode(' '));
+      }
+    });
+
+    element.innerHTML = '';
+    element.appendChild(fragment);
+    splitCache.add(element);
+    return spans;
+  }
+
+  function ensureSplitText() {
+    const splitTargets = document.querySelectorAll('.split-ready');
+    splitTargets.forEach((target) => {
+      splitText(target);
+    });
+  }
+
+  function animateHero(reduceMotion) {
+    const hero = document.querySelector('#hero');
+    if (!hero) return;
+
+    const words = hero.querySelectorAll('.split-word');
+    const cta = hero.querySelector('.hero-cta');
+
+    if (hasGSAP && !reduceMotion) {
+      const timeline = registerTimeline(
+        window.gsap
+          .timeline({ defaults: { ease: 'power3.out' } })
+          .from(words, {
+            yPercent: 120,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.05,
+            onStart: () => {
+              words.forEach((word) => {
+                word.style.willChange = 'transform, opacity';
+              });
+            },
+            onComplete: () => {
+              words.forEach((word) => {
+                word.style.willChange = 'auto';
+              });
+            },
+          })
+          .from(
+            cta,
+            {
+              opacity: 0,
+              y: 24,
+              duration: 0.6,
+              onStart: () => {
+                if (cta) cta.style.willChange = 'transform, opacity';
+              },
+              onComplete: () => {
+                if (cta) cta.style.willChange = 'auto';
+              },
+            },
+            '-=0.4'
+          )
+      );
+
+      return timeline;
+    }
+
+    words.forEach((word) => {
+      word.style.opacity = '1';
+      word.style.transform = 'translateY(0)';
+    });
+    if (cta) {
+      cta.style.opacity = '1';
+      cta.style.transform = 'translateY(0)';
+    }
+  }
+
+  function animateParallax(reduceMotion) {
+    const layers = document.querySelectorAll('.parallax-layer');
+    if (!layers.length) return;
+
+    if (hasGSAP && hasScrollTrigger && !reduceMotion) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      layers.forEach((layer) => {
+        const depth = Number.parseFloat(layer.dataset.depth || '0.3');
+        const trigger = layer.closest('section') || layer;
+        const timeline = window.gsap.to(layer, {
+          yPercent: depth * -60,
+          ease: 'none',
+          scrollTrigger: {
+            trigger,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+            onEnter: () => {
+              layer.style.willChange = 'transform';
+            },
+            onLeave: () => {
+              layer.style.willChange = 'auto';
+            },
+            onLeaveBack: () => {
+              layer.style.willChange = 'auto';
+            },
+          },
+        });
+        registerTimeline(timeline);
+      });
+      return;
+    }
+
+    if (reduceMotion) {
+      layers.forEach((layer) => {
+        layer.style.transform = 'none';
+        layer.style.willChange = 'auto';
+      });
+      return;
+    }
+
+    let rafId = null;
+    const update = () => {
+      layers.forEach((layer) => {
+        const depth = Number.parseFloat(layer.dataset.depth || '0.3');
+        const offset = window.scrollY * depth * -0.12;
+        layer.style.transform = `translate3d(0, ${offset}px, 0)`;
+      });
+      rafId = null;
+    };
+
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    registerCleanup(() => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    });
+  }
+
+  function animateSections(reduceMotion) {
+    const sections = document.querySelectorAll('[data-animate="section"]');
+    if (!sections.length) return;
+
+    if (hasGSAP && hasScrollTrigger && !reduceMotion) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+    }
+
+    sections.forEach((section) => {
+      const targets = section.querySelectorAll('[data-animate-item]');
+      const elements = targets.length ? targets : [section];
+
+      if (hasGSAP && hasScrollTrigger && !reduceMotion) {
+        const timeline = window.gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+          },
+        });
+
+        timeline.from(elements, {
+          opacity: 0,
+          y: 32,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'power2.out',
+          onStart: () => {
+            elements.forEach((el) => {
+              el.style.willChange = 'transform, opacity';
+            });
+          },
+          onComplete: () => {
+            elements.forEach((el) => {
+              el.style.willChange = 'auto';
+            });
+          },
+        });
+        registerTimeline(timeline);
+      } else {
+        const observer = registerObserver(
+          new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                elements.forEach((el, index) => {
+                  window.setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                  }, reduceMotion ? 0 : index * 80);
+                });
+                obs.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.4 }
+          )
+        );
+        observer.observe(section);
+      }
+    });
+  }
+
+  function animateTimeline(reduceMotion) {
+    const timelineSection = document.querySelector('[data-animate="timeline"]');
+    if (!timelineSection) return;
+
+    const items = timelineSection.querySelectorAll('[data-animate-item]');
+    if (!items.length) return;
+
+    if (hasGSAP && hasScrollTrigger && !reduceMotion) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      const timeline = window.gsap.timeline({
+        scrollTrigger: {
+          trigger: timelineSection,
+          start: 'top 80%',
+        },
+      });
+      timeline.from(items, {
+        opacity: 0,
+        x: -24,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power2.out',
+        onStart: () => {
+          items.forEach((item) => {
+            item.style.willChange = 'transform, opacity';
+          });
+        },
+        onComplete: () => {
+          items.forEach((item) => {
+            item.style.willChange = 'auto';
+          });
+        },
+      });
+      registerTimeline(timeline);
+    } else {
+      const observer = registerObserver(
+        new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              items.forEach((item, index) => {
+                window.setTimeout(() => {
+                  item.style.opacity = '1';
+                  item.style.transform = 'translateX(0)';
+                }, reduceMotion ? 0 : index * 60);
+              });
+              obs.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.5 }
+        )
+      );
+      observer.observe(timelineSection);
+    }
+  }
+
+  function animateSvgDraw(reduceMotion) {
+    const shapes = document.querySelectorAll('.reto-parallax svg path, .reto-parallax svg circle');
+    if (!shapes.length) return;
+
+    shapes.forEach((shape) => {
+      if (typeof shape.getTotalLength !== 'function') return;
+      const length = shape.getTotalLength();
+      shape.style.strokeDasharray = `${length}`;
+      shape.style.strokeDashoffset = `${length}`;
+    });
+
+    if (hasGSAP && hasScrollTrigger && !reduceMotion) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      shapes.forEach((shape) => {
+        const trigger = shape.closest('.reto-section') || shape.parentElement;
+        const tween = window.gsap.to(shape, {
+          strokeDashoffset: 0,
+          ease: 'none',
+          duration: 1.5,
+          scrollTrigger: {
+            trigger,
+            start: 'top 85%',
+          },
+        });
+        registerTimeline(tween);
+      });
+    } else {
+      const observer = registerObserver(
+        new IntersectionObserver((entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const element = entry.target;
+            element.style.transition = reduceMotion ? 'none' : 'stroke-dashoffset 1.2s ease-out';
+            element.style.strokeDashoffset = '0';
+            obs.unobserve(element);
+          });
+        })
+      );
+      shapes.forEach((shape) => observer.observe(shape));
+    }
+  }
+
+  function initCountUps(reduceMotion) {
+    const kpis = document.querySelectorAll('.kpi');
+    if (!kpis.length) return;
+
+    const CountUp = window.CountUp?.CountUp || window.CountUp;
+
+    const observer = registerObserver(
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const element = entry.target;
+          const valueEl = element.querySelector('.kpi-value');
+          const target = Number.parseFloat(element.dataset.target || valueEl?.textContent || '0');
+
+          if (!valueEl) {
+            obs.unobserve(element);
+            return;
+          }
+
+          if (!CountUp || reduceMotion) {
+            valueEl.textContent = Number.isFinite(target)
+              ? Math.round(target).toLocaleString('es-ES')
+              : valueEl.textContent;
+            obs.unobserve(element);
+            return;
+          }
+
+          const counter = new CountUp(valueEl, target, {
+            duration: 2.2,
+            separator: '.',
+            decimal: ',',
+          });
+
+          if (!counter.error) {
+            counter.start(() => {
+              valueEl.setAttribute('data-count-complete', 'true');
+            });
+          }
+          obs.unobserve(element);
+        });
+      }, { threshold: 0.6 })
+    );
+
+    kpis.forEach((kpi) => observer.observe(kpi));
+  }
+
+  function handleFlipToggle(event) {
+    const button = event.currentTarget;
+    const pressed = button.getAttribute('aria-pressed') === 'true';
+    button.setAttribute('aria-pressed', String(!pressed));
+  }
+
+  function initFlipCards(reduceMotion) {
+    const sections = document.querySelectorAll('[data-animate="flip-cards"]');
+    if (!sections.length) return;
+
+    sections.forEach((section) => {
+      const cards = Array.from(section.querySelectorAll('.flip-card'));
+      cards.forEach((card) => {
+        const button = card.querySelector('button');
+        if (!button) return;
+        if (!state.flipHandlers.has(button)) {
+          button.addEventListener('click', handleFlipToggle);
+          state.flipHandlers.set(button, handleFlipToggle);
+        }
+        state.flipButtons.add(button);
+      });
+
+      if (hasGSAP && hasScrollTrigger && !reduceMotion) {
+        window.gsap.registerPlugin(window.ScrollTrigger);
+        const timeline = window.gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+          },
+        });
+        timeline.from(cards.map((card) => card), {
+          opacity: 0,
+          rotateX: -15,
+          transformOrigin: 'top center',
+          y: 36,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power2.out',
+          onStart: () => {
+            cards.forEach((card) => {
+              card.style.willChange = 'transform, opacity';
+            });
+          },
+          onComplete: () => {
+            cards.forEach((card) => {
+              card.style.willChange = 'auto';
+            });
+          },
+        });
+        registerTimeline(timeline);
+      } else {
+        const observer = registerObserver(
+          new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                cards.forEach((card, index) => {
+                  window.setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'rotateX(0deg)';
+                  }, reduceMotion ? 0 : index * 70);
+                });
+                obs.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.4 }
+          )
+        );
+        observer.observe(section);
+      }
+    });
+  }
+
+  function destroy() {
+    state.timelines.forEach((timeline) => {
+      try {
+        timeline.kill();
+      } catch (error) {
+        console.error('Error al limpiar animación', error);
+      }
+    });
+    state.timelines = [];
+
+    if (hasScrollTrigger) {
+      try {
+        window.ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      } catch (error) {
+        console.error('Error al limpiar ScrollTrigger', error);
+      }
+    }
+
+    state.observers.forEach((observer) => observer.disconnect());
+    state.observers = [];
+
+    state.cleanups.forEach((cleanup) => {
+      try {
+        cleanup();
+      } catch (error) {
+        console.error('Error en limpieza de animación', error);
+      }
+    });
+    state.cleanups = [];
+
+    state.flipButtons.forEach((button) => {
+      const handler = state.flipHandlers.get(button);
+      if (handler) {
+        button.removeEventListener('click', handler);
+        state.flipHandlers.delete(button);
+      }
+    });
+    state.flipButtons.clear();
+  }
+
+  function init() {
+    destroy();
+
+    const reduceMotion = prefersReducedMotionQuery.matches;
+
+    ensureSplitText();
+    animateHero(reduceMotion);
+    animateParallax(reduceMotion);
+    animateSections(reduceMotion);
+    animateTimeline(reduceMotion);
+    animateSvgDraw(reduceMotion);
+    initCountUps(reduceMotion);
+    initFlipCards(reduceMotion);
+  }
+
+  const handleMotionChange = () => {
+    init();
+  };
+
+  if (typeof prefersReducedMotionQuery.addEventListener === 'function') {
+    prefersReducedMotionQuery.addEventListener('change', handleMotionChange);
+  } else if (typeof prefersReducedMotionQuery.addListener === 'function') {
+    prefersReducedMotionQuery.addListener(handleMotionChange);
+  }
+
+  window.AnimationManager = {
+    init,
+    destroy,
+  };
+})();
