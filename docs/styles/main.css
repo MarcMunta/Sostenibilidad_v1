@@ -139,15 +139,10 @@ a:focus-visible {
   --color-card-gradient-bottom: rgba(45, 212, 191, 0.22);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background-color: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-body);
-  scroll-snap-type: y proximity;
   overflow-x: hidden;
   transition: background-color var(--transition-long), color var(--transition-long);
 }
