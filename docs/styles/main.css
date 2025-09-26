@@ -652,15 +652,15 @@ nav {
 /* ===== Mapa y panel ====================================================== */
 #mapa-global {
   position: relative;
-  --map-size: clamp(320px, min(62vw, 72vh), 560px);
+  --map-size: clamp(340px, min(68vw, 72vh), 640px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
-  gap: clamp(var(--space-xl), 4vw, var(--space-2xl));
+  gap: clamp(var(--space-lg), 3vw, var(--space-2xl));
   align-items: center;
   align-content: center;
-  padding: calc(var(--nav-height) + var(--space-2xl)) clamp(3vw, 5vw, 6vw) var(--space-2xl);
-  max-width: min(1160px, 96vw);
+  padding: calc(var(--nav-height) + var(--space-2xl)) clamp(3vw, 4vw, 6vw) var(--space-2xl);
+  max-width: min(1400px, 98vw);
   margin-inline: auto;
   min-height: calc(100vh - var(--nav-height) - var(--space-xl));
 }
@@ -670,9 +670,8 @@ nav {
   overflow: hidden;
   border: 1px solid var(--color-border);
   width: min(100%, var(--map-size));
-  aspect-ratio: 1 / 1;
   max-width: var(--map-size);
-  max-height: var(--map-size);
+  height: clamp(320px, 60vh, 640px);
   flex: none;
   box-shadow: var(--shadow-sm);
   display: flex;
@@ -700,8 +699,8 @@ nav {
   gap: var(--space-lg);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
-  width: min(100%, clamp(320px, 34vw, 420px));
-  max-height: var(--map-size);
+  width: min(100%, clamp(320px, 32vw, 460px));
+  max-height: calc(100% - var(--space-lg));
   grid-template-rows: auto auto 1fr auto;
   align-content: start;
   overflow: auto;
@@ -957,8 +956,8 @@ footer small {
   }
 
   #mapa-global {
-    grid-template-columns: minmax(280px, var(--map-size)) minmax(320px, 1fr);
-    justify-items: center;
+    grid-template-columns: minmax(320px, var(--map-size)) minmax(320px, 1fr);
+    justify-items: stretch;
   }
 }
 
@@ -968,9 +967,9 @@ footer small {
   }
 
   #mapa-global {
-    --map-size: clamp(360px, min(48vw, 70vh), 600px);
-    padding: calc(var(--nav-height) + var(--space-2xl)) clamp(4vw, 6vw, 8vw) var(--space-2xl);
-    grid-template-columns: minmax(360px, var(--map-size)) minmax(360px, 0.95fr);
+    --map-size: clamp(420px, min(52vw, 70vh), 720px);
+    padding: calc(var(--nav-height) + var(--space-2xl)) clamp(3vw, 5vw, 7vw) var(--space-2xl);
+    grid-template-columns: minmax(420px, 1.4fr) minmax(360px, 1fr);
   }
 
   .hero-content {
