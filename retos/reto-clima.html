@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reto Clima | Sostenibilidad 2030</title>
+    <meta
+      name="description"
+      content="Caso real sobre adaptación climática con análisis de impacto ambiental, social y económico."
+    />
+    <meta name="keywords" content="clima, adaptación, sostenibilidad, resiliencia" />
+    <meta name="author" content="Equipo Educativo Sostenibilidad 2030" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ejemplo.org/sostenibilidad/retos/reto-clima" />
+    <meta property="og:title" content="Reto Clima | Sostenibilidad 2030" />
+    <meta
+      property="og:description"
+      content="Explora el plan climático de Copenhague, sus impactos y lecciones para la acción climática."
+    />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@Sostenibilidad2030" />
+    <meta name="twitter:title" content="Reto Clima | Sostenibilidad 2030" />
+    <meta
+      name="twitter:description"
+      content="Descubre cómo Copenhague acelera la adaptación climática con soluciones integrales."
+    />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" />
+    <link rel="canonical" href="https://ejemplo.org/sostenibilidad/retos/reto-clima" />
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
+      crossorigin=""
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --color-bg: #f1f5f9;
+        --color-bg-alt: rgba(15, 23, 42, 0.05);
+        --color-text: #0f172a;
+        --color-muted: rgba(15, 23, 42, 0.65);
+        --color-accent: #2563eb;
+        --color-accent-soft: rgba(37, 99, 235, 0.08);
+        --color-surface: #ffffff;
+        --shadow-lg: 0 30px 60px -35px rgba(15, 23, 42, 0.6);
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--color-bg);
+        color: var(--color-text);
+        font-family: inherit;
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--color-accent);
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      [tabindex]:focus-visible {
+        outline: 3px solid var(--color-accent);
+        outline-offset: 4px;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 1rem;
+        top: -100vh;
+        padding: 0.75rem 1.25rem;
+        background: var(--color-accent);
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 600;
+        transition: top 0.3s ease;
+        z-index: 1000;
+      }
+
+      .skip-link:focus {
+        top: 1rem;
+      }
+
+      header {
+        background: var(--color-surface);
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        box-shadow: 0 10px 30px -20px rgba(15, 23, 42, 0.4);
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem clamp(1.5rem, 4vw, 4rem);
+      }
+
+      .logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+        letter-spacing: 0.05em;
+      }
+
+      nav[aria-label="breadcrumb"] {
+        background: var(--color-accent-soft);
+      }
+
+      .breadcrumb {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0.75rem clamp(1.5rem, 4vw, 4rem);
+        font-size: 0.95rem;
+      }
+
+      .breadcrumb li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .breadcrumb li::after {
+        content: "/";
+        color: var(--color-muted);
+      }
+
+      .breadcrumb li:last-child::after {
+        content: "";
+      }
+
+      .hero {
+        position: relative;
+        padding: clamp(4rem, 12vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(125, 211, 252, 0.25));
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80");
+        background-size: cover;
+        background-position: center;
+        opacity: 0.2;
+        mix-blend-mode: multiply;
+        z-index: 0;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 60rem;
+      }
+
+      .hero-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-muted);
+      }
+
+      .hero-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.5rem, 6vw, 3.75rem);
+        margin: 0.75rem 0;
+      }
+
+      .hero-summary {
+        max-width: 45rem;
+        font-size: 1.05rem;
+        color: var(--color-muted);
+      }
+
+      main {
+        padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 4rem) 6rem;
+        display: grid;
+        gap: clamp(3rem, 8vw, 4.5rem);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(37, 99, 235, 0.08));
+      }
+
+      .case-summary {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .case-summary article {
+        background: var(--color-surface);
+        padding: clamp(1.75rem, 4vw, 2.5rem);
+        border-radius: 1.5rem;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .case-summary article::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(37, 99, 235, 0.12), transparent 60%);
+        z-index: 0;
+      }
+
+      .case-summary h2,
+      .case-summary h3 {
+        margin-top: 0;
+        font-family: "Playfair Display", serif;
+      }
+
+      .case-summary p {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 1rem;
+        color: var(--color-muted);
+      }
+
+      .impact-section {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .impact-card {
+        background: var(--color-surface);
+        border-radius: 1.25rem;
+        padding: 2rem;
+        box-shadow: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .impact-card h2 {
+        margin-top: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+      }
+
+      .impact-card ul {
+        margin: 1rem 0 0;
+        padding-left: 1.2rem;
+        color: var(--color-muted);
+      }
+
+      .chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+      }
+
+      .chip {
+        background: var(--color-accent-soft);
+        color: var(--color-accent);
+        padding: 0.5rem 0.95rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .timeline-section {
+        background: var(--color-surface);
+        padding: clamp(2rem, 5vw, 3rem);
+        border-radius: 1.5rem;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .timeline-section h2 {
+        font-family: "Playfair Display", serif;
+      }
+
+      .timeline {
+        list-style: none;
+        margin: 2rem 0 0;
+        padding: 0;
+        position: relative;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 1rem;
+        top: 0.5rem;
+        bottom: 0.5rem;
+        width: 3px;
+        background: linear-gradient(180deg, rgba(37, 99, 235, 0.4), transparent);
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 3rem;
+        margin-bottom: 1.75rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.5s ease, transform 0.6s ease;
+      }
+
+      .timeline-item[data-visible="true"] {
+        opacity: 1;
+        transform: none;
+      }
+
+      .timeline-item::before {
+        content: attr(data-year);
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: var(--color-accent);
+        color: #fff;
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .critic-section {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .flip-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .flip-card {
+        perspective: 1200px;
+      }
+
+      .flip-card button {
+        width: 100%;
+        border: none;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        position: relative;
+        height: 200px;
+      }
+
+      .flip-card button:focus-visible {
+        outline: none;
+      }
+
+      .flip-card button:focus-visible .card-face,
+      .flip-card button:hover .card-face {
+        box-shadow: 0 30px 60px -25px rgba(37, 99, 235, 0.55);
+      }
+
+      .card-face {
+        position: absolute;
+        inset: 0;
+        background: var(--color-surface);
+        border-radius: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        backface-visibility: hidden;
+        box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.45);
+        transition: transform 0.8s ease;
+      }
+
+      .card-face.back {
+        transform: rotateY(180deg);
+        text-align: center;
+        color: var(--color-muted);
+      }
+
+      .flip-card button[aria-pressed="true"] .front {
+        transform: rotateY(180deg);
+      }
+
+      .flip-card button[aria-pressed="true"] .back {
+        transform: rotateY(360deg);
+      }
+
+      .map-section {
+        background: var(--color-surface);
+        padding: clamp(2rem, 5vw, 3rem);
+        border-radius: 1.5rem;
+        box-shadow: var(--shadow-lg);
+      }
+
+      #map-clima {
+        width: 100%;
+        min-height: 320px;
+        border-radius: 1rem;
+      }
+
+      .cta-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.6rem;
+        border-radius: 999px;
+        background: var(--color-accent);
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .cta-button.secondary {
+        background: transparent;
+        color: var(--color-accent);
+        border: 2px solid var(--color-accent);
+      }
+
+      .cta-button:hover,
+      .cta-button:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px -20px rgba(37, 99, 235, 0.6);
+      }
+
+      footer {
+        padding: 3rem clamp(1.5rem, 4vw, 4rem);
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      footer a {
+        color: #93c5fd;
+      }
+
+      @media (max-width: 768px) {
+        .top-bar {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .timeline::before {
+          left: 0.75rem;
+        }
+
+        .timeline-item {
+          padding-left: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+    <header>
+      <div class="top-bar">
+        <a class="logo" href="/">Sostenibilidad 2030</a>
+        <span>Ruta de aprendizaje: Retos climáticos</span>
+      </div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" data-animate="breadcrumb">
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/index.html#retos">Retos</a></li>
+          <li aria-current="page">Clima</li>
+        </ol>
+      </nav>
+    </header>
+
+    <section class="hero" data-animate="hero">
+      <div class="hero-content">
+        <span class="hero-kicker">Reto global 1</span>
+        <h1 class="hero-title">Neutralidad climática en Copenhague</h1>
+        <p class="hero-summary">
+          La capital danesa aspira a convertirse en la primera ciudad neutral en carbono del mundo para 2025. Analizamos su
+          estrategia de adaptación urbana, las tensiones políticas y sociales que enfrenta y el aprendizaje que deja para otras
+          urbes costeras expuestas a los extremos climáticos.
+        </p>
+      </div>
+    </section>
+
+    <main id="contenido-principal">
+      <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
+        <article>
+          <h2 id="resumen-caso">Contexto del caso</h2>
+          <p>
+            Copenhague se sitúa en una región baja del mar Báltico y vive un aumento sostenido del nivel del mar y del número de
+            lluvias intensas. Tras las inundaciones de 2011, el ayuntamiento creó el Plan de Acción Climática centrado en la
+            neutralidad y en un enfoque de “ciudad esponja”. El plan combina expansión de infraestructuras verdes, movilidad
+            eléctrica y energía distrital basada en residuos y biomasa sostenible. La gobernanza es compartida entre el municipio,
+            cooperativas energéticas y empresas de agua, pero enfrenta presiones por el rápido crecimiento poblacional y la
+            gentrificación de barrios portuarios como Nordhavn.
+          </p>
+          <p>
+            El presupuesto supera los 4.000 millones de euros con cofinanciación estatal y del Banco Nórdico de Inversiones. Las
+            decisiones técnicas se apoyan en modelos digitales que cruzan datos meteorológicos, patrones de movilidad y escenarios
+            de subida del mar. Cada distrito cuenta con mesas ciudadanas que definen prioridades de adaptación para proteger
+            viviendas, escuelas y zonas industriales. Las soluciones basadas en la naturaleza —canales verdes, parques retentores
+            y techos azules— actúan como sistema de drenaje, mientras que se incentiva la rehabilitación energética de edificios
+            históricos y la electrificación del transporte público y privado.
+          </p>
+        </article>
+        <article>
+          <h3 id="aprendizajes">Aprendizajes clave</h3>
+          <p>
+            El programa demuestra que la neutralidad climática requiere instrumentos fiscales que desincentiven la calefacción a
+            combustibles fósiles y mecanismos de reparto de beneficios tangibles. Copenhague creó tarifas diferenciadas de energía
+            distrital según eficiencia energética y estableció cooperativas solares que devuelven dividendos a vecindarios con
+            menor renta. La ciudad habilitó laboratorios urbanos para co-diseñar espacios multifuncionales que sirven como parques
+            recreativos en verano y cuencas de retención en episodios de lluvia extrema.
+          </p>
+          <p>
+            El seguimiento se realiza con paneles de datos abiertos que reportan emisiones en tiempo real por sector, generando
+            presión pública sobre las empresas más contaminantes. El plan también integra la salud pública: se monitoriza cómo la
+            isla de calor y el incremento de alérgenos afectan la asistencia a escuelas y hospitales para priorizar nuevas áreas
+            verdes. Esta mirada integral articula resiliencia climática y bienestar ciudadano.
+          </p>
+        </article>
+        <article>
+          <h3 id="desafios">Desafíos pendientes</h3>
+          <p>
+            Los principales cuestionamientos provienen de colectivos que alertan sobre el impacto de nuevas infraestructuras en la
+            biodiversidad marina y en los derechos de pesca artesanal. Además, la transición energética depende parcialmente de
+            biomasa importada, lo que abre debates sobre su trazabilidad. Las soluciones basadas en la naturaleza requieren
+            mantenimiento constante y coordinación interdepartamental para evitar inundaciones puntuales en barrios con servicios
+            públicos saturados. Las autoridades exploran alianzas con ciudades vecinas para compartir costos de almacenamiento de
+            energía y mejorar la gobernanza metropolitana del clima.
+          </p>
+          <p>
+            También se discute cómo garantizar viviendas asequibles durante la transformación urbana. Programas de renovación han
+            elevado el valor inmobiliario en zonas portuarias, expulsando a residentes de larga data. Para atajar el problema se
+            están implementando fideicomisos de suelo comunitario y metas de vivienda pública en cada nuevo desarrollo, aunque su
+            implementación es desigual. El reto radica en equilibrar competitividad económica, justicia climática y protección de
+            ecosistemas costeros.
+          </p>
+        </article>
+      </section>
+
+      <section class="impact-section" aria-labelledby="impacto-ambiental" data-animate="section">
+        <article class="impact-card">
+          <h2 id="impacto-ambiental">Impacto ambiental</h2>
+          <p>
+            Las intervenciones priorizan la reducción de emisiones y la adaptación urbana. El sistema de calefacción distrital
+            modernizado evita 1,4 millones de toneladas de CO₂ anuales, mientras que los parques de retención capturan hasta 30
+            milímetros de lluvia por hora, reduciendo inundaciones y mejorando la calidad del agua urbana.
+          </p>
+          <ul>
+            <li>230 hectáreas de superficies permeables nuevas en calles y plazas.</li>
+            <li>Red de 65 km de ciclovías “rápidas” conectadas a estaciones intermodales.</li>
+            <li>Incremento del 25 % de biodiversidad urbana gracias a techos verdes y humedales restaurados.</li>
+            <li>Reducción proyectada del 80 % en descargas directas al mar en tormentas extremas.</li>
+          </ul>
+        </article>
+        <article class="impact-card" aria-labelledby="impacto-personas">
+          <h2 id="impacto-personas">Impacto en personas y economía</h2>
+          <p>
+            La estrategia combina creación de empleo verde, salud pública y justicia climática. Los empleos vinculados a energía
+            renovable y movilidad eléctrica crecieron un 35 %, mientras que la inversión en infraestructura resiliente protege
+            cadenas logísticas portuarias clave para la economía danesa. La mejora de espacios públicos favorece el turismo y el
+            bienestar.
+          </p>
+          <div class="chip-list" role="list">
+            <span class="chip" role="listitem">Energía cooperativa</span>
+            <span class="chip" role="listitem">Turismo sostenible</span>
+            <span class="chip" role="listitem">Logística portuaria</span>
+            <span class="chip" role="listitem">Salud urbana</span>
+            <span class="chip" role="listitem">Vivienda asequible</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="timeline-section" aria-labelledby="timeline" data-animate="timeline" data-scroll-trigger>
+        <h2 id="timeline">Medidas clave y evolución</h2>
+        <p>
+          La ciudad planifica intervenciones escalonadas para reducir emisiones, adaptarse a lluvias intensas y mantener la
+          participación ciudadana.
+        </p>
+        <ol class="timeline">
+          <li class="timeline-item" data-year="2011" data-animate-item>
+            Creación del plan de adaptación tras lluvias históricas y lanzamiento de fondos de innovación verde.
+          </li>
+          <li class="timeline-item" data-year="2015" data-animate-item>
+            Construcción de las primeras plazas inundables y adopción de estándares obligatorios de techos verdes en nuevos
+            edificios.
+          </li>
+          <li class="timeline-item" data-year="2017" data-animate-item>
+            Expansión de cooperativas solares comunitarias y electrificación del 50 % de la flota de autobuses urbanos.
+          </li>
+          <li class="timeline-item" data-year="2019" data-animate-item>
+            Inauguración de Nordhavn como distrito carbono neutral con redes de calefacción inteligente y puertos eléctricos.
+          </li>
+          <li class="timeline-item" data-year="2021" data-animate-item>
+            Lanzamiento del observatorio ciudadano de datos climáticos y protocolo metropolitano de compras verdes.
+          </li>
+          <li class="timeline-item" data-year="2023" data-animate-item>
+            Programas de vivienda social resiliente y pruebas de captación de carbono en plantas de biomasa municipal.
+          </li>
+        </ol>
+      </section>
+
+      <section class="critic-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
+        <h2 id="criticas">Críticas y debates abiertos</h2>
+        <p>
+          Los siguientes puntos recogen cuestionamientos recurrentes que ayudan a evaluar riesgos y mejorar la gobernanza climática.
+        </p>
+        <div class="flip-grid">
+          <div class="flip-card" data-animate-item>
+            <button type="button" aria-pressed="false" aria-label="Controversia sobre biomasa">
+              <span class="card-face front">Dependencia de biomasa importada</span>
+              <span class="card-face back">Organizaciones ambientales dudan de la sostenibilidad de la biomasa proveniente de
+                bosques bálticos y piden mayor transparencia en la certificación.</span>
+            </button>
+          </div>
+          <div class="flip-card" data-animate-item>
+            <button type="button" aria-pressed="false" aria-label="Precios de vivienda">
+              <span class="card-face front">Aumento del precio de la vivienda</span>
+              <span class="card-face back">El valor de la vivienda en zonas regeneradas supera un 28 % el promedio, lo que expulsa
+                a familias de renta media y genera presión sobre políticas de alquiler.</span>
+            </button>
+          </div>
+          <div class="flip-card" data-animate-item>
+            <button type="button" aria-pressed="false" aria-label="Impacto en pesca">
+              <span class="card-face front">Impacto en pesca artesanal</span>
+              <span class="card-face back">La extensión de diques y turbinas marítimas altera rutas tradicionales y limita el acceso
+                de pescadores locales a zonas de captura seguras.</span>
+            </button>
+          </div>
+          <div class="flip-card" data-animate-item>
+            <button type="button" aria-pressed="false" aria-label="Riesgos de datos">
+              <span class="card-face front">Uso de datos personales</span>
+              <span class="card-face back">Grupos de derechos digitales piden garantías sobre la anonimización de datos de movilidad y
+                consumo energético utilizados en paneles abiertos.</span>
+            </button>
+          </div>
+          <div class="flip-card" data-animate-item>
+            <button type="button" aria-pressed="false" aria-label="Mantenimiento de infraestructura verde">
+              <span class="card-face front">Mantenimiento de infraestructura verde</span>
+              <span class="card-face back">Asociaciones vecinales señalan que los presupuestos distritales no alcanzan para conservar
+                parques retentores y jardines de lluvia en perfecto estado durante todo el año.</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="map-section" aria-labelledby="mapa" data-animate="section">
+        <h2 id="mapa">Localización del caso</h2>
+        <p>
+          Nordhavn se ubica en el norte de Copenhague (55.706° N, 12.599° E). El mapa muestra la zona portuaria que concentra la
+          mayoría de intervenciones climáticas.
+        </p>
+        <div id="map-clima" role="application" aria-label="Mapa del plan climático de Copenhague"></div>
+      </section>
+
+      <section aria-labelledby="fuentes" data-animate="section">
+        <h2 id="fuentes">Fuentes</h2>
+        <ul>
+          <li><a href="https://international.kk.dk/climate-plan" target="_blank" rel="noopener">Añadir fuente</a></li>
+          <li><a href="https://statesofchange.org" target="_blank" rel="noopener">Añadir fuente</a></li>
+          <li><a href="https://c40.org" target="_blank" rel="noopener">Añadir fuente</a></li>
+        </ul>
+      </section>
+
+      <section class="cta-section" aria-label="Acciones finales" data-animate="section">
+        <a class="cta-button" href="/">Volver a la página principal</a>
+        <a class="cta-button secondary" href="/retos/reto-agua.html">Ir al reto de agua</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Recurso educativo abierto del programa “Sostenibilidad 2030”.</p>
+      <small>Contenido de libre uso para fines académicos. Datos cartográficos &copy; OpenStreetMap colaboradores.</small>
+    </footer>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
+      crossorigin=""
+    ></script>
+    <script>
+      const mapClima = L.map('map-clima', { zoomControl: true });
+      mapClima.setView([55.706, 12.599], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contribuidores'
+      }).addTo(mapClima);
+      L.marker([55.706, 12.599]).addTo(mapClima).bindPopup('Nordhavn: laboratorio climático de Copenhague');
+
+      document.querySelectorAll('.flip-card button').forEach((button) => {
+        button.addEventListener('click', () => {
+          const pressed = button.getAttribute('aria-pressed') === 'true';
+          button.setAttribute('aria-pressed', String(!pressed));
+        });
+      });
+    </script>
+    <script src="/scripts/animations.js" defer></script>
+  </body>
+</html>
