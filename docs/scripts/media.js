@@ -66,7 +66,10 @@ docReady(() => {
    */
   const heroVideo = document.getElementById('bgVideo');
   const heroContainer = document.querySelector('.hero-video');
-  const motionFallback = heroContainer?.querySelector('[data-motion-disabled]');
+  let motionFallback = null;
+  if (heroContainer) {
+    motionFallback = heroContainer.querySelector('[data-motion-disabled]');
+  }
 
   const syncHeroVideo = () => {
     if (!heroVideo) return;
@@ -90,7 +93,11 @@ docReady(() => {
     }
   };
 
-  prefersReducedMotion.addEventListener?.('change', syncHeroVideo);
+  if (typeof prefersReducedMotion.addEventListener === 'function') {
+    prefersReducedMotion.addEventListener('change', syncHeroVideo);
+  } else if (typeof prefersReducedMotion.addListener === 'function') {
+    prefersReducedMotion.addListener(syncHeroVideo);
+  }
   syncHeroVideo();
 
   /**
@@ -128,24 +135,32 @@ docReady(() => {
         }
         try {
           await ambientAudio.play();
-          audioButton?.setAttribute('aria-pressed', 'true');
+          if (audioButton) {
+            audioButton.setAttribute('aria-pressed', 'true');
+          }
         } catch (error) {
           console.warn('Audio playback was prevented by the browser', error);
         }
       } else {
         ambientAudio.pause();
-        audioButton?.setAttribute('aria-pressed', 'false');
+        if (audioButton) {
+          audioButton.setAttribute('aria-pressed', 'false');
+        }
       }
     };
 
-    audioButton?.addEventListener('click', toggleAudio);
+    if (audioButton) {
+      audioButton.addEventListener('click', toggleAudio);
+    }
 
-    muteAll?.addEventListener('click', () => {
-      const isMuted = ambientAudio.muted;
-      ambientAudio.muted = !isMuted;
-      muteAll.setAttribute('aria-pressed', String(!isMuted));
-      muteAll.textContent = ambientAudio.muted ? '🔇' : '🔊';
-    });
+    if (muteAll) {
+      muteAll.addEventListener('click', () => {
+        const isMuted = ambientAudio.muted;
+        ambientAudio.muted = !isMuted;
+        muteAll.setAttribute('aria-pressed', String(!isMuted));
+        muteAll.textContent = ambientAudio.muted ? '🔇' : '🔊';
+      });
+    }
   }
 
   /**
@@ -175,8 +190,10 @@ docReady(() => {
               }
               if (el._lottie) {
                 if (entry.isIntersecting) {
-                  el._lottie.play();
-                } else {
+                  if (typeof el._lottie.play === 'function') {
+                    el._lottie.play();
+                  }
+                } else if (typeof el._lottie.pause === 'function') {
                   el._lottie.pause();
                 }
               }
@@ -187,7 +204,11 @@ docReady(() => {
 
           document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-              lottieTargets.forEach((target) => target._lottie?.pause());
+              lottieTargets.forEach((target) => {
+                if (target._lottie && typeof target._lottie.pause === 'function') {
+                  target._lottie.pause();
+                }
+              });
             }
           });
         })
@@ -292,7 +313,7 @@ docReady(() => {
             }
 
             const leafletModule = await import('https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js');
-            const L = leafletModule.default ?? leafletModule;
+            const L = leafletModule && leafletModule.default ? leafletModule.default : leafletModule;
 
             const map = L.map('map', {
               zoomControl: true,
@@ -327,7 +348,10 @@ docReady(() => {
               .bindPopup(popupHtml);
 
             mapSection.dataset.state = 'loaded';
-            mapSection.querySelector('.map-placeholder')?.remove();
+            const placeholder = mapSection.querySelector('.map-placeholder');
+            if (placeholder && typeof placeholder.remove === 'function') {
+              placeholder.remove();
+            }
           } catch (error) {
             console.error('Error loading map resources', error);
             mapSection.dataset.state = 'error';

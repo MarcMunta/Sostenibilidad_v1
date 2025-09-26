@@ -79,7 +79,9 @@
       }
     }
 
-    window.feather?.replace();
+    if (window.feather && typeof window.feather.replace === 'function') {
+      window.feather.replace();
+    }
   }
 
   function getStoredTheme() {
@@ -246,7 +248,9 @@
       mapButton.className = 'reto-card__map';
       mapButton.textContent = 'Ver en el mapa';
       mapButton.addEventListener('click', () => {
-        window.MapManager?.focusOnReto(reto.id);
+        if (window.MapManager && typeof window.MapManager.focusOnReto === 'function') {
+          window.MapManager.focusOnReto(reto.id);
+        }
         highlightRetoCard(reto.id);
       });
       controls.appendChild(mapButton);
@@ -331,10 +335,17 @@
     initPrefetch();
     parseAndRenderRetos();
 
-    window.AnimationManager?.init();
-    window.MapManager?.initPage({ retosData: state.retosData });
+    if (window.AnimationManager && typeof window.AnimationManager.init === 'function') {
+      window.AnimationManager.init();
+    }
 
-    window.feather?.replace();
+    if (window.MapManager && typeof window.MapManager.initPage === 'function') {
+      window.MapManager.initPage({ retosData: state.retosData });
+    }
+
+    if (window.feather && typeof window.feather.replace === 'function') {
+      window.feather.replace();
+    }
 
     window.addEventListener('map:focus', onMapFocus);
     addCleanup(() => window.removeEventListener('map:focus', onMapFocus));
@@ -347,8 +358,13 @@
     }
 
     runCleanups();
-    window.AnimationManager?.destroy?.();
-    window.MapManager?.destroy?.();
+    if (window.AnimationManager && typeof window.AnimationManager.destroy === 'function') {
+      window.AnimationManager.destroy();
+    }
+
+    if (window.MapManager && typeof window.MapManager.destroy === 'function') {
+      window.MapManager.destroy();
+    }
   }
 
   function createOverlay() {

@@ -47,10 +47,10 @@
     if (!fallbackConfigPath || !fallbackImage) return fallbackImage;
 
     const config = await loadJsonConfig(fallbackConfigPath);
-    if (config?.src) {
+    if (config && config.src) {
       fallbackImage.src = config.src;
     }
-    if (config?.alt) {
+    if (config && config.alt) {
       fallbackImage.alt = config.alt;
     }
 
@@ -61,7 +61,7 @@
     if (!container) return;
     if (container.dataset.lottieHydrated === 'true') {
       const wrapper = container.closest('.reto-icon');
-      const fallbackImage = wrapper?.querySelector('[data-fallback-image]');
+      const fallbackImage = wrapper ? wrapper.querySelector('[data-fallback-image]') : null;
       if (reduceMotion) {
         if (wrapper) {
           wrapper.dataset.state = 'fallback';
@@ -132,8 +132,8 @@
         window.requestAnimationFrame(showAnimation);
       }
 
-      if (reduceMotion) {
-        animation.goToAndStop?.(0, true);
+      if (reduceMotion && typeof animation.goToAndStop === 'function') {
+        animation.goToAndStop(0, true);
       }
       container.dataset.lottieHydrated = 'true';
     } catch (error) {
@@ -492,7 +492,7 @@
     const kpis = document.querySelectorAll('.kpi');
     if (!kpis.length) return;
 
-    const CountUp = window.CountUp?.CountUp || window.CountUp;
+    const CountUp = window.CountUp && window.CountUp.CountUp ? window.CountUp.CountUp : window.CountUp;
 
     const observer = registerObserver(
       new IntersectionObserver((entries, obs) => {
@@ -500,7 +500,8 @@
           if (!entry.isIntersecting) return;
           const element = entry.target;
           const valueEl = element.querySelector('.kpi-value');
-          const target = Number.parseFloat(element.dataset.target || valueEl?.textContent || '0');
+          const fallbackText = valueEl ? valueEl.textContent : '0';
+          const target = Number.parseFloat(element.dataset.target || fallbackText || '0');
 
           if (!valueEl) {
             obs.unobserve(element);
