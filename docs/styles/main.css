@@ -653,24 +653,26 @@ nav {
 #mapa-global {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 44%));
+  grid-template-columns: minmax(0, 1fr);
   justify-content: center;
   gap: var(--space-2xl);
-  align-items: start;
+  align-items: stretch;
   padding: calc(var(--nav-height) + var(--space-3xl)) 5vw var(--space-3xl);
-  max-width: min(1200px, 95vw);
+  max-width: min(1280px, 95vw);
   margin-inline: auto;
-  min-height: auto;
+  min-height: min(760px, 92vh);
 }
 
 #mapa-global .map-container {
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border);
-  min-height: clamp(280px, 48vh, 520px);
-  max-height: 520px;
+  min-height: clamp(320px, 65vh, 560px);
   box-shadow: var(--shadow-sm);
   display: flex;
+  background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.12), transparent 65%),
+    radial-gradient(circle at 70% 70%, rgba(14, 165, 233, 0.1), transparent 70%),
+    color-mix(in srgb, var(--color-surface-alt) 60%, transparent);
 }
 
 #mapa-global #map {
@@ -685,9 +687,24 @@ nav {
   background: var(--color-elevated);
   backdrop-filter: blur(12px);
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-lg);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  min-height: clamp(320px, 65vh, 560px);
+  grid-template-rows: auto auto 1fr auto;
+  align-content: start;
+}
+
+.map-panel [data-retos-list] {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-content: start;
+  min-height: 0;
+}
+
+.map-panel .map-details {
+  min-height: 0;
 }
 
 .map-panel[data-active-reto] .reto-card.is-active {
@@ -752,18 +769,22 @@ nav {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.map-panel [data-retos-list] .reto-card {
+  height: 100%;
+}
+
 .reto-card {
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   border-radius: var(--radius-lg);
   background: var(--color-elevated);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .reto-card__title {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2vw, 1.35rem);
 }
 
 .reto-card__image {
@@ -910,6 +931,10 @@ footer small {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2xl);
   }
+
+  #mapa-global {
+    grid-template-columns: minmax(360px, 1fr) minmax(360px, 1fr);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -919,6 +944,7 @@ footer small {
 
   #mapa-global {
     padding: calc(var(--nav-height) + var(--space-3xl)) clamp(5vw, 8vw, 12vw) var(--space-3xl);
+    grid-template-columns: minmax(420px, 1.15fr) minmax(380px, 0.95fr);
   }
 
   .hero-content {
@@ -927,6 +953,11 @@ footer small {
 
   .scrollytelling[data-columns="2"] {
     align-items: center;
+  }
+
+  .map-panel [data-retos-list] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
   }
 }
 
