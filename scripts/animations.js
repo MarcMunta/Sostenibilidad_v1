@@ -12,6 +12,140 @@
   };
 
   const splitCache = new WeakSet();
+  const configCache = new Map();
+
+  async function loadJsonConfig(path) {
+    if (!path) return null;
+    const cacheKey = path;
+    if (configCache.has(cacheKey)) {
+      return configCache.get(cacheKey);
+    }
+
+    try {
+      const response = await fetch(path, { cache: 'no-cache' });
+      if (!response.ok) {
+        throw new Error(`Estado ${response.status}`);
+      }
+      const json = await response.json();
+      configCache.set(cacheKey, json);
+      return json;
+    } catch (error) {
+      console.warn(`No se pudo cargar la configuración JSON desde ${path}`, error);
+      configCache.set(cacheKey, null);
+      return null;
+    }
+  }
+
+  window.MediaConfigLoader = {
+    load: loadJsonConfig,
+  };
+
+  async function ensureFallbackImage(container, wrapper) {
+    if (!container || !wrapper) return null;
+    const fallbackConfigPath = container.getAttribute('data-fallback-config');
+    const fallbackImage = wrapper.querySelector('[data-fallback-image]');
+    if (!fallbackConfigPath || !fallbackImage) return fallbackImage;
+
+    const config = await loadJsonConfig(fallbackConfigPath);
+    if (config?.src) {
+      fallbackImage.src = config.src;
+    }
+    if (config?.alt) {
+      fallbackImage.alt = config.alt;
+    }
+
+    return fallbackImage;
+  }
+
+  async function hydrateLottieContainer(container, reduceMotion) {
+    if (!container) return;
+    if (container.dataset.lottieHydrated === 'true') {
+      const wrapper = container.closest('.reto-icon');
+      const fallbackImage = wrapper?.querySelector('[data-fallback-image]');
+      if (reduceMotion) {
+        if (wrapper) {
+          wrapper.dataset.state = 'fallback';
+        }
+        if (fallbackImage) {
+          fallbackImage.hidden = false;
+        }
+      } else {
+        if (wrapper) {
+          wrapper.dataset.state = 'animated';
+        }
+        if (fallbackImage) {
+          fallbackImage.hidden = true;
+        }
+      }
+      return;
+    }
+    const wrapper = container.closest('.reto-icon');
+    if (wrapper && !wrapper.dataset.state) {
+      wrapper.dataset.state = 'fallback';
+    }
+
+    const fallbackImage = await ensureFallbackImage(container, wrapper);
+
+    if (typeof window.lottie === 'undefined') {
+      if (fallbackImage) {
+        fallbackImage.hidden = false;
+      }
+      return;
+    }
+
+    const configPath = container.getAttribute('data-lottie-config');
+    const config = await loadJsonConfig(configPath);
+    if (!config || !config.src) {
+      if (fallbackImage) {
+        fallbackImage.hidden = false;
+      }
+      return;
+    }
+
+    try {
+      const animation = window.lottie.loadAnimation({
+        container,
+        renderer: config.renderer || 'svg',
+        loop: typeof config.loop === 'boolean' ? config.loop : true,
+        autoplay: reduceMotion ? false : config.autoplay !== false,
+        path: config.src,
+        name: config.name || undefined,
+      });
+
+      container.dataset.lottieReady = 'true';
+      if (config.description) {
+        container.setAttribute('data-description', config.description);
+      }
+
+      const showAnimation = () => {
+        if (wrapper) {
+          wrapper.dataset.state = 'animated';
+        }
+        if (fallbackImage) {
+          fallbackImage.hidden = true;
+        }
+      };
+
+      if (typeof animation.addEventListener === 'function') {
+        animation.addEventListener('DOMLoaded', showAnimation);
+      } else {
+        window.requestAnimationFrame(showAnimation);
+      }
+
+      if (reduceMotion) {
+        animation.goToAndStop?.(0, true);
+      }
+      container.dataset.lottieHydrated = 'true';
+    } catch (error) {
+      console.warn('No se pudo inicializar la animación Lottie', error);
+      if (wrapper) {
+        wrapper.dataset.state = 'fallback';
+      }
+      if (fallbackImage) {
+        fallbackImage.hidden = false;
+      }
+    }
+  }
 
   function registerTimeline(timeline) {
     if (timeline && typeof timeline.kill === 'function') {
@@ -400,6 +534,15 @@
     kpis.forEach((kpi) => observer.observe(kpi));
   }
 
+  function initLottieAnimations(reduceMotion) {
+    const containers = document.querySelectorAll('[data-lottie-config]');
+    if (!containers.length) return;
+
+    containers.forEach((container) => {
+      hydrateLottieContainer(container, reduceMotion);
+    });
+  }
+
   function handleFlipToggle(event) {
     const button = event.currentTarget;
     const pressed = button.getAttribute('aria-pressed') === 'true';
@@ -526,6 +669,7 @@
     animateSvgDraw(reduceMotion);
     initCountUps(reduceMotion);
     initFlipCards(reduceMotion);
+    initLottieAnimations(reduceMotion);
   }
 
   const handleMotionChange = () => {
