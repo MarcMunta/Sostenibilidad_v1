@@ -653,7 +653,7 @@ nav {
 #mapa-global {
   position: relative;
   --map-size: clamp(520px, min(74vw, 85vh), 1040px);
-  --panel-size: clamp(360px, 32vw, 640px);
+  --panel-size: clamp(420px, 36vw, 760px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
@@ -753,7 +753,7 @@ nav {
 .leaflet-popup-content {
   font-size: clamp(1rem, 1.8vw, 1.1rem);
   line-height: 1.6;
-  max-width: clamp(300px, 48vw, 380px);
+  max-width: clamp(360px, 52vw, 480px);
 }
 
 .leaflet-popup-content h3 {
@@ -764,7 +764,7 @@ nav {
 .map-popup {
   display: grid;
   gap: var(--space-sm);
-  max-width: clamp(300px, 48vw, 380px);
+  max-width: clamp(360px, 52vw, 480px);
 }
 
 .map-popup img {
@@ -983,7 +983,7 @@ footer small {
   }
 
   .map-panel {
-    width: min(100%, 520px);
+    width: min(100%, 560px);
     max-height: none;
   }
 }
@@ -1003,7 +1003,7 @@ footer small {
   }
 
   #mapa-global {
-    grid-template-columns: minmax(360px, var(--map-size)) minmax(320px, 1fr);
+    grid-template-columns: minmax(360px, var(--map-size)) minmax(360px, 1fr);
     justify-items: stretch;
   }
 }
@@ -1016,7 +1016,7 @@ footer small {
   #mapa-global {
     --map-size: clamp(640px, min(62vw, 78vh), 1220px);
     padding: calc(var(--nav-height) + var(--space-2xl)) clamp(3vw, 4vw, 6vw) var(--space-2xl);
-    grid-template-columns: minmax(540px, 1.85fr) minmax(360px, 1fr);
+    grid-template-columns: minmax(540px, 1.75fr) minmax(420px, 1fr);
   }
 
   .hero-content {
