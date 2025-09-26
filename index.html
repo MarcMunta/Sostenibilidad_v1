@@ -77,7 +77,7 @@
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons" defer></script>
   </head>
-  <body>
+  <body data-barba="wrapper">
     <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
 
     <header>
@@ -117,7 +117,7 @@
       </nav>
     </header>
 
-    <main id="contenido-principal">
+    <main id="contenido-principal" data-barba="container" data-barba-namespace="home">
       <section id="hero" aria-labelledby="hero-heading">
         <div class="hero-media" aria-hidden="true">
           <video src="/media/planeta.mp4" autoplay muted loop playsinline poster="/media/planeta.jpg"></video>
@@ -288,7 +288,7 @@
         </article>
       </section>
 
-      <section id="mapa-global" aria-labelledby="mapa-global-heading">
+      <section id="mapa-global" aria-labelledby="mapa-global-heading" data-animate="section">
         <div class="map-container" role="presentation">
           <div id="map" role="application" aria-label="Mapa de proyectos de sostenibilidad"></div>
         </div>
@@ -317,7 +317,8 @@
                 "resumen": "Parques solares comunitarios en Atacama que abastecen a 1,2 millones de hogares.",
                 "coordenadas": [-24.385, -69.332],
                 "imagen": "https://images.unsplash.com/photo-1509395062183-67c5ad6faff9",
-                "ruta": "https://ejemplo.org/proyectos/transicion-energetica"
+                "ruta": "/retos/reto-clima.html",
+                "emoji": "⚡"
               },
               {
                 "id": "agua",
@@ -325,7 +326,8 @@
                 "resumen": "Desalinización con energías renovables para comunidades costeras en Marruecos.",
                 "coordenadas": [31.7917, -7.0926],
                 "imagen": "https://images.unsplash.com/photo-1501612780327-45045538702b",
-                "ruta": "https://ejemplo.org/proyectos/gestion-agua"
+                "ruta": "/retos/reto-agua.html",
+                "emoji": "💧"
               },
               {
                 "id": "biodiversidad",
@@ -333,7 +335,8 @@
                 "resumen": "Corredores biológicos amazónicos que conectan 12 reservas indígenas.",
                 "coordenadas": [-3.4653, -62.2159],
                 "imagen": "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
-                "ruta": "https://ejemplo.org/proyectos/regeneracion-biodiversidad"
+                "ruta": "/retos/reto-biodiversidad.html",
+                "emoji": "🌱"
               },
               {
                 "id": "ciudades",
@@ -341,7 +344,8 @@
                 "resumen": "Red de movilidad eléctrica y reciclaje modular en Helsinki.",
                 "coordenadas": [60.1699, 24.9384],
                 "imagen": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-                "ruta": "https://ejemplo.org/proyectos/ciudades-circulares"
+                "ruta": "/retos/reto-aire.html",
+                "emoji": "🏙️"
               }
             ]
           }
@@ -372,8 +376,8 @@
       </div>
     </footer>
 
-    <script src="scripts/app.js" defer></script>
-    <script src="scripts/animations.js" defer></script>
-    <script src="scripts/map.js" defer></script>
+    <script src="/scripts/animations.js" defer></script>
+    <script src="/scripts/map.js" defer></script>
+    <script src="/scripts/app.js" defer></script>
   </body>
 </html>

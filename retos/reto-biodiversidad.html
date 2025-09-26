@@ -463,7 +463,7 @@
       }
     </style>
   </head>
-  <body>
+  <body data-barba="wrapper">
     <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
     <header>
       <div class="top-bar">
@@ -491,7 +491,7 @@
       </div>
     </section>
 
-    <main id="contenido-principal">
+    <main id="contenido-principal" data-barba="container" data-barba-namespace="reto-biodiversidad">
       <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
         <article>
           <h2 id="resumen-caso">Contexto del caso</h2>
@@ -648,7 +648,19 @@
           El corredor se ubica en la triple frontera amazónica. El mapa se centra en el río Negro medio (−3.4653° N, −62.2159° O),
           donde convergen territorios indígenas y áreas protegidas.
         </p>
-        <div id="map-biodiversidad" role="application" aria-label="Mapa del corredor biológico amazónico"></div>
+        <div
+          id="map-biodiversidad"
+          role="application"
+          aria-label="Mapa del corredor biológico amazónico"
+          data-map-lat="-3.4653"
+          data-map-lng="-62.2159"
+          data-map-zoom="6"
+          data-marker-title="Corredor amazónico Río Negro"
+          data-marker-summary="Comunidades indígenas restauran corredores biológicos en la triple frontera."
+          data-marker-image="https://images.unsplash.com/photo-1469474968028-56623f02e42e"
+          data-marker-emoji="🌿"
+          data-marker-route="/retos/reto-biodiversidad.html"
+        ></div>
       </section>
 
       <section aria-labelledby="fuentes" data-animate="section">
@@ -675,23 +687,10 @@
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
       crossorigin=""
+      defer
     ></script>
-    <script>
-      const mapBiodiversidad = L.map('map-biodiversidad', { zoomControl: true });
-      mapBiodiversidad.setView([-3.4653, -62.2159], 6);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contribuidores'
-      }).addTo(mapBiodiversidad);
-      L.marker([-3.4653, -62.2159]).addTo(mapBiodiversidad).bindPopup('Río Negro medio: nodos del corredor amazónico');
-
-      document.querySelectorAll('.flip-card button').forEach((button) => {
-        button.addEventListener('click', () => {
-          const pressed = button.getAttribute('aria-pressed') === 'true';
-          button.setAttribute('aria-pressed', String(!pressed));
-        });
-      });
-    </script>
     <script src="/scripts/animations.js" defer></script>
+    <script src="/scripts/map.js" defer></script>
+    <script src="/scripts/app.js" defer></script>
   </body>
 </html>

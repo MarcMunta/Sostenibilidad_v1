@@ -463,7 +463,7 @@
       }
     </style>
   </head>
-  <body>
+  <body data-barba="wrapper">
     <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
     <header>
       <div class="top-bar">
@@ -491,7 +491,7 @@
       </div>
     </section>
 
-    <main id="contenido-principal">
+    <main id="contenido-principal" data-barba="container" data-barba-namespace="reto-clima">
       <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
         <article>
           <h2 id="resumen-caso">Contexto del caso</h2>
@@ -660,7 +660,19 @@
           Nordhavn se ubica en el norte de Copenhague (55.706° N, 12.599° E). El mapa muestra la zona portuaria que concentra la
           mayoría de intervenciones climáticas.
         </p>
-        <div id="map-clima" role="application" aria-label="Mapa del plan climático de Copenhague"></div>
+        <div
+          id="map-clima"
+          role="application"
+          aria-label="Mapa del plan climático de Copenhague"
+          data-map-lat="55.706"
+          data-map-lng="12.599"
+          data-map-zoom="13"
+          data-marker-title="Nordhavn, Copenhague"
+          data-marker-summary="Distrito portuario convertido en laboratorio de neutralidad climática."
+          data-marker-image="https://images.unsplash.com/photo-1529921879218-f0c40882972a"
+          data-marker-emoji="⚡"
+          data-marker-route="/retos/reto-clima.html"
+        ></div>
       </section>
 
       <section aria-labelledby="fuentes" data-animate="section">
@@ -687,23 +699,10 @@
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
       crossorigin=""
+      defer
     ></script>
-    <script>
-      const mapClima = L.map('map-clima', { zoomControl: true });
-      mapClima.setView([55.706, 12.599], 13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contribuidores'
-      }).addTo(mapClima);
-      L.marker([55.706, 12.599]).addTo(mapClima).bindPopup('Nordhavn: laboratorio climático de Copenhague');
-
-      document.querySelectorAll('.flip-card button').forEach((button) => {
-        button.addEventListener('click', () => {
-          const pressed = button.getAttribute('aria-pressed') === 'true';
-          button.setAttribute('aria-pressed', String(!pressed));
-        });
-      });
-    </script>
     <script src="/scripts/animations.js" defer></script>
+    <script src="/scripts/map.js" defer></script>
+    <script src="/scripts/app.js" defer></script>
   </body>
 </html>

@@ -463,7 +463,7 @@
       }
     </style>
   </head>
-  <body>
+  <body data-barba="wrapper">
     <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
     <header>
       <div class="top-bar">
@@ -491,7 +491,7 @@
       </div>
     </section>
 
-    <main id="contenido-principal">
+    <main id="contenido-principal" data-barba="container" data-barba-namespace="reto-agua">
       <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
         <article>
           <h2 id="resumen-caso">Contexto del caso</h2>
@@ -656,7 +656,19 @@
         <p>
           La planta se localiza cerca de Cap Ghir, al norte de Agadir (31.7917° N, -7.0926° O), en la costa atlántica de Marruecos.
         </p>
-        <div id="map-agua" role="application" aria-label="Mapa del proyecto hídrico de Agadir"></div>
+        <div
+          id="map-agua"
+          role="application"
+          aria-label="Mapa del proyecto hídrico de Agadir"
+          data-map-lat="31.7917"
+          data-map-lng="-7.0926"
+          data-map-zoom="9"
+          data-marker-title="Cap Ghir, planta solar-desalinizadora"
+          data-marker-summary="Desalinización sostenible que abastece a Agadir con energía solar."
+          data-marker-image="https://images.unsplash.com/photo-1501612780327-45045538702b"
+          data-marker-emoji="💧"
+          data-marker-route="/retos/reto-agua.html"
+        ></div>
       </section>
 
       <section aria-labelledby="fuentes" data-animate="section">
@@ -683,23 +695,10 @@
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
       crossorigin=""
+      defer
     ></script>
-    <script>
-      const mapAgua = L.map('map-agua', { zoomControl: true });
-      mapAgua.setView([31.7917, -7.0926], 9);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contribuidores'
-      }).addTo(mapAgua);
-      L.marker([31.7917, -7.0926]).addTo(mapAgua).bindPopup('Cap Ghir: planta solar-desalinizadora de Agadir');
-
-      document.querySelectorAll('.flip-card button').forEach((button) => {
-        button.addEventListener('click', () => {
-          const pressed = button.getAttribute('aria-pressed') === 'true';
-          button.setAttribute('aria-pressed', String(!pressed));
-        });
-      });
-    </script>
     <script src="/scripts/animations.js" defer></script>
+    <script src="/scripts/map.js" defer></script>
+    <script src="/scripts/app.js" defer></script>
   </body>
 </html>
