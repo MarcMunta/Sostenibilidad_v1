@@ -653,7 +653,8 @@ nav {
 #mapa-global {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+  grid-template-columns: repeat(2, minmax(280px, 44%));
+  justify-content: center;
   gap: var(--space-2xl);
   align-items: start;
   padding: calc(var(--nav-height) + var(--space-3xl)) 5vw var(--space-3xl);
