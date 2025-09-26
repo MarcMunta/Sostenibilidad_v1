@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sostenibilidad 2030 | Los 4 retos globales</title>
+    <meta
+      name="description"
+      content="Explora los cuatro grandes retos de sostenibilidad con mapas interactivos, datos dinámicos y recursos educativos para la acción climática."
+    />
+    <meta name="keywords" content="sostenibilidad, retos globales, clima, educación, ODS" />
+    <meta name="author" content="Equipo Educativo Sostenibilidad 2030" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ejemplo.org/sostenibilidad" />
+    <meta property="og:title" content="Sostenibilidad 2030 | Los 4 retos globales" />
+    <meta
+      property="og:description"
+      content="Descubre iniciativas inspiradoras y datos clave sobre los desafíos ambientales que marcan nuestro futuro."
+    />
+    <meta property="og:image" content="https://ejemplo.org/assets/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@Sostenibilidad2030" />
+    <meta name="twitter:title" content="Sostenibilidad 2030 | Los 4 retos globales" />
+    <meta
+      name="twitter:description"
+      content="Recorre los retos de sostenibilidad con experiencias inmersivas, mapas interactivos y datos en vivo."
+    />
+    <meta name="twitter:image" content="https://ejemplo.org/assets/twitter-card.jpg" />
+
+    <link rel="canonical" href="https://ejemplo.org/sostenibilidad" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
+      crossorigin=""
+    />
+
+    <style>
+      :root {
+        color-scheme: light dark;
+        --color-bg: #0c1d2c;
+        --color-bg-alt: rgba(12, 29, 44, 0.85);
+        --color-text: #f8fafc;
+        --color-accent: #4ade80;
+        --color-muted: rgba(248, 250, 252, 0.7);
+        --nav-height: 4.5rem;
+      }
+
+      [data-theme="light"] {
+        --color-bg: #f1f5f9;
+        --color-bg-alt: rgba(241, 245, 249, 0.85);
+        --color-text: #0f172a;
+        --color-muted: rgba(15, 23, 42, 0.7);
+        --color-accent: #2563eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--color-text);
+        background-color: var(--color-bg);
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      .skip-link {
+        position: absolute;
+        top: -100vh;
+        left: 1rem;
+        padding: 0.75rem 1rem;
+        background: var(--color-accent);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        transition: top 0.3s ease;
+        z-index: 9999;
+      }
+
+      .skip-link:focus {
+        top: 1rem;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--nav-height);
+        z-index: 999;
+        backdrop-filter: blur(14px);
+        background: var(--color-bg-alt);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      nav {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+      }
+
+      .brand svg {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand span {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-links a {
+        font-weight: 500;
+        text-decoration: none;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -0.4rem;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      .nav-links a:focus-visible::after,
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .theme-toggle {
+        border: 1px solid currentColor;
+        border-radius: 999px;
+        padding: 0.35rem 0.85rem;
+        background: transparent;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+      }
+
+      section {
+        min-height: 100vh;
+        padding: calc(var(--nav-height) + 3rem) 5vw 6rem;
+        display: grid;
+        align-items: center;
+        scroll-snap-align: start;
+        position: relative;
+      }
+
+      #hero {
+        overflow: hidden;
+        color: #fff;
+        padding: 0;
+      }
+
+      .hero-media {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        z-index: -2;
+      }
+
+      .hero-media img,
+      .hero-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.65);
+      }
+
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(120deg, rgba(12, 29, 44, 0.65) 0%, rgba(15, 118, 110, 0.35) 100%);
+      }
+
+      .hero-content {
+        padding: calc(var(--nav-height) + 5rem) 8vw 10vh;
+        display: grid;
+        gap: 2rem;
+        max-width: 960px;
+      }
+
+      .hero-content h1 {
+        font-family: "Playfair Display", "Times New Roman", serif;
+        font-size: clamp(2.8rem, 6vw, 5rem);
+        margin: 0;
+        line-height: 1.05;
+      }
+
+      .hero-content p {
+        font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+        color: rgba(241, 245, 249, 0.92);
+        max-width: 640px;
+      }
+
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 1rem 1.75rem;
+        border-radius: 999px;
+        background: var(--color-accent);
+        color: #0f172a;
+        font-weight: 700;
+        text-decoration: none;
+        transform: perspective(600px) rotateX(0deg) rotateY(0deg);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 18px 35px rgba(37, 99, 235, 0.35);
+      }
+
+      .hero-cta:hover,
+      .hero-cta:focus-visible {
+        transform: perspective(600px) rotateX(4deg) rotateY(-6deg) translateY(-4px);
+        box-shadow: 0 22px 45px rgba(37, 99, 235, 0.45);
+      }
+
+      .parallax-layer {
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .parallax-layer[data-depth="0.2"] {
+        top: 10%;
+        left: 5%;
+      }
+
+      .parallax-layer[data-depth="0.6"] {
+        bottom: 15%;
+        right: 10%;
+      }
+
+      .split-ready span {
+        display: inline-block;
+      }
+
+      .reto-section {
+        background: radial-gradient(circle at top, rgba(37, 99, 235, 0.2), transparent 60%);
+        overflow: hidden;
+      }
+
+      .reto-section:nth-of-type(even) {
+        background: radial-gradient(circle at bottom, rgba(45, 212, 191, 0.22), transparent 65%);
+      }
+
+      .reto-content {
+        display: grid;
+        gap: 1.5rem;
+        padding: 3rem;
+        border-radius: 2rem;
+        backdrop-filter: blur(12px);
+        background: rgba(15, 23, 42, 0.55);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        max-width: 960px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      [data-theme="light"] .reto-content {
+        background: rgba(255, 255, 255, 0.75);
+      }
+
+      .reto-title {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        margin: 0;
+      }
+
+      .reto-parallax {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .reto-parallax svg {
+        position: absolute;
+        width: 160px;
+        opacity: 0.35;
+      }
+
+      .reto-parallax svg:nth-child(1) {
+        top: 12%;
+        left: 8%;
+      }
+
+      .reto-parallax svg:nth-child(2) {
+        bottom: 18%;
+        right: 12%;
+      }
+
+      .kpi-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+      }
+
+      .kpi {
+        flex: 1 1 180px;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: rgba(15, 23, 42, 0.35);
+      }
+
+      [data-theme="light"] .kpi {
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .kpi strong {
+        font-size: 2.5rem;
+        display: block;
+        font-family: "Playfair Display", serif;
+      }
+
+      .decorative-svg {
+        width: 140px;
+        height: auto;
+        opacity: 0.4;
+      }
+
+      #mapa-global {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+        gap: 2rem;
+        align-items: stretch;
+        padding: calc(var(--nav-height) + 4rem) 5vw 6rem;
+      }
+
+      #mapa-global .map-container {
+        border-radius: 1.5rem;
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        min-height: 60vh;
+      }
+
+      #mapa-global #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      .map-panel {
+        padding: 2rem;
+        border-radius: 1.5rem;
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(10px);
+        display: grid;
+        gap: 1rem;
+      }
+
+      [data-theme="light"] .map-panel {
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      footer {
+        padding: 4rem 5vw;
+        background: rgba(15, 23, 42, 0.95);
+        color: #e2e8f0;
+        display: grid;
+        gap: 1rem;
+      }
+
+      footer small {
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      @media (max-width: 1024px) {
+        nav {
+          padding: 0 1.25rem;
+        }
+
+        #mapa-global {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        header {
+          height: auto;
+        }
+
+        nav {
+          flex-direction: column;
+          gap: 1rem;
+          padding: 1rem;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        section {
+          padding: calc(var(--nav-height) + 2rem) 7vw 5rem;
+        }
+
+        .hero-content {
+          padding: calc(var(--nav-height) + 4rem) 7vw 8vh;
+        }
+
+        .reto-content {
+          padding: 2.25rem;
+        }
+      }
+    </style>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <!-- Lenis -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.27/bundled/lenis.min.js" defer></script>
+    <!-- Barba.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.js" defer></script>
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-o8UHw8LJZwZpupE/3vY6k9ZzQ0ISFQp3p3p3bW4vPp8="
+      crossorigin=""
+      defer
+    ></script>
+    <!-- Lottie -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+    <!-- CountUp.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js" defer></script>
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+    <header>
+      <nav aria-label="Menú principal">
+        <a class="brand" href="#hero">
+          <span class="sr-only">Ir al inicio</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            role="img"
+            aria-labelledby="logo-title logo-desc"
+          >
+            <title id="logo-title">Sostenibilidad 2030</title>
+            <desc id="logo-desc">Logotipo circular con hoja y ondas que representan equilibrio ambiental</desc>
+            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" />
+            <path
+              d="M18 36c10-4 16-12 18-24 8 8 12 20 6 32-4 8-12 12-20 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span>Sostenibilidad 2030</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#retos">Los 4 retos</a></li>
+          <li><a href="#mapa-global">Mapa global</a></li>
+          <li><a href="#footer">Recursos</a></li>
+        </ul>
+        <button class="theme-toggle" type="button" aria-pressed="false">
+          <span aria-hidden="true" data-feather="moon"></span>
+          <span>Modo</span>
+        </button>
+      </nav>
+    </header>
+
+    <main id="contenido-principal">
+      <section id="hero" aria-labelledby="hero-heading">
+        <div class="hero-media" aria-hidden="true">
+          <video src="/media/planeta.mp4" autoplay muted loop playsinline poster="/media/planeta.jpg"></video>
+        </div>
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="parallax-layer" data-depth="0.2" aria-hidden="true">
+          <svg class="decorative-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="58" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" />
+            <circle cx="60" cy="60" r="38" fill="none" stroke="rgba(255,255,255,0.35)" stroke-dasharray="8 12" stroke-width="2" />
+          </svg>
+        </div>
+        <div class="parallax-layer" data-depth="0.6" aria-hidden="true">
+          <svg class="decorative-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M80 10c18 22 30 36 30 60s-12 38-30 60c-18-22-30-36-30-60S62 32 80 10z"
+              fill="none"
+              stroke="rgba(148, 197, 255, 0.45)"
+              stroke-width="3"
+            />
+          </svg>
+        </div>
+        <div class="hero-content">
+          <h1 id="hero-heading" class="split-ready">
+            <span>Los</span> <span>4</span> <span>retos</span> <span>para</span> <span>cambiar</span> <span>el</span> <span>planeta</span>
+          </h1>
+          <p class="split-ready">
+            <span>Explora</span> <span>las</span> <span>iniciativas</span> <span>más</span> <span>innovadoras</span> <span>y</span> <span>descubre</span>
+            <span>cómo</span> <span>podemos</span> <span>actuar</span> <span>hoy</span> <span>para</span> <span>alcanzar</span> <span>la</span>
+            <span>neutralidad</span> <span>climática.</span>
+          </p>
+          <a class="hero-cta" href="#retos">Conocer los retos</a>
+        </div>
+      </section>
+
+      <section id="retos" class="reto-section" aria-labelledby="reto-energia-titulo">
+        <div class="reto-parallax" aria-hidden="true">
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="110" cy="110" r="100" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4" />
+          </svg>
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M40 120c30-60 70-90 140-60"
+              fill="none"
+              stroke="rgba(74, 222, 128, 0.4)"
+              stroke-width="6"
+            />
+          </svg>
+        </div>
+        <article class="reto-content" aria-labelledby="reto-energia-titulo">
+          <h2 id="reto-energia-titulo" class="reto-title split-ready">
+            <span>Reto</span> <span>1:</span> <span>Transición</span> <span>energética</span>
+          </h2>
+          <p>
+            Impulsar energías limpias y asequibles para reducir emisiones y ampliar el acceso global.
+          </p>
+          <div class="kpi-group" aria-label="Indicadores clave del reto 1">
+            <div class="kpi" data-target="750">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>GW de capacidad renovable a instalar</span>
+            </div>
+            <div class="kpi" data-target="65">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>% de reducción de emisiones en 2030</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="reto-agua" class="reto-section" aria-labelledby="reto-agua-titulo">
+        <div class="reto-parallax" aria-hidden="true">
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M60 30c40 60 60 80 60 110s-20 50-60 50"
+              fill="none"
+              stroke="rgba(56, 189, 248, 0.35)"
+              stroke-width="6"
+            />
+          </svg>
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="150" cy="160" r="40" fill="rgba(59, 130, 246, 0.18)" />
+          </svg>
+        </div>
+        <article class="reto-content" aria-labelledby="reto-agua-titulo">
+          <h2 id="reto-agua-titulo" class="reto-title split-ready">
+            <span>Reto</span> <span>2:</span> <span>Gestión</span> <span>del</span> <span>agua</span>
+          </h2>
+          <p>
+            Garantizar el acceso universal al agua potable mediante soluciones circulares y regenerativas.
+          </p>
+          <div class="kpi-group" aria-label="Indicadores clave del reto 2">
+            <div class="kpi" data-target="120">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>Ciudades con sistemas de reutilización</span>
+            </div>
+            <div class="kpi" data-target="4800000">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>Personas con acceso a agua segura</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="reto-biodiversidad" class="reto-section" aria-labelledby="reto-biodiversidad-titulo">
+        <div class="reto-parallax" aria-hidden="true">
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M20 180c50-120 120-160 190-110"
+              fill="none"
+              stroke="rgba(167, 243, 208, 0.4)"
+              stroke-width="6"
+            />
+          </svg>
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="180" cy="60" r="30" fill="rgba(45, 212, 191, 0.22)" />
+          </svg>
+        </div>
+        <article class="reto-content" aria-labelledby="reto-biodiversidad-titulo">
+          <h2 id="reto-biodiversidad-titulo" class="reto-title split-ready">
+            <span>Reto</span> <span>3:</span> <span>Regenerar</span> <span>la</span> <span>biodiversidad</span>
+          </h2>
+          <p>
+            Restaurar ecosistemas críticos y promover la convivencia entre comunidades y naturaleza.
+          </p>
+          <div class="kpi-group" aria-label="Indicadores clave del reto 3">
+            <div class="kpi" data-target="250000">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>Hectáreas restauradas</span>
+            </div>
+            <div class="kpi" data-target="1400">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>Especies con planes de protección</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="reto-ciudades" class="reto-section" aria-labelledby="reto-ciudades-titulo">
+        <div class="reto-parallax" aria-hidden="true">
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="50" fill="rgba(96, 165, 250, 0.18)" />
+          </svg>
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M30 140c30-70 90-80 160-20"
+              fill="none"
+              stroke="rgba(129, 140, 248, 0.35)"
+              stroke-width="6"
+            />
+          </svg>
+        </div>
+        <article class="reto-content" aria-labelledby="reto-ciudades-titulo">
+          <h2 id="reto-ciudades-titulo" class="reto-title split-ready">
+            <span>Reto</span> <span>4:</span> <span>Ciudades</span> <span>circulares</span>
+          </h2>
+          <p>
+            Diseñar urbes resilientes con movilidad sostenible, eficiencia energética y cero residuos.
+          </p>
+          <div class="kpi-group" aria-label="Indicadores clave del reto 4">
+            <div class="kpi" data-target="85">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>Ciudades con planes de movilidad limpia</span>
+            </div>
+            <div class="kpi" data-target="60">
+              <strong class="kpi-value" aria-live="polite">0</strong>
+              <span>% de residuos desviados del vertedero</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="mapa-global" aria-labelledby="mapa-global-heading">
+        <div class="map-container" role="presentation">
+          <div id="map" role="application" aria-label="Mapa de proyectos de sostenibilidad"></div>
+        </div>
+        <aside class="map-panel" aria-live="polite" aria-atomic="true">
+          <h2 id="mapa-global-heading">Mapa global de iniciativas</h2>
+          <p>
+            Selecciona un marcador para descubrir datos, historias y recursos de aprendizaje sobre cada reto.
+          </p>
+          <div class="map-details">
+            <h3 data-map-title>Selecciona un reto</h3>
+            <p data-map-summary>Los datos aparecerán aquí cuando interactúes con el mapa.</p>
+            <img data-map-image alt="" hidden loading="lazy" />
+            <a data-map-link href="#" target="_blank" rel="noopener" hidden>Explorar recurso</a>
+          </div>
+          <p class="map-attribution">
+            Datos cartográficos &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
+            colaboradores
+          </p>
+        </aside>
+        <script type="application/json" id="data-retos">
+          {
+            "retos": [
+              {
+                "id": "energia",
+                "nombre": "Transición energética",
+                "resumen": "Parques solares comunitarios en Atacama que abastecen a 1,2 millones de hogares.",
+                "coordenadas": [-24.385, -69.332],
+                "imagen": "https://images.unsplash.com/photo-1509395062183-67c5ad6faff9",
+                "ruta": "https://ejemplo.org/proyectos/transicion-energetica"
+              },
+              {
+                "id": "agua",
+                "nombre": "Gestión del agua",
+                "resumen": "Desalinización con energías renovables para comunidades costeras en Marruecos.",
+                "coordenadas": [31.7917, -7.0926],
+                "imagen": "https://images.unsplash.com/photo-1501612780327-45045538702b",
+                "ruta": "https://ejemplo.org/proyectos/gestion-agua"
+              },
+              {
+                "id": "biodiversidad",
+                "nombre": "Regenerar la biodiversidad",
+                "resumen": "Corredores biológicos amazónicos que conectan 12 reservas indígenas.",
+                "coordenadas": [-3.4653, -62.2159],
+                "imagen": "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+                "ruta": "https://ejemplo.org/proyectos/regeneracion-biodiversidad"
+              },
+              {
+                "id": "ciudades",
+                "nombre": "Ciudades circulares",
+                "resumen": "Red de movilidad eléctrica y reciclaje modular en Helsinki.",
+                "coordenadas": [60.1699, 24.9384],
+                "imagen": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+                "ruta": "https://ejemplo.org/proyectos/ciudades-circulares"
+              }
+            ]
+          }
+        </script>
+      </section>
+    </main>
+
+    <footer id="footer">
+      <div>
+        <h2>Créditos educativos</h2>
+        <p>
+          Este recurso forma parte del programa educativo "Sostenibilidad 2030" orientado a docentes y estudiantes
+          comprometidos con los ODS.
+        </p>
+      </div>
+      <small>
+        Contenido con fines educativos. Visuales libres de derechos bajo licencias Creative Commons. Mapa basado en datos
+        de <a href="https://www.openstreetmap.org/">OpenStreetMap</a>.
+      </small>
+      <small>&copy; 2024 Equipo Educativo Sostenibilidad 2030. Uso exclusivamente académico.</small>
+      <div>
+        <p>Scripts locales:</p>
+        <ul>
+          <li><code>scripts/app.js</code></li>
+          <li><code>scripts/animations.js</code></li>
+          <li><code>scripts/map.js</code></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="scripts/app.js" defer></script>
+    <script src="scripts/animations.js" defer></script>
+    <script src="scripts/map.js" defer></script>
+  </body>
+</html>
