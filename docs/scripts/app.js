@@ -210,7 +210,8 @@
     if (!container) {
       container = document.createElement('div');
       container.dataset.retosList = 'true';
-      container.className = 'retos-grid';
+      container.className = 'map-card-scroller';
+      container.setAttribute('role', 'list');
       panel.insertBefore(container, details || panel.firstChild);
     }
 
@@ -220,6 +221,9 @@
       const card = document.createElement('article');
       card.className = 'reto-card';
       card.dataset.retoId = reto.id;
+      card.setAttribute('role', 'group');
+      card.setAttribute('aria-label', reto.nombre);
+      card.tabIndex = 0;
 
       if (reto.imagen) {
         const picture = document.createElement('img');
@@ -247,11 +251,18 @@
       mapButton.type = 'button';
       mapButton.className = 'reto-card__map';
       mapButton.textContent = 'Ver en el mapa';
-      mapButton.addEventListener('click', () => {
+
+      const focusReto = () => {
         if (window.MapManager && typeof window.MapManager.focusOnReto === 'function') {
           window.MapManager.focusOnReto(reto.id);
+        } else {
+          highlightRetoCard(reto.id);
         }
-        highlightRetoCard(reto.id);
+      };
+
+      mapButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        focusReto();
       });
       controls.appendChild(mapButton);
 
@@ -264,6 +275,21 @@
       }
 
       card.appendChild(controls);
+
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('a, button')) {
+          return;
+        }
+        focusReto();
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          focusReto();
+        }
+      });
+
       container.appendChild(card);
     });
   }
@@ -278,8 +304,13 @@
     container.querySelectorAll('.reto-card').forEach((card) => {
       const isActive = card.dataset.retoId === retoId;
       card.classList.toggle('is-active', isActive);
+      card.setAttribute('aria-current', isActive ? 'true' : 'false');
       if (isActive) {
-        card.scrollIntoView({ block: 'nearest', behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+        card.scrollIntoView({
+          block: 'nearest',
+          inline: 'center',
+          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+        });
       }
     });
   }
