@@ -12,6 +12,7 @@
     retosData: [],
     overlay: null,
     navLinks: [],
+    initialScrollBehavior: null,
   };
 
   function addCleanup(fn) {
@@ -39,9 +40,22 @@
     }
 
     if (prefersReducedMotion.matches || typeof window.Lenis !== 'function') {
+      if (state.initialScrollBehavior !== null) {
+        if (state.initialScrollBehavior === '') {
+          document.documentElement.style.removeProperty('scroll-behavior');
+        } else {
+          document.documentElement.style.scrollBehavior = state.initialScrollBehavior;
+        }
+        state.initialScrollBehavior = null;
+      }
       state.lenis = null;
       return;
     }
+
+    if (state.initialScrollBehavior === null) {
+      state.initialScrollBehavior = document.documentElement.style.scrollBehavior || '';
+    }
+    document.documentElement.style.scrollBehavior = 'auto';
 
     const easing = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -1.35 * t));
     const lenis = new window.Lenis({
@@ -83,6 +97,12 @@
       lenis.destroy();
       state.lenis = null;
       state.lenisCleanup = null;
+      if (state.initialScrollBehavior === '') {
+        document.documentElement.style.removeProperty('scroll-behavior');
+      } else {
+        document.documentElement.style.scrollBehavior = state.initialScrollBehavior || '';
+      }
+      state.initialScrollBehavior = null;
     };
     state.cleanupFns.push(state.lenisCleanup);
   }

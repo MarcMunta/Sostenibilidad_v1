@@ -147,7 +147,7 @@ body {
   background-color: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-body);
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   overflow-x: hidden;
   transition: background-color var(--transition-long), color var(--transition-long);
 }
@@ -838,6 +838,7 @@ footer small {
 
   body {
     scroll-behavior: auto;
+    scroll-snap-type: none;
   }
 
   .parallax-layer,
