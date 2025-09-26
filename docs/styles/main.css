@@ -652,16 +652,16 @@ nav {
 /* ===== Mapa y panel ====================================================== */
 #mapa-global {
   position: relative;
-  --map-size: clamp(420px, min(72vw, 78vh), 780px);
-  --panel-size: clamp(360px, 42vw, 560px);
+  --map-size: clamp(520px, min(74vw, 85vh), 1040px);
+  --panel-size: clamp(360px, 32vw, 640px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
-  gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
+  gap: clamp(var(--space-lg), 4vw, var(--space-3xl));
   align-items: center;
   align-content: center;
-  padding: calc(var(--nav-height) + var(--space-2xl)) clamp(2vw, 5vw, 8vw) var(--space-2xl);
-  max-width: min(1680px, 98vw);
+  padding: calc(var(--nav-height) + var(--space-2xl)) clamp(2vw, 4vw, 6vw) var(--space-2xl);
+  max-width: min(2040px, 100vw);
   margin-inline: auto;
   min-height: calc(100vh - var(--nav-height) - var(--space-xl));
 }
@@ -1003,7 +1003,7 @@ footer small {
   }
 
   #mapa-global {
-    grid-template-columns: minmax(320px, var(--map-size)) minmax(320px, 1fr);
+    grid-template-columns: minmax(360px, var(--map-size)) minmax(320px, 1fr);
     justify-items: stretch;
   }
 }
@@ -1014,9 +1014,9 @@ footer small {
   }
 
   #mapa-global {
-    --map-size: clamp(420px, min(52vw, 70vh), 720px);
-    padding: calc(var(--nav-height) + var(--space-2xl)) clamp(3vw, 5vw, 7vw) var(--space-2xl);
-    grid-template-columns: minmax(420px, 1.4fr) minmax(360px, 1fr);
+    --map-size: clamp(640px, min(62vw, 78vh), 1220px);
+    padding: calc(var(--nav-height) + var(--space-2xl)) clamp(3vw, 4vw, 6vw) var(--space-2xl);
+    grid-template-columns: minmax(540px, 1.85fr) minmax(360px, 1fr);
   }
 
   .hero-content {
