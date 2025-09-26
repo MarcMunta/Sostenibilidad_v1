@@ -306,10 +306,18 @@
       card.classList.toggle('is-active', isActive);
       card.setAttribute('aria-current', isActive ? 'true' : 'false');
       if (isActive) {
-        card.scrollIntoView({
-          block: 'nearest',
-          inline: 'center',
-          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+        const behavior = prefersReducedMotion.matches ? 'auto' : 'smooth';
+        const containerRect = container.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+        const containerScrollLeft = container.scrollLeft;
+        const cardCenter = cardRect.left - containerRect.left + containerScrollLeft + cardRect.width / 2;
+        const targetLeft = cardCenter - container.clientWidth / 2;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        const clampedLeft = Math.max(0, Math.min(targetLeft, maxScroll));
+
+        container.scrollTo({
+          left: clampedLeft,
+          behavior,
         });
       }
     });

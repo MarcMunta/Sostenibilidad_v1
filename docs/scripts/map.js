@@ -101,7 +101,9 @@
     const escapedSummary = reto.resumen;
     const imageAlt = reto.imagenAlt || `Vista representativa del reto ${reto.nombre}`;
     const imageHtml = reto.imagen
-      ? `<img src="${reto.imagen}" alt="${imageAlt}" loading="lazy" decoding="async" />`
+      ? `<figure class="map-popup__media">
+          <img src="${reto.imagen}" alt="${imageAlt}" loading="lazy" decoding="async" />
+        </figure>`
       : '';
 
     const buttonHtml = reto.ruta
