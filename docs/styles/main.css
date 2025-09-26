@@ -784,9 +784,26 @@ nav {
 .map-popup__link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2xs);
+  padding: var(--space-xs) clamp(var(--space-md), 4vw, var(--space-xl));
+  min-width: clamp(10rem, 60%, 14rem);
   font-weight: 600;
   color: var(--color-accent-strong);
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent-strong) 35%, transparent);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25);
+  text-decoration: none;
+  transition: background-color var(--transition-base), color var(--transition-base),
+    transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.map-popup__link:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--color-accent-strong) 85%, transparent);
+  color: var(--color-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .map-panel a {
