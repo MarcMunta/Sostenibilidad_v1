@@ -763,7 +763,8 @@ nav {
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: var(--radius-lg);
+  border-radius: clamp(1.4rem, 4vw, 2.2rem) clamp(1.4rem, 4vw, 2.2rem) var(--radius-lg)
+    var(--radius-lg);
   border: 1px solid color-mix(in srgb, var(--color-border) 45%, transparent);
   box-shadow: var(--shadow-lg);
   background: color-mix(in srgb, var(--color-elevated) 75%, var(--color-surface));
@@ -774,8 +775,13 @@ nav {
   display: grid;
   gap: var(--space-sm);
   width: clamp(320px, 60vw, 560px);
-  justify-items: stretch;
+  justify-items: center;
   animation: map-popup-rise var(--transition-long);
+}
+
+.map-popup > :is(header, p) {
+  justify-self: stretch;
+  width: 100%;
 }
 
 .map-popup header h3 {
@@ -786,14 +792,14 @@ nav {
 .map-popup__media {
   display: grid;
   place-items: center;
-  width: 100%;
-  max-width: clamp(200px, 46%, 260px);
+  inline-size: clamp(200px, 46%, 260px);
   padding: clamp(var(--space-xs), 1.5vw, var(--space-md));
   background: color-mix(in srgb, var(--color-accent) 12%, transparent);
   border-radius: var(--radius-lg);
   position: relative;
   overflow: hidden;
   justify-self: center;
+  margin-inline: auto;
 }
 
 .map-popup__media::after {
@@ -840,6 +846,7 @@ nav {
   transition: background-color var(--transition-base), color var(--transition-base),
     transform var(--transition-base), box-shadow var(--transition-base);
   justify-self: center;
+  margin-inline: auto;
 }
 
 .map-popup__link::after {
