@@ -753,7 +753,8 @@ nav {
 .leaflet-popup-content {
   font-size: clamp(1rem, 1.8vw, 1.1rem);
   line-height: 1.6;
-  max-width: clamp(360px, 52vw, 480px);
+  width: clamp(320px, 60vw, 560px);
+  max-width: none;
 }
 
 .leaflet-popup-content h3 {
@@ -764,12 +765,20 @@ nav {
 .map-popup {
   display: grid;
   gap: var(--space-sm);
-  max-width: clamp(360px, 52vw, 480px);
+  width: clamp(320px, 60vw, 560px);
+}
+
+@media (max-width: 600px) {
+  .leaflet-popup-content,
+  .map-popup {
+    width: min(88vw, 420px);
+  }
 }
 
 .map-popup img {
-  width: 100%;
+  width: clamp(140px, 38%, 200px);
   border-radius: var(--radius-md);
+  justify-self: center;
 }
 
 .map-popup__link {
