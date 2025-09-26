@@ -14,6 +14,7 @@
   <link rel="preload" as="image" href="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=32&q=15">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTs3oykYXJA.woff2">
   <link rel="stylesheet" href="../styles/multimedia.css">
+  <link rel="stylesheet" href="../styles/icons.css">
   <title>Sistema multimedia sostenible</title>
 </head>
 <body>
@@ -87,14 +88,40 @@
     <section aria-labelledby="animaciones">
       <h2 id="animaciones">Iconografía animada</h2>
       <div class="lottie-gallery">
-        <div class="lottie-item" role="img" aria-label="Animación de hoja" data-lottie data-src="https://assets6.lottiefiles.com/packages/lf20_wux2ozp0.json">
-          <svg class="lottie-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M60 12c24 0 42 18 42 42 0 28-42 66-42 66S18 82 18 54c0-24 18-42 42-42z" fill="#3ad07d"/></svg>
+        <div class="lottie-item" role="img" aria-label="Animación de hoja">
+          <svg class="icon icon-leaf" viewBox="0 0 120 120" focusable="false">
+            <g class="icon-leaf__group">
+              <path class="icon-leaf__shape" d="M60 12c-14 24-36 38-36 64 0 22 16 36 36 36s36-14 36-36c0-26-22-40-36-64z"></path>
+              <path class="icon-leaf__vein" d="M60 24v66"></path>
+              <path class="icon-leaf__vein" d="M60 54c-10 6-16 14-16 26"></path>
+              <path class="icon-leaf__vein" d="M60 54c10 6 16 14 16 26"></path>
+            </g>
+            <path class="icon-leaf__glow" d="M60 20c-10 18-28 32-28 54"></path>
+          </svg>
         </div>
-        <div class="lottie-item" role="img" aria-label="Animación de gota" data-lottie data-src="https://assets5.lottiefiles.com/packages/lf20_n8dO0x.json">
-          <svg class="lottie-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M60 12c18 24 30 45 30 63 0 18-13.4 33-30 33s-30-15-30-33c0-18 12-39 30-63z" fill="#2ab0ff"/></svg>
+        <div class="lottie-item" role="img" aria-label="Animación de gota">
+          <svg class="icon icon-drop" viewBox="0 0 120 120" focusable="false">
+            <g class="icon-drop__group">
+              <path class="icon-drop__shape" d="M60 14C44 38 32 58 32 78c0 18 13.5 32 28 32s28-14 28-32c0-20-12-40-28-64z"></path>
+              <path class="icon-drop__shine" d="M52 36c-5 8-10 18-10 26 0 8 5 14 12 14"></path>
+            </g>
+            <g class="icon-drop__ripples" aria-hidden="true">
+              <ellipse cx="60" cy="98" rx="26" ry="8"></ellipse>
+              <ellipse cx="60" cy="98" rx="36" ry="11"></ellipse>
+            </g>
+          </svg>
         </div>
-        <div class="lottie-item" role="img" aria-label="Animación de planeta" data-lottie data-src="https://assets7.lottiefiles.com/packages/lf20_oy6czb.json">
-          <svg class="lottie-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="60" cy="60" r="42" fill="#71d0ff"/><path d="M18 66c12 12 90 12 102 0-6-18-30-30-54-30S24 48 18 66z" fill="#1d9360"/></svg>
+        <div class="lottie-item" role="img" aria-label="Animación de planeta">
+          <svg class="icon icon-planet" viewBox="0 0 120 120" focusable="false">
+            <circle class="icon-planet__halo" cx="60" cy="60" r="50"></circle>
+            <circle class="icon-planet__body" cx="60" cy="60" r="34"></circle>
+            <path class="icon-planet__land" d="M30 68c12 14 84 14 96 0-6-18-30-30-48-30s-36 12-48 30z"></path>
+            <g class="icon-planet__orbit">
+              <ellipse class="icon-planet__orbit-track" cx="60" cy="60" rx="44" ry="26"></ellipse>
+              <circle class="icon-planet__satellite" cx="104" cy="60" r="5"></circle>
+            </g>
+            <circle class="icon-planet__glow" cx="60" cy="60" r="42"></circle>
+          </svg>
         </div>
       </div>
     </section>

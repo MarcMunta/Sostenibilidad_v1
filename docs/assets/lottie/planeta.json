@@ -1,8 +1,0 @@
-{
-  "name": "Planeta girando",
-  "description": "Animación de un planeta con órbitas que refuerza el enfoque global del proyecto.",
-  "src": "https://assets9.lottiefiles.com/packages/lf20_t24tpvcu.json",
-  "renderer": "svg",
-  "loop": true,
-  "autoplay": true
-}

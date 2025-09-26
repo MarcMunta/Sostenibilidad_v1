@@ -596,29 +596,10 @@ nav {
 }
 
 .reto-icon__animation {
-  width: 72%;
-  height: 72%;
-}
-
-.reto-icon__fallback {
-  width: 72%;
-  height: 72%;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
-  transition: opacity var(--transition-base);
-}
-
-.reto-icon__fallback[hidden] {
-  display: none;
-}
-
-.reto-icon[data-state="fallback"] .reto-icon__fallback {
-  opacity: 1;
-}
-
-.reto-icon[data-state="animated"] .reto-icon__fallback {
-  opacity: 0;
+  width: 76%;
+  height: 76%;
+  display: grid;
+  place-items: center;
 }
 
 .reto-title {

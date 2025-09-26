@@ -214,20 +214,9 @@ main {
 }
 
 .lottie-item svg,
-.lottie-item canvas {
-  width: 70%;
-  height: 70%;
-}
-
-.lottie-fallback {
-  display: none;
-  width: 60%;
-  height: auto;
-  fill: currentColor;
-}
-
-.lottie-item.is-static .lottie-fallback {
-  display: block;
+.lottie-item .icon {
+  width: 72%;
+  height: 72%;
 }
 
 #map {

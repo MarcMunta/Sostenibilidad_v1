@@ -49,11 +49,12 @@
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
 
     <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/icons.css" />
 
     
     <!-- GSAP + ScrollTrigger -->
@@ -66,12 +67,10 @@
     <!-- Leaflet JS -->
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-o8UHw8LJZwZpupE/3vY6k9ZzQ0ISFQp3p3p3bW4vPp8="
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
       defer
     ></script>
-    <!-- Lottie -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
     <!-- CountUp.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js" defer></script>
     <!-- Feather Icons -->
@@ -174,20 +173,22 @@
           </svg>
         </div>
         <article class="reto-content" aria-labelledby="reto-energia-titulo">
-          <figure class="reto-icon" data-state="fallback">
-            <div
-              class="reto-icon__animation"
-              data-lottie-config="assets/lottie/planeta.json"
-              data-fallback-config="assets/img/planeta.json"
-              aria-hidden="true"
-            ></div>
-            <img
-              class="reto-icon__fallback"
-              data-fallback-image
-              src="https://source.unsplash.com/collection/190727/320x320?planet"
-              alt="Ilustración del planeta Tierra rodeado por órbitas luminosas"
-              loading="lazy"
-            />
+          <figure class="reto-icon" aria-hidden="true">
+            <div class="reto-icon__animation">
+              <svg class="icon icon-planet" viewBox="0 0 120 120" focusable="false">
+                <circle class="icon-planet__halo" cx="60" cy="60" r="50"></circle>
+                <circle class="icon-planet__body" cx="60" cy="60" r="34"></circle>
+                <path
+                  class="icon-planet__land"
+                  d="M30 68c12 14 84 14 96 0-6-18-30-30-48-30s-36 12-48 30z"
+                ></path>
+                <g class="icon-planet__orbit">
+                  <ellipse class="icon-planet__orbit-track" cx="60" cy="60" rx="44" ry="26"></ellipse>
+                  <circle class="icon-planet__satellite" cx="104" cy="60" r="5"></circle>
+                </g>
+                <circle class="icon-planet__glow" cx="60" cy="60" r="42"></circle>
+              </svg>
+            </div>
           </figure>
           <h2 id="reto-energia-titulo" class="reto-title split-ready">
             <span>Reto</span> <span>1:</span> <span>Transición</span> <span>energética</span>
@@ -223,20 +224,25 @@
           </svg>
         </div>
         <article class="reto-content" aria-labelledby="reto-agua-titulo">
-          <figure class="reto-icon" data-state="fallback">
-            <div
-              class="reto-icon__animation"
-              data-lottie-config="assets/lottie/gota.json"
-              data-fallback-config="assets/img/gota.json"
-              aria-hidden="true"
-            ></div>
-            <img
-              class="reto-icon__fallback"
-              data-fallback-image
-              src="https://source.unsplash.com/collection/827743/320x320?water"
-              alt="Ilustración de una gota de agua suspendida sobre un fondo azul"
-              loading="lazy"
-            />
+          <figure class="reto-icon" aria-hidden="true">
+            <div class="reto-icon__animation">
+              <svg class="icon icon-drop" viewBox="0 0 120 120" focusable="false">
+                <g class="icon-drop__group">
+                  <path
+                    class="icon-drop__shape"
+                    d="M60 14C44 38 32 58 32 78c0 18 13.5 32 28 32s28-14 28-32c0-20-12-40-28-64z"
+                  ></path>
+                  <path
+                    class="icon-drop__shine"
+                    d="M52 36c-5 8-10 18-10 26 0 8 5 14 12 14"
+                  ></path>
+                </g>
+                <g class="icon-drop__ripples" aria-hidden="true">
+                  <ellipse cx="60" cy="98" rx="26" ry="8"></ellipse>
+                  <ellipse cx="60" cy="98" rx="36" ry="11"></ellipse>
+                </g>
+              </svg>
+            </div>
           </figure>
           <h2 id="reto-agua-titulo" class="reto-title split-ready">
             <span>Reto</span> <span>2:</span> <span>Gestión</span> <span>del</span> <span>agua</span>
@@ -272,20 +278,21 @@
           </svg>
         </div>
         <article class="reto-content" aria-labelledby="reto-biodiversidad-titulo">
-          <figure class="reto-icon" data-state="fallback">
-            <div
-              class="reto-icon__animation"
-              data-lottie-config="assets/lottie/hoja.json"
-              data-fallback-config="assets/img/hoja.json"
-              aria-hidden="true"
-            ></div>
-            <img
-              class="reto-icon__fallback"
-              data-fallback-image
-              src="https://source.unsplash.com/collection/888146/320x320?leaf"
-              alt="Ilustración de una hoja verde con gotas de rocío"
-              loading="lazy"
-            />
+          <figure class="reto-icon" aria-hidden="true">
+            <div class="reto-icon__animation">
+              <svg class="icon icon-leaf" viewBox="0 0 120 120" focusable="false">
+                <g class="icon-leaf__group">
+                  <path
+                    class="icon-leaf__shape"
+                    d="M60 12c-14 24-36 38-36 64 0 22 16 36 36 36s36-14 36-36c0-26-22-40-36-64z"
+                  ></path>
+                  <path class="icon-leaf__vein" d="M60 24v66"></path>
+                  <path class="icon-leaf__vein" d="M60 54c-10 6-16 14-16 26"></path>
+                  <path class="icon-leaf__vein" d="M60 54c10 6 16 14 16 26"></path>
+                </g>
+                <path class="icon-leaf__glow" d="M60 20c-10 18-28 32-28 54"></path>
+              </svg>
+            </div>
           </figure>
           <h2 id="reto-biodiversidad-titulo" class="reto-title split-ready">
             <span>Reto</span> <span>3:</span> <span>Regenerar</span> <span>la</span> <span>biodiversidad</span>
