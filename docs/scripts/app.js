@@ -33,8 +33,9 @@
 
   function setupLenis() {
     if (state.lenisCleanup) {
-      state.lenisCleanup();
-      state.lenisCleanup = null;
+      const previousCleanup = state.lenisCleanup;
+      state.cleanupFns = state.cleanupFns.filter((fn) => fn !== previousCleanup);
+      previousCleanup();
     }
 
     if (prefersReducedMotion.matches || typeof window.Lenis !== 'function') {
@@ -42,12 +43,27 @@
       return;
     }
 
+    const easing = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -1.35 * t));
     const lenis = new window.Lenis({
       autoRaf: false,
+      duration: 1.1,
+      easing,
       smoothWheel: true,
       smoothTouch: false,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.05,
     });
     state.lenis = lenis;
+
+    const syncScrollTrigger = () => {
+      if (typeof window.ScrollTrigger !== 'undefined') {
+        window.ScrollTrigger.update();
+      }
+    };
+
+    if (typeof lenis.on === 'function') {
+      lenis.on('scroll', syncScrollTrigger);
+    }
 
     const raf = (time) => {
       lenis.raf(time);
@@ -57,13 +73,18 @@
     state.lenisRafId = window.requestAnimationFrame(raf);
 
     state.lenisCleanup = () => {
+      if (typeof lenis.off === 'function') {
+        lenis.off('scroll', syncScrollTrigger);
+      }
       if (state.lenisRafId) {
         window.cancelAnimationFrame(state.lenisRafId);
         state.lenisRafId = null;
       }
       lenis.destroy();
       state.lenis = null;
+      state.lenisCleanup = null;
     };
+    state.cleanupFns.push(state.lenisCleanup);
   }
 
   function applyTheme(theme) {

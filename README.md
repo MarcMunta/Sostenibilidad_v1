@@ -43,7 +43,7 @@ El listado mostrado en el mapa y en el panel lateral se alimenta del bloque `<sc
 
 - **Textos principales:** edítalos directamente en `index.html` o en los archivos específicos dentro de `retos/`. Los elementos con la clase `split-ready` están segmentados palabra a palabra para animaciones; mantén las etiquetas `<span>` al editar títulos.
 - **Imágenes del mapa y las tarjetas:** utiliza URLs de Unsplash Source para evitar almacenar binarios. Puedes documentar la URL correspondiente en `assets/img/*.json` y reutilizarla en el JSON de retos o en cualquier `<img>`. Ejemplo: `https://source.unsplash.com/collection/2290905/800x600?solar`.
-- **Fallbacks de iconos:** cada figura con clase `.reto-icon` incluye una imagen de respaldo. Asegúrate de proporcionar un texto alternativo descriptivo.
+- **Iconos animados:** cada figura con clase `.reto-icon` contiene un SVG decorativo marcado con `aria-hidden="true"`. Mantén esa estructura para evitar que los lectores de pantalla anuncien información redundante.
 
 ## Modificar variables CSS
 
@@ -53,13 +53,13 @@ El listado mostrado en el mapa y en el panel lateral se alimenta del bloque `<sc
 2. Al añadir nuevos tokens sigue la convención `--nombre-kebab-case`.
 3. Comprueba contraste mínimo AA (4.5:1) al cambiar colores de texto o fondo.
 
-## Reemplazar iconos Lottie
+## Actualizar los iconos animados
 
-Las animaciones se cargan usando los JSON de `assets/lottie/` junto con la librería Lottie-web.
+Los iconos de los retos ahora son SVG inline animados mediante CSS (`styles/icons.css`). Cada figura está incrustada directamente en el HTML para evitar dependencias externas.
 
-1. Sustituye el contenido del archivo correspondiente (`planeta.json`, `gota.json` o `hoja.json`) indicando la nueva URL pública (`src`) y, opcionalmente, `name`, `description`, `loop`, `autoplay` y `renderer`.
-2. Si necesitas un nuevo icono, crea un archivo adicional dentro de `assets/lottie/` y referencia su ruta relativa en el atributo `data-lottie-config` de la figura deseada.
-3. El script detecta automáticamente la ausencia de Lottie y mantiene visible el fallback (`data-fallback-image`). No elimines esa imagen para conservar la accesibilidad.
+1. Ajusta los colores o el movimiento editando las clases `.icon-*` y las `@keyframes` en `styles/icons.css`.
+2. Si necesitas sustituir la ilustración, modifica el `path` o añade nuevos elementos dentro de la etiqueta `<svg>` correspondiente en `index.html`.
+3. Para crear iconos adicionales reutiliza la estructura existente (`<svg class="icon icon-nombre">…</svg>`) y añade las clases necesarias en `styles/icons.css`. Recuerda proporcionar una alternativa visual estática en caso de usar el icono fuera de los contextos animados.
 
 ## Añadir fuentes bibliográficas y recursos
 
