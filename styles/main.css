@@ -581,6 +581,46 @@ nav {
   max-width: 960px;
 }
 
+.reto-icon {
+  display: grid;
+  place-items: center;
+  width: clamp(90px, 11vw, 150px);
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  justify-self: start;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 28%, transparent),
+    0 18px 35px rgba(15, 23, 42, 0.28);
+  overflow: hidden;
+}
+
+.reto-icon__animation {
+  width: 72%;
+  height: 72%;
+}
+
+.reto-icon__fallback {
+  width: 72%;
+  height: 72%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+  transition: opacity var(--transition-base);
+}
+
+.reto-icon__fallback[hidden] {
+  display: none;
+}
+
+.reto-icon[data-state="fallback"] .reto-icon__fallback {
+  opacity: 1;
+}
+
+.reto-icon[data-state="animated"] .reto-icon__fallback {
+  opacity: 0;
+}
+
 .reto-title {
   font-size: clamp(2rem, 4vw, 2.9rem);
   color: var(--color-text);

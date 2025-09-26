@@ -225,9 +225,10 @@
       if (reto.imagen) {
         const picture = document.createElement('img');
         picture.className = 'reto-card__image';
-        picture.src = `${reto.imagen}?auto=format&fit=crop&w=480&q=80`;
-        picture.alt = '';
+        picture.src = reto.imagen;
+        picture.alt = reto.imagenAlt || `Vista representativa del reto ${reto.nombre}`;
         picture.loading = 'lazy';
+        picture.decoding = 'async';
         card.appendChild(picture);
       }
 

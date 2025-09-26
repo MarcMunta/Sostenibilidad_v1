@@ -120,7 +120,14 @@
     <main id="contenido-principal" data-barba="container" data-barba-namespace="home">
       <section id="hero" aria-labelledby="hero-heading">
         <div class="hero-media" aria-hidden="true">
-          <video src="/media/planeta.mp4" autoplay muted loop playsinline poster="/media/planeta.jpg"></video>
+          <video
+            src="/media/planeta.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="https://source.unsplash.com/collection/190727/1280x720?earth"
+          ></video>
         </div>
         <div class="hero-overlay" aria-hidden="true"></div>
         <div class="parallax-layer" data-depth="0.2" aria-hidden="true">
@@ -167,6 +174,21 @@
           </svg>
         </div>
         <article class="reto-content" aria-labelledby="reto-energia-titulo">
+          <figure class="reto-icon" data-state="fallback">
+            <div
+              class="reto-icon__animation"
+              data-lottie-config="assets/lottie/planeta.json"
+              data-fallback-config="assets/img/planeta.json"
+              aria-hidden="true"
+            ></div>
+            <img
+              class="reto-icon__fallback"
+              data-fallback-image
+              src="https://source.unsplash.com/collection/190727/320x320?planet"
+              alt="Ilustración del planeta Tierra rodeado por órbitas luminosas"
+              loading="lazy"
+            />
+          </figure>
           <h2 id="reto-energia-titulo" class="reto-title split-ready">
             <span>Reto</span> <span>1:</span> <span>Transición</span> <span>energética</span>
           </h2>
@@ -201,6 +223,21 @@
           </svg>
         </div>
         <article class="reto-content" aria-labelledby="reto-agua-titulo">
+          <figure class="reto-icon" data-state="fallback">
+            <div
+              class="reto-icon__animation"
+              data-lottie-config="assets/lottie/gota.json"
+              data-fallback-config="assets/img/gota.json"
+              aria-hidden="true"
+            ></div>
+            <img
+              class="reto-icon__fallback"
+              data-fallback-image
+              src="https://source.unsplash.com/collection/827743/320x320?water"
+              alt="Ilustración de una gota de agua suspendida sobre un fondo azul"
+              loading="lazy"
+            />
+          </figure>
           <h2 id="reto-agua-titulo" class="reto-title split-ready">
             <span>Reto</span> <span>2:</span> <span>Gestión</span> <span>del</span> <span>agua</span>
           </h2>
@@ -235,6 +272,21 @@
           </svg>
         </div>
         <article class="reto-content" aria-labelledby="reto-biodiversidad-titulo">
+          <figure class="reto-icon" data-state="fallback">
+            <div
+              class="reto-icon__animation"
+              data-lottie-config="assets/lottie/hoja.json"
+              data-fallback-config="assets/img/hoja.json"
+              aria-hidden="true"
+            ></div>
+            <img
+              class="reto-icon__fallback"
+              data-fallback-image
+              src="https://source.unsplash.com/collection/888146/320x320?leaf"
+              alt="Ilustración de una hoja verde con gotas de rocío"
+              loading="lazy"
+            />
+          </figure>
           <h2 id="reto-biodiversidad-titulo" class="reto-title split-ready">
             <span>Reto</span> <span>3:</span> <span>Regenerar</span> <span>la</span> <span>biodiversidad</span>
           </h2>
@@ -300,7 +352,12 @@
           <div class="map-details">
             <h3 data-map-title>Selecciona un reto</h3>
             <p data-map-summary>Los datos aparecerán aquí cuando interactúes con el mapa.</p>
-            <img data-map-image alt="" hidden loading="lazy" />
+            <img
+              data-map-image
+              alt="Vista ilustrativa del reto seleccionado en el mapa global"
+              hidden
+              loading="lazy"
+            />
             <a data-map-link href="#" target="_blank" rel="noopener" hidden>Explorar recurso</a>
           </div>
           <p class="map-attribution">
@@ -316,7 +373,8 @@
                 "nombre": "Transición energética",
                 "resumen": "Parques solares comunitarios en Atacama que abastecen a 1,2 millones de hogares.",
                 "coordenadas": [-24.385, -69.332],
-                "imagen": "https://images.unsplash.com/photo-1509395062183-67c5ad6faff9",
+                "imagen": "https://source.unsplash.com/collection/2290905/800x600?solar",
+                "imagenAlt": "Vista aérea de paneles solares en el desierto de Atacama",
                 "ruta": "/retos/reto-clima.html",
                 "emoji": "⚡"
               },
@@ -325,7 +383,8 @@
                 "nombre": "Gestión del agua",
                 "resumen": "Desalinización con energías renovables para comunidades costeras en Marruecos.",
                 "coordenadas": [31.7917, -7.0926],
-                "imagen": "https://images.unsplash.com/photo-1501612780327-45045538702b",
+                "imagen": "https://source.unsplash.com/collection/483251/800x600?desalination",
+                "imagenAlt": "Tuberías y depósitos de una planta de desalinización junto al mar",
                 "ruta": "/retos/reto-agua.html",
                 "emoji": "💧"
               },
@@ -334,7 +393,8 @@
                 "nombre": "Regenerar la biodiversidad",
                 "resumen": "Corredores biológicos amazónicos que conectan 12 reservas indígenas.",
                 "coordenadas": [-3.4653, -62.2159],
-                "imagen": "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+                "imagen": "https://source.unsplash.com/collection/484351/800x600?rainforest",
+                "imagenAlt": "Selva amazónica cubierta de niebla al amanecer",
                 "ruta": "/retos/reto-biodiversidad.html",
                 "emoji": "🌱"
               },
@@ -343,7 +403,8 @@
                 "nombre": "Ciudades circulares",
                 "resumen": "Red de movilidad eléctrica y reciclaje modular en Helsinki.",
                 "coordenadas": [60.1699, 24.9384],
-                "imagen": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+                "imagen": "https://source.unsplash.com/collection/483251/800x600?smart-city",
+                "imagenAlt": "Tranvía eléctrico circulando por una avenida moderna de Helsinki",
                 "ruta": "/retos/reto-aire.html",
                 "emoji": "🏙️"
               }
