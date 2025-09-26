@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>index.html</loc>
+  </url>
+  <url>
+    <loc>retos/reto-clima.html</loc>
+  </url>
+  <url>
+    <loc>retos/reto-agua.html</loc>
+  </url>
+  <url>
+    <loc>retos/reto-biodiversidad.html</loc>
+  </url>
+  <url>
+    <loc>retos/reto-aire.html</loc>
+  </url>
+</urlset>

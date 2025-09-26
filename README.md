@@ -1,19 +1,31 @@
 # Sostenibilidad 2030 — Guía de edición
 
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-brightgreen)](https://marcmunta.github.io/Sostenibilidad_v1/)
+
 Este repositorio contiene una demo educativa de los cuatro grandes retos de sostenibilidad. A continuación encontrarás todo lo necesario para personalizar datos, animaciones, estilos y recursos multimedia sin perder el enfoque en accesibilidad y rendimiento.
+
+## Publicación en GitHub Pages
+
+- **URL pública:** <https://marcmunta.github.io/Sostenibilidad_v1/>
+- **Despliegue automático:** cualquier _push_ a `main` publica la última versión porque GitHub Pages sirve el contenido del directorio `/docs` directamente.
+- **Rutas relativas:** mantén los enlaces sin barras iniciales (por ejemplo, `retos/reto-clima.html` en lugar de `/retos/reto-clima.html`) para que funcionen dentro de la subcarpeta `/Sostenibilidad_v1/`.
+- **Configuración del proyecto:** en GitHub ve a **Settings → Pages → Source** y selecciona `Deploy from a branch` con la rama `main` y la carpeta `/docs`.
+
+> Consejo: si añades HTML adicional fuera de `docs/`, recuerda moverlo a esa carpeta antes de hacer _push_ para que forme parte del despliegue.
 
 ## Estructura del proyecto
 
-- `index.html`: página principal con el hero, los cuatro retos, el mapa y el JSON embebido con los datos de los retos.
-- `retos/`: casos detallados para cada reto (HTML estático).
-- `styles/main.css`: hoja de estilos global con tokens y componentes.
-- `scripts/animations.js`, `scripts/map.js`, `scripts/app.js`: lógica de animaciones, mapa interactivo y comportamiento general.
-- `assets/lottie/`: configuraciones JSON que apuntan a animaciones públicas en LottieFiles (`planeta.json`, `gota.json`, `hoja.json`).
-- `assets/img/`: referencias JSON a imágenes dinámicas de [Unsplash Source](https://source.unsplash.com) (`planeta.json`, `gota.json`, `hoja.json`).
+- `docs/index.html`: página principal con el hero, los cuatro retos, el mapa y el JSON embebido con los datos de los retos.
+- `docs/retos/`: casos detallados para cada reto (HTML estático).
+- `docs/styles/main.css`: hoja de estilos global con tokens y componentes.
+- `docs/scripts/animations.js`, `docs/scripts/map.js`, `docs/scripts/app.js`: lógica de animaciones, mapa interactivo y comportamiento general.
+- `docs/assets/`: recursos multimedia (animaciones Lottie, imágenes de referencia, vídeo, audio y favicon en SVG).
+- `docs/404.html`: página de error personalizada enlazando con la portada.
+- `docs/robots.txt` y `docs/sitemap.xml`: archivos mínimos para SEO adaptados a rutas relativas.
 
 ## Editar el JSON embebido de retos
 
-El listado mostrado en el mapa y en el panel lateral se alimenta del bloque `<script id="data-retos" type="application/json">` presente en `index.html`.
+El listado mostrado en el mapa y en el panel lateral se alimenta del bloque `<script id="data-retos" type="application/json">` presente en `docs/index.html`.
 
 1. Localiza el bloque dentro de la sección `#mapa-global`.
 2. Cada reto incluye las claves `id`, `nombre`, `resumen`, `coordenadas`, `imagen`, `imagenAlt`, `ruta` y `emoji`.
@@ -72,7 +84,7 @@ Las animaciones se cargan usando los JSON de `assets/lottie/` junto con la libre
 ## Ejecutar la demo localmente
 
 1. Clona o descarga el repositorio.
-2. Abre `index.html` en tu navegador preferido (doble clic o arrastrar al navegador).
+2. Abre `docs/index.html` en tu navegador preferido (doble clic o arrastrar al navegador).
 3. Para asegurar la carga de los JSON locales en algunos navegadores, se recomienda usar un servidor estático sencillo (`npx serve`, `python -m http.server`, etc.), aunque el sitio funciona en modo solo lectura con apertura directa.
 
 ## Buenas prácticas al agregar nuevo contenido
