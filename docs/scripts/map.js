@@ -145,12 +145,24 @@
     const map = window.L.map(container, {
       zoomControl: true,
       preferCanvas: false,
+      worldCopyJump: false,
+      maxBoundsViscosity: 1,
     });
 
-    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contribuidores',
-    }).addTo(map);
+    const worldBounds = window.L.latLngBounds(
+      window.L.latLng(-90, -180),
+      window.L.latLng(90, 180)
+    );
+    map.setMaxBounds(worldBounds);
+
+    window.L
+      .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contribuidores',
+        noWrap: true,
+        bounds: worldBounds,
+      })
+      .addTo(map);
 
     fitMapToRetos(map, state.retos);
 
@@ -220,14 +232,26 @@
         zoomControl: true,
         scrollWheelZoom: false,
         dragging: true,
+        worldCopyJump: false,
+        maxBoundsViscosity: 1,
       });
+
+      const worldBounds = window.L.latLngBounds(
+        window.L.latLng(-90, -180),
+        window.L.latLng(90, 180)
+      );
+      map.setMaxBounds(worldBounds);
 
       map.setView([lat, lng], Number.isFinite(zoom) ? zoom : 10);
 
-      window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contribuidores',
-      }).addTo(map);
+      window.L
+        .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contribuidores',
+          noWrap: true,
+          bounds: worldBounds,
+        })
+        .addTo(map);
 
       const marker = window.L.marker([lat, lng], {
         icon: window.L.divIcon({
