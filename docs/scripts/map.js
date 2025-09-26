@@ -90,9 +90,9 @@
     return window.L.divIcon({
       className: 'map-marker',
       html: `<span aria-hidden="true">${markerEmoji}</span>`,
-      iconSize: [32, 32],
-      iconAnchor: [16, 30],
-      popupAnchor: [0, -24],
+      iconSize: [48, 48],
+      iconAnchor: [24, 42],
+      popupAnchor: [0, -32],
     });
   }
 
@@ -147,6 +147,7 @@
       preferCanvas: false,
       worldCopyJump: false,
       maxBoundsViscosity: 1,
+      minZoom: 2,
     });
 
     const worldBounds = window.L.latLngBounds(
@@ -230,12 +231,15 @@
         return;
       }
 
+      const safeZoom = Number.isFinite(zoom) ? zoom : 10;
+
       const map = window.L.map(container, {
         zoomControl: true,
         scrollWheelZoom: false,
         dragging: true,
         worldCopyJump: false,
         maxBoundsViscosity: 1,
+        minZoom: Math.max(3, Math.min(safeZoom, 12) - 2),
       });
 
       const worldBounds = window.L.latLngBounds(
@@ -244,7 +248,7 @@
       );
       map.setMaxBounds(worldBounds);
 
-      map.setView([lat, lng], Number.isFinite(zoom) ? zoom : 10);
+      map.setView([lat, lng], safeZoom);
 
       window.L
         .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -259,8 +263,8 @@
         icon: window.L.divIcon({
           className: 'map-marker map-marker--mini',
           html: `<span aria-hidden="true">${container.dataset.markerEmoji || '📍'}</span>`,
-          iconSize: [28, 28],
-          iconAnchor: [14, 26],
+          iconSize: [36, 36],
+          iconAnchor: [18, 32],
         }),
         title: container.dataset.markerTitle || 'Ubicación del reto',
       });

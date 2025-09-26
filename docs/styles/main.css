@@ -663,7 +663,8 @@ nav {
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border);
-  min-height: clamp(320px, 55vh, 560px);
+  min-height: clamp(240px, 45vh, 460px);
+  aspect-ratio: 4 / 3;
   box-shadow: var(--shadow-sm);
   display: flex;
 }
@@ -693,13 +694,23 @@ nav {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  font-size: 1.75rem;
+  font-size: clamp(2.1rem, 3vw, 2.6rem);
   color: #0f172a;
   text-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
 }
 
 .map-marker--mini {
-  font-size: 1.35rem;
+  font-size: clamp(1.6rem, 2.5vw, 1.9rem);
+}
+
+.leaflet-popup-content {
+  font-size: clamp(1rem, 1.8vw, 1.1rem);
+  line-height: 1.6;
+}
+
+.leaflet-popup-content h3 {
+  font-size: clamp(1.2rem, 2.1vw, 1.4rem);
+  margin-bottom: 0.4rem;
 }
 
 .map-popup {
