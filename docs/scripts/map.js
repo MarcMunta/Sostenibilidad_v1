@@ -204,6 +204,8 @@
     window.addEventListener('resize', resize);
     registerCleanup(() => window.removeEventListener('resize', resize));
 
+    window.requestAnimationFrame(() => map.invalidateSize());
+
     state.globalMap = map;
     state.maps.set(container, map);
     updateDetails(null);
