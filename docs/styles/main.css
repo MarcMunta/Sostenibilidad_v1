@@ -1018,17 +1018,23 @@ nav {
 }
 
 .map-panel [data-retos-list] .reto-card {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
   position: relative;
   z-index: 0;
   height: 100%;
   scroll-snap-align: center;
   scroll-snap-stop: always;
   overflow: hidden;
+  border-radius: var(--radius-lg);
   border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-  background: color-mix(in srgb, var(--color-elevated) 92%, rgba(15, 23, 42, 0.04));
+  background:
+    radial-gradient(circle at var(--pointer-x) var(--pointer-y), color-mix(in srgb, var(--color-accent) 28%, transparent) 0%,
+      transparent 58%),
+    color-mix(in srgb, var(--color-elevated) 92%, rgba(15, 23, 42, 0.04));
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-base), box-shadow var(--transition-base),
-    border-color var(--transition-base);
+    border-color var(--transition-base), background 220ms ease;
   isolation: isolate;
 }
 
@@ -1046,7 +1052,7 @@ nav {
 
 .map-panel [data-retos-list] .reto-card::before {
   background: radial-gradient(circle at 20% 15%, rgba(14, 165, 233, 0.25), transparent 55%);
-  transform: scale(0.92);
+  transform: scale(0.94);
 }
 
 .map-panel [data-retos-list] .reto-card::after {
@@ -1054,12 +1060,15 @@ nav {
   transform: scale(0.98);
 }
 
+.map-panel [data-retos-list] .reto-card[data-hover-active='true'],
 .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within) {
-  transform: translateY(-12px);
+  transform: translateY(-10px) scale(1.01);
   box-shadow: var(--shadow-lg);
   border-color: color-mix(in srgb, var(--color-accent-strong) 55%, transparent);
 }
 
+.map-panel [data-retos-list] .reto-card[data-hover-active='true']::before,
+.map-panel [data-retos-list] .reto-card[data-hover-active='true']::after,
 .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within)::before,
 .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within)::after {
   opacity: 1;
@@ -1077,6 +1086,7 @@ nav {
     transition: none;
   }
 
+  .map-panel [data-retos-list] .reto-card[data-hover-active='true'],
   .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within) {
     transform: none;
   }
@@ -1155,6 +1165,12 @@ nav {
 .reto-card.is-active {
   border-color: var(--color-accent-strong);
   box-shadow: var(--shadow-md);
+}
+
+@media (pointer: coarse) {
+  .map-panel [data-retos-list] .reto-card {
+    background: color-mix(in srgb, var(--color-elevated) 92%, rgba(15, 23, 42, 0.04));
+  }
 }
 
 /* ===== Timeline destacado =============================================== */
