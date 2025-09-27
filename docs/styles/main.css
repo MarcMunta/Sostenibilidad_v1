@@ -1023,32 +1023,47 @@ nav {
   height: 100%;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  transition: transform var(--transition-base), box-shadow var(--transition-base),
-    border-color var(--transition-base), background-color var(--transition-base);
   overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  background: color-mix(in srgb, var(--color-elevated) 92%, rgba(15, 23, 42, 0.04));
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+  isolation: isolate;
 }
 
+.map-panel [data-retos-list] .reto-card::before,
 .map-panel [data-retos-list] .reto-card::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(16, 185, 129, 0.12));
-  opacity: 0;
-  transition: opacity var(--transition-base);
-  pointer-events: none;
   z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.map-panel [data-retos-list] .reto-card::before {
+  background: radial-gradient(circle at 20% 15%, rgba(14, 165, 233, 0.25), transparent 55%);
+  transform: scale(0.92);
+}
+
+.map-panel [data-retos-list] .reto-card::after {
+  background: linear-gradient(140deg, rgba(14, 165, 233, 0.12), rgba(16, 185, 129, 0.16));
+  transform: scale(0.98);
 }
 
 .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within) {
-  transform: translateY(-8px);
+  transform: translateY(-12px);
   box-shadow: var(--shadow-lg);
   border-color: color-mix(in srgb, var(--color-accent-strong) 55%, transparent);
-  background: color-mix(in srgb, var(--color-elevated) 80%, rgba(14, 165, 233, 0.2));
 }
 
+.map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within)::before,
 .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within)::after {
   opacity: 1;
+  transform: scale(1);
 }
 
 .map-panel [data-retos-list] .reto-card__image {
@@ -1064,6 +1079,11 @@ nav {
 
   .map-panel [data-retos-list] .reto-card:is(:hover, :focus-visible, :focus-within) {
     transform: none;
+  }
+
+  .map-panel [data-retos-list] .reto-card::before,
+  .map-panel [data-retos-list] .reto-card::after {
+    transition: none;
   }
 
   .map-popup {
