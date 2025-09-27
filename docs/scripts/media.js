@@ -307,8 +307,8 @@ docReady(() => {
               const cssLink = document.createElement('link');
               cssLink.rel = 'stylesheet';
               cssLink.href = leafletCssHref;
-              cssLink.integrity = 'sha256-sA+e2kpawuO/7dBDEuDfSUdifYEYTbSsfXCMVbJbRMQ=';
-              cssLink.crossOrigin = '';
+              cssLink.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+              cssLink.crossOrigin = 'anonymous';
               document.head.append(cssLink);
             }
 
