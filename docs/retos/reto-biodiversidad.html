@@ -41,437 +41,42 @@
       integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
       crossorigin=""
     />
-    <style>
-      :root {
-        color-scheme: light dark;
-        --color-bg: #f1f5f9;
-        --color-bg-alt: rgba(15, 23, 42, 0.05);
-        --color-text: #0f172a;
-        --color-muted: rgba(15, 23, 42, 0.65);
-        --color-accent: #16a34a;
-        --color-accent-soft: rgba(22, 163, 74, 0.12);
-        --color-surface: #ffffff;
-        --shadow-lg: 0 30px 60px -35px rgba(15, 23, 42, 0.45);
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        background: var(--color-bg);
-        color: var(--color-text);
-        font-family: inherit;
-        line-height: 1.6;
-      }
-
-      a {
-        color: var(--color-accent);
-      }
-
-      a:focus-visible,
-      button:focus-visible,
-      [tabindex]:focus-visible {
-        outline: 3px solid var(--color-accent);
-        outline-offset: 4px;
-      }
-
-      .skip-link {
-        position: absolute;
-        left: 1rem;
-        top: -100vh;
-        padding: 0.75rem 1.25rem;
-        background: var(--color-accent);
-        color: #fff;
-        border-radius: 999px;
-        font-weight: 600;
-        transition: top 0.3s ease;
-        z-index: 1000;
-      }
-
-      .skip-link:focus {
-        top: 1rem;
-      }
-
-      header {
-        background: var(--color-surface);
-        position: sticky;
-        top: 0;
-        z-index: 900;
-        box-shadow: 0 10px 30px -20px rgba(15, 23, 42, 0.4);
-      }
-
-      .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.25rem clamp(1.5rem, 4vw, 4rem);
-      }
-
-      .logo {
-        font-family: "Playfair Display", serif;
-        font-size: 1.35rem;
-        letter-spacing: 0.05em;
-      }
-
-      nav[aria-label="breadcrumb"] {
-        background: var(--color-accent-soft);
-      }
-
-      .breadcrumb {
-        display: flex;
-        gap: 0.5rem;
-        list-style: none;
-        margin: 0;
-        padding: 0.75rem clamp(1.5rem, 4vw, 4rem);
-        font-size: 0.95rem;
-      }
-
-      .breadcrumb li {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .breadcrumb li::after {
-        content: "/";
-        color: var(--color-muted);
-      }
-
-      .breadcrumb li:last-child::after {
-        content: "";
-      }
-
-      .hero {
-        position: relative;
-        padding: clamp(4rem, 12vw, 7rem) clamp(1.5rem, 4vw, 4rem);
-        background: linear-gradient(135deg, rgba(22, 163, 74, 0.12), rgba(74, 222, 128, 0.25));
-        overflow: hidden;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80");
-        background-size: cover;
-        background-position: center;
-        opacity: 0.25;
-        mix-blend-mode: multiply;
-        z-index: 0;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 60rem;
-      }
-
-      .hero-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-muted);
-      }
-
-      .hero-title {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2.5rem, 6vw, 3.75rem);
-        margin: 0.75rem 0;
-      }
-
-      .hero-summary {
-        max-width: 45rem;
-        font-size: 1.05rem;
-        color: var(--color-muted);
-      }
-
-      main {
-        padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 4rem) 6rem;
-        display: grid;
-        gap: clamp(3rem, 8vw, 4.5rem);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(22, 163, 74, 0.1));
-      }
-
-      .case-summary {
-        display: grid;
-        gap: 2rem;
-      }
-
-      .case-summary article {
-        background: var(--color-surface);
-        padding: clamp(1.75rem, 4vw, 2.5rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .case-summary article::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(120deg, rgba(22, 163, 74, 0.12), transparent 60%);
-        z-index: 0;
-      }
-
-      .case-summary h2,
-      .case-summary h3 {
-        margin-top: 0;
-        font-family: "Playfair Display", serif;
-      }
-
-      .case-summary p {
-        position: relative;
-        z-index: 1;
-        margin-bottom: 1rem;
-        color: var(--color-muted);
-      }
-
-      .impact-section {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .impact-card {
-        background: var(--color-surface);
-        border-radius: 1.25rem;
-        padding: 2rem;
-        box-shadow: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-      }
-
-      .impact-card h2 {
-        margin-top: 0;
-        font-family: "Playfair Display", serif;
-        font-size: 1.6rem;
-      }
-
-      .impact-card ul {
-        margin: 1rem 0 0;
-        padding-left: 1.2rem;
-        color: var(--color-muted);
-      }
-
-      .chip-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.25rem;
-      }
-
-      .chip {
-        background: var(--color-accent-soft);
-        color: var(--color-accent);
-        padding: 0.5rem 0.95rem;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-
-      .timeline-section {
-        background: var(--color-surface);
-        padding: clamp(2rem, 5vw, 3rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      .timeline-section h2 {
-        font-family: "Playfair Display", serif;
-      }
-
-      .timeline {
-        list-style: none;
-        margin: 2rem 0 0;
-        padding: 0;
-        position: relative;
-      }
-
-      .timeline::before {
-        content: "";
-        position: absolute;
-        left: 1rem;
-        top: 0.5rem;
-        bottom: 0.5rem;
-        width: 3px;
-        background: linear-gradient(180deg, rgba(22, 163, 74, 0.4), transparent);
-      }
-
-      .timeline-item {
-        position: relative;
-        padding-left: 3rem;
-        margin-bottom: 1.75rem;
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.5s ease, transform 0.6s ease;
-      }
-
-      .timeline-item[data-visible="true"] {
-        opacity: 1;
-        transform: none;
-      }
-
-      .timeline-item::before {
-        content: attr(data-year);
-        position: absolute;
-        left: 0;
-        top: 0;
-        background: var(--color-accent);
-        color: #fff;
-        border-radius: 999px;
-        padding: 0.35rem 0.75rem;
-        font-size: 0.85rem;
-        font-weight: 600;
-      }
-
-      .critic-section {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .flip-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 1.25rem;
-      }
-
-      .flip-card {
-        perspective: 1200px;
-      }
-
-      .flip-card button {
-        width: 100%;
-        border: none;
-        background: transparent;
-        padding: 0;
-        cursor: pointer;
-        position: relative;
-        height: 200px;
-      }
-
-      .flip-card button:focus-visible {
-        outline: none;
-      }
-
-      .flip-card button:focus-visible .card-face,
-      .flip-card button:hover .card-face {
-        box-shadow: 0 30px 60px -25px rgba(22, 163, 74, 0.55);
-      }
-
-      .card-face {
-        position: absolute;
-        inset: 0;
-        background: var(--color-surface);
-        border-radius: 1.25rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1.5rem;
-        backface-visibility: hidden;
-        box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.45);
-        transition: transform 0.8s ease;
-        text-align: center;
-      }
-
-      .card-face.back {
-        transform: rotateY(180deg);
-        color: var(--color-muted);
-      }
-
-      .flip-card button[aria-pressed="true"] .front {
-        transform: rotateY(180deg);
-      }
-
-      .flip-card button[aria-pressed="true"] .back {
-        transform: rotateY(360deg);
-      }
-
-      .map-section {
-        background: var(--color-surface);
-        padding: clamp(2rem, 5vw, 3rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      #map-biodiversidad {
-        width: 100%;
-        min-height: 320px;
-        border-radius: 1rem;
-      }
-
-      .cta-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .cta-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.9rem 1.6rem;
-        border-radius: 999px;
-        background: var(--color-accent);
-        color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .cta-button.secondary {
-        background: transparent;
-        color: var(--color-accent);
-        border: 2px solid var(--color-accent);
-      }
-
-      .cta-button:hover,
-      .cta-button:focus-visible {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px -20px rgba(22, 163, 74, 0.6);
-      }
-
-      footer {
-        padding: 3rem clamp(1.5rem, 4vw, 4rem);
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-
-      footer a {
-        color: #86efac;
-      }
-
-      @media (max-width: 768px) {
-        .top-bar {
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .timeline::before {
-          left: 0.75rem;
-        }
-
-        .timeline-item {
-          padding-left: 2.5rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../styles/retos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.js" defer></script>
   </head>
-  <body data-barba="wrapper">
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <header>
-      <div class="top-bar">
-        <a class="logo" href="../index.html">Sostenibilidad 2030</a>
-        <span>Ruta de aprendizaje: Biodiversidad</span>
+  <body class="reto-page" data-reto="biodiversidad" data-barba="wrapper">
+    <a class="reto-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+    <header class="reto-header">
+      <div class="reto-header__top">
+        <a class="reto-header__brand" href="../index.html">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            role="img"
+            aria-hidden="true"
+          >
+            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" />
+            <path
+              d="M18 36c10-4 16-12 18-24 8 8 12 20 6 32-4 8-12 12-20 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span>Sostenibilidad 2030</span>
+        </a>
+        <div class="reto-header__meta">
+          <span class="reto-pill">Reto biodiversidad</span>
+          <span>Triple frontera amazónica</span>
+          <a href="#mapa">Ir al mapa</a>
+        </div>
       </div>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" data-animate="breadcrumb">
+      <nav aria-label="Ruta de navegación">
+        <ol class="reto-breadcrumb">
           <li><a href="../index.html">Inicio</a></li>
           <li><a href="../index.html#retos">Retos</a></li>
           <li aria-current="page">Biodiversidad</li>
@@ -479,106 +84,195 @@
       </nav>
     </header>
 
-    <section class="hero" data-animate="hero">
-      <div class="hero-content">
-        <span class="hero-kicker">Reto global 4</span>
-        <h1 class="hero-title">Corredores amazónicos para la vida</h1>
-        <p class="hero-summary">
-          Doce pueblos indígenas y organizaciones socioambientales impulsan una red de corredores biológicos que conecta reservas en
-          Brasil, Colombia y Perú. Esta estrategia protege especies en peligro, asegura medios de vida y fortalece el manejo
-          territorial comunitario frente a presiones extractivas.
-        </p>
-      </div>
-    </section>
+    <main id="contenido-principal" class="reto-main" data-barba="container" data-barba-namespace="reto-biodiversidad">
+      <section class="reto-hero" data-animate="section">
+        <div class="reto-hero__content" data-animate-item>
+          <span class="reto-hero__badge">Reto global 4</span>
+          <h1 class="reto-hero__title">Corredores amazónicos para la vida</h1>
+          <p class="reto-hero__summary">
+            Doce pueblos indígenas impulsan una red de corredores biológicos que conecta reservas en Brasil, Colombia y Perú. La
+            estrategia protege especies, asegura medios de vida y fortalece el manejo territorial comunitario frente a
+            presiones extractivas.
+          </p>
+          <div class="reto-hero__actions">
+            <a class="reto-button is-primary" href="#galeria">Ver experiencias</a>
+            <a class="reto-button" href="#fuentes">Explorar recursos</a>
+          </div>
+          <div class="reto-hero__stats">
+            <div class="reto-stat" data-hover-card>
+              <strong>8 M ha</strong>
+              <span>Superficie comunitaria gestionada bajo acuerdos de conservación.</span>
+            </div>
+            <div class="reto-stat" data-hover-card>
+              <strong>12 pueblos</strong>
+              <span>Gobiernan el corredor con protocolos de consulta intercultural.</span>
+            </div>
+            <div class="reto-stat" data-hover-card>
+              <strong>45&nbsp;%</strong>
+              <span>Reducción de tala ilegal en zonas núcleo gracias a vigilancia indígena.</span>
+            </div>
+          </div>
+        </div>
+        <div class="reto-hero__media" data-animate-item>
+          <figure class="reto-hero__visual" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80"
+              alt="Bosque amazónico con río serpenteante entre la vegetación"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div class="reto-hero__ornament" aria-hidden="true"></div>
+        </div>
+      </section>
 
-    <main id="contenido-principal" data-barba="container" data-barba-namespace="reto-biodiversidad">
-      <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
-        <article>
+      <section class="reto-section" aria-labelledby="resumen-caso" data-animate="section">
+        <header data-animate-item>
           <h2 id="resumen-caso">Contexto del caso</h2>
           <p>
-            En el corredor del río Negro medio, comunidades de los pueblos Baré, Tukano, Tikuna y Uitoto gestionan territorios que
-            abarcan más de 8 millones de hectáreas. La deforestación asociada a minería ilegal, ganadería extensiva y carreteras ha
-            fragmentado el hábitat de especies emblemáticas como el jaguar, el delfín rosado y el paujil. Para responder, las
-            organizaciones indígenas crearon el Programa Corredores Amazónicos, con apoyo del Fondo Global para el Medio Ambiente y
-            universidades locales.
+            En el corredor del río Negro medio, comunidades Baré, Tukano, Tikuna y Uitoto gestionan territorios que abarcan más
+            de ocho millones de hectáreas. La deforestación por minería ilegal y carreteras fragmentó el hábitat de especies
+            como el jaguar y el delfín rosado.
           </p>
-          <p>
-            El programa delimita corredores ecológicos que conectan reservas indígenas con áreas protegidas nacionales. Incluye la
-            restauración de bosques degradados mediante viveros comunitarios y acuerdos de conservación con pescadores y recolectores
-            de frutos amazónicos. Los planes de manejo integran conocimientos tradicionales y ciencia participativa para monitorear
-            fauna y servicios ecosistémicos. Una red de vigilancia territorial controla el ingreso de actividades ilegales y recopila
-            evidencia para procesos judiciales.
-          </p>
-        </article>
-        <article>
-          <h3 id="aprendizajes">Aprendizajes clave</h3>
-          <p>
-            El caso demuestra que la gobernanza indígena es esencial para la conservación. Los consejos comunitarios administran
-            fondos climáticos, pagan brigadas de guardabosques y financian becas para jóvenes investigadores locales. El programa
-            implementa indicadores de bienestar biocultural que evalúan salud, educación y seguridad alimentaria junto con la
-            conservación de especies.
-          </p>
-          <p>
-            Se establecieron acuerdos con cooperativas de cacao, açaí y artesanías para garantizar ingresos sostenibles. La cadena de
-            valor incorpora certificaciones de comercio justo y monitoreo satelital para asegurar cero deforestación. Además, las
-            comunidades desarrollan mapas culturales que documentan sitios sagrados y rutas de movilidad, fortaleciendo la defensa
-            territorial frente a proyectos extractivos.
-          </p>
-        </article>
-        <article>
+        </header>
+        <div class="reto-grid-two">
+          <article data-animate-item>
+            <p>
+              El Programa Corredores Amazónicos conecta reservas indígenas con áreas protegidas nacionales. Incluye viveros
+              comunitarios para restaurar bosques, acuerdos de pesca sostenible y monitoreo participativo que integra
+              conocimientos tradicionales con ciencia ciudadana.
+            </p>
+            <p>
+              Una red de vigilancia territorial documenta evidencias de actividades ilegales, apoya procesos judiciales y
+              fortalece la defensa frente a proyectos extractivos. Los mapas culturales identifican sitios sagrados y rutas de
+              movilidad para priorizar acciones de conservación.
+            </p>
+          </article>
+          <article data-animate-item>
+            <figure class="reto-figure">
+              <img
+                src="https://images.unsplash.com/photo-1526312477771-0e5733d31e30?auto=format&fit=crop&w=900&q=80"
+                alt="Guardabosques indígenas navegando por un río"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                Brigadas indígenas vigilan ríos y selvas con drones, GPS y saberes tradicionales para detectar amenazas.
+              </figcaption>
+            </figure>
+            <h3 id="aprendizajes">Aprendizajes clave</h3>
+            <p>
+              La gobernanza indígena es esencial: los consejos comunitarios administran fondos climáticos, financian becas para
+              jóvenes investigadores y aplican indicadores de bienestar biocultural que evalúan salud, educación y seguridad
+              alimentaria junto con la conservación.
+            </p>
+            <p>
+              Cooperativas de cacao, açaí y artesanías garantizan ingresos sostenibles con certificaciones de comercio justo y
+              monitoreo satelital de cero deforestación, manteniendo la autonomía económica en el territorio.
+            </p>
+          </article>
+        </div>
+        <article class="reto-highlight" data-animate-item aria-labelledby="desafios">
           <h3 id="desafios">Desafíos pendientes</h3>
           <p>
-            El financiamiento a largo plazo sigue siendo incierto. Muchos proyectos dependen de donantes internacionales y requieren
-            estrategias de ingresos diversificados. Las comunidades buscan mecanismos de pago por servicios ambientales que reconozcan
-            la captura de carbono y la conservación de biodiversidad.
+            El financiamiento a largo plazo sigue incierto y depende de donantes internacionales. Las comunidades buscan pagos
+            por servicios ambientales que reconozcan la captura de carbono y la protección de la biodiversidad.
           </p>
           <p>
-            La presión de grupos ilegales obliga a fortalecer la seguridad de líderes ambientales y mejorar la coordinación con
-            autoridades estatales. También es necesario garantizar conectividad ecológica frente a la expansión de carreteras y la
-            construcción de infraestructuras energéticas. El cambio climático altera patrones de lluvias, afectando ciclos de pesca y
-            cosecha de frutos silvestres, lo que exige planes de adaptación específicos.
+            La presión de actores ilegales exige fortalecer la seguridad de líderes ambientales y garantizar conectividad
+            ecológica frente a carreteras e infraestructuras energéticas. El cambio climático altera ciclos de pesca y cosecha,
+            demandando planes de adaptación específicos.
           </p>
         </article>
       </section>
 
-      <section class="impact-section" aria-labelledby="impacto-ambiental" data-animate="section">
-        <article class="impact-card">
-          <h2 id="impacto-ambiental">Impacto ambiental</h2>
-          <p>
-            Los corredores restauran conectividad ecológica, reducen la deforestación y protegen especies clave. La vigilancia
-            comunitaria disminuyó en 45 % la tala ilegal en zonas núcleo y permitió recuperar poblaciones de fauna emblemática.
-          </p>
-          <ul>
-            <li>280.000 hectáreas bajo acuerdos de conservación y restauración activa.</li>
-            <li>Plantación de 12 millones de plántulas nativas con monitoreo satelital comunitario.</li>
-            <li>Recuperación del 30 % de hábitat crítico para el delfín rosado y corredores de anidación de tortugas.</li>
-            <li>Implementación de laboratorios de agua para vigilar contaminación por mercurio en ríos.</li>
-          </ul>
-        </article>
-        <article class="impact-card" aria-labelledby="impacto-personas">
-          <h2 id="impacto-personas">Impacto en personas y economía</h2>
-          <p>
-            La regeneración de paisajes respalda economías comunitarias, refuerza la soberanía alimentaria y fortalece la cultura. Las
-            cooperativas generan ingresos estables y financian servicios de salud y educación adaptados a la cosmovisión indígena.
-          </p>
-          <div class="chip-list" role="list">
-            <span class="chip" role="listitem">Cooperativas forestales</span>
-            <span class="chip" role="listitem">Turismo comunitario</span>
-            <span class="chip" role="listitem">Salud intercultural</span>
-            <span class="chip" role="listitem">Educación bilingüe</span>
-            <span class="chip" role="listitem">Mercados justos</span>
-          </div>
-        </article>
+      <section class="reto-section" aria-labelledby="impacto-ambiental" data-animate="section">
+        <header data-animate-item>
+          <h2 id="impacto-ambiental">Impactos ambientales y sociales</h2>
+          <p>Resultados del corredor amazónico en restauración ecológica y economías comunitarias.</p>
+        </header>
+        <div class="reto-impact-grid">
+          <article class="reto-impact" data-hover-card data-animate-item>
+            <h3>Impacto ambiental</h3>
+            <p>
+              Los corredores restauran la conectividad ecológica, reducen la deforestación y protegen especies clave. La
+              vigilancia comunitaria disminuyó 45&nbsp;% la tala ilegal en zonas núcleo.
+            </p>
+            <ul class="reto-list">
+              <li>280&nbsp;000 hectáreas bajo acuerdos de conservación y restauración activa.</li>
+              <li>Plantación de 12 millones de plántulas nativas con monitoreo satelital comunitario.</li>
+              <li>Recuperación del 30&nbsp;% de hábitat para el delfín rosado y corredores de tortugas.</li>
+              <li>Laboratorios de agua comunitarios vigilan la contaminación por mercurio en ríos.</li>
+            </ul>
+          </article>
+          <article class="reto-impact" data-hover-card data-animate-item aria-labelledby="impacto-personas">
+            <h3 id="impacto-personas">Impacto en personas y economía</h3>
+            <p>
+              La regeneración de paisajes respalda economías comunitarias, refuerza la soberanía alimentaria y fortalece la
+              cultura. Las cooperativas financian servicios de salud y educación adaptados a la cosmovisión indígena.
+            </p>
+            <ul class="reto-list">
+              <li>Pagos comunitarios a guardabosques y becas para formación técnica de jóvenes.</li>
+              <li>Turismo comunitario gestionado por mujeres que revaloriza narrativas culturales.</li>
+              <li>Programas de salud intercultural y bancos de semillas para fortalecer la dieta local.</li>
+              <li>Alianzas comerciales que garantizan precios justos sin comprometer derechos territoriales.</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
-      <section class="timeline-section" aria-labelledby="timeline" data-animate="timeline" data-scroll-trigger>
-        <h2 id="timeline">Hitos del corredor amazónico</h2>
-        <p>
-          Las etapas muestran cómo la colaboración multinacional y la gobernanza indígena sostienen la protección de la Amazonía.
-        </p>
+      <section class="reto-quote" data-animate="section">
+        <blockquote>
+          “Defender el corredor es defender nuestra memoria y el futuro de las especies que nos acompañan desde siempre.”
+        </blockquote>
+        <cite>Josenira Baré · Coordinadora del Consejo de Corredores Amazónicos</cite>
+      </section>
+
+      <section class="reto-section" aria-labelledby="galeria" data-animate="section">
+        <header data-animate-item>
+          <h2 id="galeria">Galería de acciones comunitarias</h2>
+          <p>Imágenes de las iniciativas que sostienen la regeneración biocultural.</p>
+        </header>
+        <div class="reto-gallery">
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+              alt="Vivero comunitario con jóvenes indígenas plantando"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Viveros comunitarios producen especies nativas para restaurar áreas degradadas.</figcaption>
+          </figure>
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=900&q=80"
+              alt="Artesanas indígenas elaborando tejidos tradicionales"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Cooperativas de artesanías promueven comercio justo y liderazgo femenino.</figcaption>
+          </figure>
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1493815793585-d94ccbc86df0?auto=format&fit=crop&w=900&q=80"
+              alt="Investigadores indígenas usando tabletas para monitoreo"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Jóvenes investigadores combinan tecnología y conocimiento tradicional en el monitoreo.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="reto-section" aria-labelledby="cronologia" data-animate="timeline">
+        <header data-animate-item>
+          <h2 id="cronologia">Hitos del corredor amazónico</h2>
+          <p>Momentos clave que consolidan la colaboración multinacional y la gobernanza indígena.</p>
+        </header>
         <ol class="timeline">
           <li class="timeline-item" data-year="2015" data-animate-item>
-            Firma del acuerdo intercomunitario para crear la red de corredores y establecimiento de protocolos de consulta previa.
+            Firma del acuerdo intercomunitario para crear la red de corredores y establecimiento de protocolos de consulta
+            previa.
           </li>
           <li class="timeline-item" data-year="2017" data-animate-item>
             Puesta en marcha de viveros comunitarios y centros de monitoreo participativo con tecnología satelital.
@@ -593,61 +287,67 @@
             Implementación de corredores fluviales seguros y acuerdos con pescadores para limitar artes destructivas.
           </li>
           <li class="timeline-item" data-year="2023" data-animate-item>
-            Integración de indicadores de bienestar biocultural en políticas públicas regionales y en informes climáticos nacionales.
+            Integración de indicadores de bienestar biocultural en políticas públicas regionales y en informes climáticos
+            nacionales.
           </li>
         </ol>
       </section>
 
-      <section class="critic-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
-        <h2 id="criticas">Críticas y debates abiertos</h2>
-        <p>
-          Incorporar estas voces permite ajustar el programa, proteger derechos y asegurar financiamiento sostenible.
-        </p>
+      <section class="reto-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
+        <header data-animate-item>
+          <h2 id="criticas">Críticas y debates abiertos</h2>
+          <p>Voces clave para ajustar el programa y asegurar financiación sostenible.</p>
+        </header>
         <div class="flip-grid">
           <div class="flip-card" data-animate-item>
-            <button type="button" aria-pressed="false" aria-label="Seguridad de líderes">
+            <button type="button" aria-pressed="false" aria-label="Seguridad de defensores">
               <span class="card-face front">Seguridad de defensores</span>
-              <span class="card-face back">Organizaciones de derechos humanos piden reforzar mecanismos de protección frente a amenazas
-                de actores ilegales.</span>
+              <span class="card-face back"
+                >Organizaciones de derechos humanos piden reforzar la protección frente a amenazas de actores ilegales.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
-            <button type="button" aria-pressed="false" aria-label="Sostenibilidad financiera">
+            <button type="button" aria-pressed="false" aria-label="Financiamiento permanente">
               <span class="card-face front">Financiamiento permanente</span>
-              <span class="card-face back">Los fondos climáticos requieren renovarse cada tres años, generando incertidumbre para brigadas y
-                programas educativos.</span>
+              <span class="card-face back"
+                >Los fondos climáticos se renuevan cada tres años, generando incertidumbre para brigadas y programas
+                educativos.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
-            <button type="button" aria-pressed="false" aria-label="Derechos de uso">
+            <button type="button" aria-pressed="false" aria-label="Derechos sobre recursos">
               <span class="card-face front">Derechos sobre recursos</span>
-              <span class="card-face back">Algunos acuerdos comerciales podrían restringir el acceso tradicional a semillas y plantas
-                medicinales si no se garantizan licencias libres.</span>
+              <span class="card-face back"
+                >Algunos acuerdos comerciales podrían restringir el acceso tradicional a semillas y plantas medicinales.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
-            <button type="button" aria-pressed="false" aria-label="Infraestructura regional">
+            <button type="button" aria-pressed="false" aria-label="Infraestructura invasiva">
               <span class="card-face front">Infraestructura invasiva</span>
-              <span class="card-face back">Planes carreteros y de hidrovías impulsados por gobiernos federales amenazan con fragmentar los
-                corredores restaurados.</span>
+              <span class="card-face back"
+                >Planes carreteros e hidrovías amenazan con fragmentar los corredores restaurados.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Participación juvenil">
               <span class="card-face front">Participación juvenil</span>
-              <span class="card-face back">Jóvenes indígenas reclaman mayor voz en decisiones y acceso a formación tecnológica para liderar la
-                vigilancia del territorio.</span>
+              <span class="card-face back"
+                >Jóvenes indígenas reclaman mayor voz en decisiones y acceso a formación tecnológica para liderar la vigilancia.</span
+              >
             </button>
           </div>
         </div>
       </section>
 
-      <section class="map-section" aria-labelledby="mapa" data-animate="section">
-        <h2 id="mapa">Localización del caso</h2>
-        <p>
-          El corredor se ubica en la triple frontera amazónica. El mapa se centra en el río Negro medio (−3.4653° N, −62.2159° O),
-          donde convergen territorios indígenas y áreas protegidas.
-        </p>
+      <section class="reto-section map-section" aria-labelledby="mapa" data-animate="section">
+        <header data-animate-item>
+          <h2 id="mapa">Localización del caso</h2>
+          <p>El corredor se ubica en la triple frontera amazónica alrededor del río Negro medio (−3.4653° N, −62.2159° O).</p>
+        </header>
         <div
           id="map-biodiversidad"
           role="application"
@@ -663,24 +363,29 @@
         ></div>
       </section>
 
-      <section aria-labelledby="fuentes" data-animate="section">
-        <h2 id="fuentes">Fuentes</h2>
-        <ul>
-          <li><a href="https://raoni.org" target="_blank" rel="noopener">Añadir fuente</a></li>
-          <li><a href="https://www.reddplusamazon.org" target="_blank" rel="noopener">Añadir fuente</a></li>
-          <li><a href="https://pactoglobal.org" target="_blank" rel="noopener">Añadir fuente</a></li>
+      <section class="reto-section" aria-labelledby="fuentes" data-animate="section">
+        <header data-animate-item>
+          <h2 id="fuentes">Fuentes abiertas y recursos</h2>
+          <p>Materiales para profundizar en la regeneración biocultural y los corredores amazónicos.</p>
+        </header>
+        <ul class="reto-list">
+          <li><a href="https://raoni.org" target="_blank" rel="noopener">Instituto Raoni · Defensa de territorios indígenas</a></li>
+          <li><a href="https://www.reddplusamazon.org" target="_blank" rel="noopener">Plataforma REDD+ Amazonía</a></li>
+          <li><a href="https://pactoglobal.org" target="_blank" rel="noopener">Pacto Global · Corredores bioculturales</a></li>
         </ul>
       </section>
 
-      <section class="cta-section" aria-label="Acciones finales" data-animate="section">
-        <a class="cta-button" href="../index.html">Volver a la página principal</a>
-        <a class="cta-button secondary" href="reto-clima.html">Volver al reto climático</a>
+      <section class="reto-section" aria-label="Acciones finales" data-animate="section">
+        <div class="reto-cta">
+          <a class="reto-button is-primary" href="../index.html">Volver a la página principal</a>
+          <a class="reto-button" href="reto-clima.html">Ir al reto climático</a>
+        </div>
       </section>
     </main>
 
     <footer>
       <p>Recurso educativo abierto del programa “Sostenibilidad 2030”.</p>
-      <small>Contenido de libre uso para fines académicos. Datos cartográficos &copy; OpenStreetMap colaboradores.</small>
+      <small>Datos cartográficos &copy; OpenStreetMap colaboradores. Contenido de libre uso para fines académicos.</small>
     </footer>
 
     <script

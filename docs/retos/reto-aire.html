@@ -41,437 +41,42 @@
       integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
       crossorigin=""
     />
-    <style>
-      :root {
-        color-scheme: light dark;
-        --color-bg: #f1f5f9;
-        --color-bg-alt: rgba(15, 23, 42, 0.05);
-        --color-text: #0f172a;
-        --color-muted: rgba(15, 23, 42, 0.65);
-        --color-accent: #f97316;
-        --color-accent-soft: rgba(249, 115, 22, 0.1);
-        --color-surface: #ffffff;
-        --shadow-lg: 0 30px 60px -35px rgba(15, 23, 42, 0.45);
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        background: var(--color-bg);
-        color: var(--color-text);
-        font-family: inherit;
-        line-height: 1.6;
-      }
-
-      a {
-        color: var(--color-accent);
-      }
-
-      a:focus-visible,
-      button:focus-visible,
-      [tabindex]:focus-visible {
-        outline: 3px solid var(--color-accent);
-        outline-offset: 4px;
-      }
-
-      .skip-link {
-        position: absolute;
-        left: 1rem;
-        top: -100vh;
-        padding: 0.75rem 1.25rem;
-        background: var(--color-accent);
-        color: #fff;
-        border-radius: 999px;
-        font-weight: 600;
-        transition: top 0.3s ease;
-        z-index: 1000;
-      }
-
-      .skip-link:focus {
-        top: 1rem;
-      }
-
-      header {
-        background: var(--color-surface);
-        position: sticky;
-        top: 0;
-        z-index: 900;
-        box-shadow: 0 10px 30px -20px rgba(15, 23, 42, 0.4);
-      }
-
-      .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.25rem clamp(1.5rem, 4vw, 4rem);
-      }
-
-      .logo {
-        font-family: "Playfair Display", serif;
-        font-size: 1.35rem;
-        letter-spacing: 0.05em;
-      }
-
-      nav[aria-label="breadcrumb"] {
-        background: var(--color-accent-soft);
-      }
-
-      .breadcrumb {
-        display: flex;
-        gap: 0.5rem;
-        list-style: none;
-        margin: 0;
-        padding: 0.75rem clamp(1.5rem, 4vw, 4rem);
-        font-size: 0.95rem;
-      }
-
-      .breadcrumb li {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .breadcrumb li::after {
-        content: "/";
-        color: var(--color-muted);
-      }
-
-      .breadcrumb li:last-child::after {
-        content: "";
-      }
-
-      .hero {
-        position: relative;
-        padding: clamp(4rem, 12vw, 7rem) clamp(1.5rem, 4vw, 4rem);
-        background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(253, 186, 116, 0.3));
-        overflow: hidden;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1600&q=80");
-        background-size: cover;
-        background-position: center;
-        opacity: 0.25;
-        mix-blend-mode: multiply;
-        z-index: 0;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 60rem;
-      }
-
-      .hero-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-muted);
-      }
-
-      .hero-title {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2.5rem, 6vw, 3.75rem);
-        margin: 0.75rem 0;
-      }
-
-      .hero-summary {
-        max-width: 45rem;
-        font-size: 1.05rem;
-        color: var(--color-muted);
-      }
-
-      main {
-        padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 4rem) 6rem;
-        display: grid;
-        gap: clamp(3rem, 8vw, 4.5rem);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(249, 115, 22, 0.1));
-      }
-
-      .case-summary {
-        display: grid;
-        gap: 2rem;
-      }
-
-      .case-summary article {
-        background: var(--color-surface);
-        padding: clamp(1.75rem, 4vw, 2.5rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .case-summary article::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(120deg, rgba(249, 115, 22, 0.12), transparent 60%);
-        z-index: 0;
-      }
-
-      .case-summary h2,
-      .case-summary h3 {
-        margin-top: 0;
-        font-family: "Playfair Display", serif;
-      }
-
-      .case-summary p {
-        position: relative;
-        z-index: 1;
-        margin-bottom: 1rem;
-        color: var(--color-muted);
-      }
-
-      .impact-section {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .impact-card {
-        background: var(--color-surface);
-        border-radius: 1.25rem;
-        padding: 2rem;
-        box-shadow: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-      }
-
-      .impact-card h2 {
-        margin-top: 0;
-        font-family: "Playfair Display", serif;
-        font-size: 1.6rem;
-      }
-
-      .impact-card ul {
-        margin: 1rem 0 0;
-        padding-left: 1.2rem;
-        color: var(--color-muted);
-      }
-
-      .chip-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.25rem;
-      }
-
-      .chip {
-        background: var(--color-accent-soft);
-        color: var(--color-accent);
-        padding: 0.5rem 0.95rem;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-
-      .timeline-section {
-        background: var(--color-surface);
-        padding: clamp(2rem, 5vw, 3rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      .timeline-section h2 {
-        font-family: "Playfair Display", serif;
-      }
-
-      .timeline {
-        list-style: none;
-        margin: 2rem 0 0;
-        padding: 0;
-        position: relative;
-      }
-
-      .timeline::before {
-        content: "";
-        position: absolute;
-        left: 1rem;
-        top: 0.5rem;
-        bottom: 0.5rem;
-        width: 3px;
-        background: linear-gradient(180deg, rgba(249, 115, 22, 0.4), transparent);
-      }
-
-      .timeline-item {
-        position: relative;
-        padding-left: 3rem;
-        margin-bottom: 1.75rem;
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.5s ease, transform 0.6s ease;
-      }
-
-      .timeline-item[data-visible="true"] {
-        opacity: 1;
-        transform: none;
-      }
-
-      .timeline-item::before {
-        content: attr(data-year);
-        position: absolute;
-        left: 0;
-        top: 0;
-        background: var(--color-accent);
-        color: #fff;
-        border-radius: 999px;
-        padding: 0.35rem 0.75rem;
-        font-size: 0.85rem;
-        font-weight: 600;
-      }
-
-      .critic-section {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .flip-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 1.25rem;
-      }
-
-      .flip-card {
-        perspective: 1200px;
-      }
-
-      .flip-card button {
-        width: 100%;
-        border: none;
-        background: transparent;
-        padding: 0;
-        cursor: pointer;
-        position: relative;
-        height: 200px;
-      }
-
-      .flip-card button:focus-visible {
-        outline: none;
-      }
-
-      .flip-card button:focus-visible .card-face,
-      .flip-card button:hover .card-face {
-        box-shadow: 0 30px 60px -25px rgba(249, 115, 22, 0.55);
-      }
-
-      .card-face {
-        position: absolute;
-        inset: 0;
-        background: var(--color-surface);
-        border-radius: 1.25rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1.5rem;
-        backface-visibility: hidden;
-        box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.45);
-        transition: transform 0.8s ease;
-        text-align: center;
-      }
-
-      .card-face.back {
-        transform: rotateY(180deg);
-        color: var(--color-muted);
-      }
-
-      .flip-card button[aria-pressed="true"] .front {
-        transform: rotateY(180deg);
-      }
-
-      .flip-card button[aria-pressed="true"] .back {
-        transform: rotateY(360deg);
-      }
-
-      .map-section {
-        background: var(--color-surface);
-        padding: clamp(2rem, 5vw, 3rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      #map-aire {
-        width: 100%;
-        min-height: 320px;
-        border-radius: 1rem;
-      }
-
-      .cta-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .cta-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.9rem 1.6rem;
-        border-radius: 999px;
-        background: var(--color-accent);
-        color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .cta-button.secondary {
-        background: transparent;
-        color: var(--color-accent);
-        border: 2px solid var(--color-accent);
-      }
-
-      .cta-button:hover,
-      .cta-button:focus-visible {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px -20px rgba(249, 115, 22, 0.6);
-      }
-
-      footer {
-        padding: 3rem clamp(1.5rem, 4vw, 4rem);
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-
-      footer a {
-        color: #fdba74;
-      }
-
-      @media (max-width: 768px) {
-        .top-bar {
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .timeline::before {
-          left: 0.75rem;
-        }
-
-        .timeline-item {
-          padding-left: 2.5rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../styles/retos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.js" defer></script>
   </head>
-  <body data-barba="wrapper">
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <header>
-      <div class="top-bar">
-        <a class="logo" href="../index.html">Sostenibilidad 2030</a>
-        <span>Ruta de aprendizaje: Aire limpio</span>
+  <body class="reto-page" data-reto="aire" data-barba="wrapper">
+    <a class="reto-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+    <header class="reto-header">
+      <div class="reto-header__top">
+        <a class="reto-header__brand" href="../index.html">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            role="img"
+            aria-hidden="true"
+          >
+            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" />
+            <path
+              d="M18 36c10-4 16-12 18-24 8 8 12 20 6 32-4 8-12 12-20 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span>Sostenibilidad 2030</span>
+        </a>
+        <div class="reto-header__meta">
+          <span class="reto-pill">Reto aire limpio</span>
+          <span>Ciudad de México · México</span>
+          <a href="#mapa">Ir al mapa</a>
+        </div>
       </div>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" data-animate="breadcrumb">
+      <nav aria-label="Ruta de navegación">
+        <ol class="reto-breadcrumb">
           <li><a href="../index.html">Inicio</a></li>
           <li><a href="../index.html#retos">Retos</a></li>
           <li aria-current="page">Calidad del aire</li>
@@ -479,104 +84,192 @@
       </nav>
     </header>
 
-    <section class="hero" data-animate="hero">
-      <div class="hero-content">
-        <span class="hero-kicker">Reto global 3</span>
-        <h1 class="hero-title">Respira Ciudad de México</h1>
-        <p class="hero-summary">
-          La megalópolis latinoamericana avanza hacia aire limpio con zonas de bajas emisiones, transporte eléctrico y redes de
-          monitoreo comunitario. Revisamos el programa Respira CDMX y cómo equilibra salud pública, movilidad y justicia ambiental.
-        </p>
-      </div>
-    </section>
+    <main id="contenido-principal" class="reto-main" data-barba="container" data-barba-namespace="reto-aire">
+      <section class="reto-hero" data-animate="section">
+        <div class="reto-hero__content" data-animate-item>
+          <span class="reto-hero__badge">Reto global 3</span>
+          <h1 class="reto-hero__title">Respira Ciudad de México</h1>
+          <p class="reto-hero__summary">
+            La megalópolis latinoamericana avanza hacia aire limpio con zonas de bajas emisiones, transporte eléctrico y redes
+            de monitoreo comunitario. El programa Respira CDMX equilibra salud pública, movilidad y justicia ambiental en una
+            cuenca donde habitan más de 21 millones de personas.
+          </p>
+          <div class="reto-hero__actions">
+            <a class="reto-button is-primary" href="#cronologia">Revisar cronología</a>
+            <a class="reto-button" href="#fuentes">Consultar fuentes</a>
+          </div>
+          <div class="reto-hero__stats">
+            <div class="reto-stat" data-hover-card>
+              <strong>90 estaciones</strong>
+              <span>Red pública y comunitaria de monitoreo atmosférico en tiempo real.</span>
+            </div>
+            <div class="reto-stat" data-hover-card>
+              <strong>300 autobuses</strong>
+              <span>Flota eléctrica metropolitana incorporada desde 2019.</span>
+            </div>
+            <div class="reto-stat" data-hover-card>
+              <strong>14&nbsp;%</strong>
+              <span>Reducción promedio de PM2.5 en zonas intervenidas con Respira CDMX.</span>
+            </div>
+          </div>
+        </div>
+        <div class="reto-hero__media" data-animate-item>
+          <figure class="reto-hero__visual" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1526402469884-49c7e6ffb452?auto=format&fit=crop&w=1000&q=80"
+              alt="Vista panorámica de Ciudad de México con cielo despejado"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div class="reto-hero__ornament" aria-hidden="true"></div>
+        </div>
+      </section>
 
-    <main id="contenido-principal" data-barba="container" data-barba-namespace="reto-aire">
-      <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
-        <article>
+      <section class="reto-section" aria-labelledby="resumen-caso" data-animate="section">
+        <header data-animate-item>
           <h2 id="resumen-caso">Contexto del caso</h2>
           <p>
-            Ciudad de México enfrenta altos niveles de ozono y partículas finas derivados de transporte motorizado, industria y
-            combustión residencial. El programa Respira CDMX articula políticas metropolitanas con el Estado de México y municipios
-            vecinos para reducir emisiones en la cuenca del Valle de México, donde viven más de 21 millones de personas. Incluye la
-            ampliación del Metrobús eléctrico, renovación de trolebuses y expansión del sistema de transporte por cable que conecta
-            colonias periféricas en laderas.
+            Ciudad de México enfrenta elevados niveles de ozono y partículas finas derivados del transporte motorizado,
+            industria y combustión residencial. Respira CDMX articula políticas con municipios vecinos para reducir emisiones
+            en la cuenca y mejorar la salud respiratoria de la población.
           </p>
-          <p>
-            Se complementa con la zona de bajas emisiones del Centro Histórico y corredores prioritarios donde se restringe el
-            tránsito a vehículos de combustión interna sin holograma ambiental. La ciudad instaló 90 estaciones de monitoreo de aire
-            y sensores de bajo costo operados por escuelas y comités vecinales, integrados en una plataforma pública en tiempo real.
-            Los datos se cruzan con registros hospitalarios para diseñar alertas tempranas y campañas de salud en barrios con mayor
-            vulnerabilidad socioeconómica.
-          </p>
-        </article>
-        <article>
-          <h3 id="aprendizajes">Aprendizajes clave</h3>
-          <p>
-            Respira CDMX demuestra la importancia de combinar inversiones en movilidad eléctrica con incentivos para la logística
-            urbana sostenible. Se implementaron microhubs de distribución en estaciones de metro y bicicletas de carga eléctricas
-            para la última milla, reduciendo circulación de camiones pesados. El programa incorpora justicia ambiental al priorizar
-            vegetación urbana y filtros de aire en escuelas ubicadas en zonas industriales.
-          </p>
-          <p>
-            La ciudad creó un fondo climático que financia proyectos comunitarios como techos fotovoltaicos y estufas limpias en
-            barrios con altos índices de pobreza energética. Esta estrategia mejora la calidad del aire interior y reduce las
-            emisiones domésticas de partículas finas. Además, se establecieron acuerdos con empresas para teletrabajo parcial y
-            horarios escalonados, disminuyendo la congestión en horas punta.
-          </p>
-        </article>
-        <article>
+        </header>
+        <div class="reto-grid-two">
+          <article data-animate-item>
+            <p>
+              La estrategia amplía el Metrobús y trolebuses eléctricos, además del sistema de transporte por cable que conecta
+              colonias periféricas. Se implementó una zona de bajas emisiones en el Centro Histórico con verificación
+              inteligente y apoyo a comercios locales para adoptar logística limpia.
+            </p>
+            <p>
+              La ciudad instaló sensores de bajo costo operados por escuelas y comités vecinales. La información se publica en
+              un tablero abierto que cruza datos ambientales con registros hospitalarios para diseñar alertas tempranas y
+              campañas de salud dirigidas a barrios vulnerables.
+            </p>
+          </article>
+          <article data-animate-item>
+            <figure class="reto-figure">
+              <img
+                src="https://images.unsplash.com/photo-1529429617124-aee3121fbb59?auto=format&fit=crop&w=900&q=80"
+                alt="Autobús eléctrico circulando en el centro de la ciudad"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                Corredores de transporte eléctrico reducen emisiones y facilitan la movilidad en la zona de bajas emisiones.
+              </figcaption>
+            </figure>
+            <h3 id="aprendizajes">Aprendizajes clave</h3>
+            <p>
+              Respira CDMX demuestra la importancia de combinar inversiones en movilidad eléctrica con incentivos para la
+              logística urbana sostenible. Microhubs de distribución y bicicletas de carga eléctrica reducen el tránsito de
+              camiones pesados en avenidas congestionadas.
+            </p>
+            <p>
+              La estrategia incorpora justicia ambiental al priorizar vegetación urbana, filtros de aire en escuelas industriales
+              y programas de capacitación para el mantenimiento de flotas eléctricas desde empleos locales.
+            </p>
+          </article>
+        </div>
+        <article class="reto-highlight" data-animate-item aria-labelledby="desafios">
           <h3 id="desafios">Desafíos pendientes</h3>
           <p>
-            Persisten retos para fiscalizar a microbuses informales que continúan operando con motores diésel antiguos. Las cámaras de
-            verificación inteligente aún no cubren toda la ciudad y la reposición de unidades requiere financiamiento adicional. Las
-            políticas de control de emisiones industriales deben coordinarse con estados vecinos para evitar desplazamiento de
-            actividades contaminantes.
+            Persisten retos para fiscalizar microbuses informales que operan con motores diésel antiguos. Las cámaras de
+            verificación inteligente aún no cubren toda la metrópoli y la reposición de unidades requiere financiamiento
+            adicional.
           </p>
           <p>
-            Organizaciones civiles reclaman mayor participación en el seguimiento de la zona de bajas emisiones, especialmente para
-            asegurar que no se traduzca en gentrificación y desplazamiento de pequeños comercios. También se busca fortalecer la
-            transparencia en contratos de electromovilidad y en la gestión de baterías al final de su vida útil. El monitoreo
-            comunitario necesita recursos para mantenimiento de sensores y capacitación continua.
+            Organizaciones civiles vigilan que la zona de bajas emisiones no derive en gentrificación y piden transparencia en
+            contratos de electromovilidad, gestión de baterías y recursos para mantener la red de sensores comunitarios.
           </p>
         </article>
       </section>
 
-      <section class="impact-section" aria-labelledby="impacto-ambiental" data-animate="section">
-        <article class="impact-card">
-          <h2 id="impacto-ambiental">Impacto ambiental</h2>
-          <p>
-            Las medidas reducen la concentración de partículas y ozono mediante movilidad limpia, expansión de áreas verdes y control
-            de emisiones industriales. Las estaciones de monitoreo muestran una disminución promedio del 14 % en PM2.5 en zonas
-            intervenidas desde 2019.
-          </p>
-          <ul>
-            <li>300 autobuses eléctricos y 200 trolebuses nuevos en operación metropolitana.</li>
-            <li>Reducción de 1,5 millones de toneladas de CO₂ equivalentes gracias a transporte público electrificado.</li>
-            <li>Plantación de 15 millones de árboles y arbustos para mitigar la isla de calor urbana.</li>
-            <li>Normativa para hornos ladrilleros que elimina combustibles de llantas y residuos.</li>
-          </ul>
-        </article>
-        <article class="impact-card" aria-labelledby="impacto-personas">
-          <h2 id="impacto-personas">Impacto en personas y economía</h2>
-          <p>
-            Respira CDMX mejora la salud respiratoria, reduce ausentismo laboral y escolar, y dinamiza sectores de movilidad eléctrica
-            y servicios de innovación. Se generan empleos en mantenimiento de flotas, gestión de datos ambientales y economía verde.
-          </p>
-          <div class="chip-list" role="list">
-            <span class="chip" role="listitem">Movilidad eléctrica</span>
-            <span class="chip" role="listitem">Salud pública</span>
-            <span class="chip" role="listitem">Logística urbana</span>
-            <span class="chip" role="listitem">Tecnología cívica</span>
-            <span class="chip" role="listitem">Economía creativa</span>
-          </div>
-        </article>
+      <section class="reto-section" aria-labelledby="impacto-ambiental" data-animate="section">
+        <header data-animate-item>
+          <h2 id="impacto-ambiental">Impactos ambientales y sociales</h2>
+          <p>Resultados medibles desde la implementación de Respira CDMX en movilidad, salud y economía verde.</p>
+        </header>
+        <div class="reto-impact-grid">
+          <article class="reto-impact" data-hover-card data-animate-item>
+            <h3>Impacto ambiental</h3>
+            <p>
+              La combinación de transporte eléctrico, corredores peatonales y control industrial redujo 14&nbsp;% las PM2.5 en
+              zonas intervenidas. El plan incluye normas para hornos ladrilleros y recuperación de áreas verdes urbanas.
+            </p>
+            <ul class="reto-list">
+              <li>300 autobuses eléctricos y 200 trolebuses articulados operando en corredores metropolitanos.</li>
+              <li>Reducción de 1,5 millones de toneladas de CO₂ equivalentes gracias a flotas electrificadas.</li>
+              <li>Plantación de 15 millones de árboles y arbustos para mitigar la isla de calor urbana.</li>
+              <li>Programa de monitoreo comunitario con datos abiertos y API pública para investigación.</li>
+            </ul>
+          </article>
+          <article class="reto-impact" data-hover-card data-animate-item aria-labelledby="impacto-personas">
+            <h3 id="impacto-personas">Impacto en personas y economía</h3>
+            <p>
+              Respira CDMX mejora la salud respiratoria, reduce el ausentismo laboral y dinamiza sectores de movilidad eléctrica
+              y tecnología cívica. El fondo climático financia proyectos comunitarios de energía limpia y estufas eficientes.
+            </p>
+            <ul class="reto-list">
+              <li>Subsidios para cooperativas de transporte que migran a unidades de cero emisiones.</li>
+              <li>Programas de empleo para mantenimiento de baterías y análisis de datos ambientales.</li>
+              <li>Teletrabajo y horarios escalonados en empresas para disminuir la congestión en horas pico.</li>
+              <li>Campañas de salud en barrios con mayor vulnerabilidad socioeconómica y exposición a ozono.</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
-      <section class="timeline-section" aria-labelledby="timeline" data-animate="timeline" data-scroll-trigger>
-        <h2 id="timeline">Cronología de acciones</h2>
-        <p>
-          Las políticas se implementan de forma gradual para garantizar adopción social y resultados medibles en calidad del aire.
-        </p>
+      <section class="reto-quote" data-animate="section">
+        <blockquote>
+          “Respira CDMX es un pacto social: prioriza el derecho a un aire limpio sobre el uso indiscriminado del automóvil y
+          pone la tecnología al servicio de los barrios.”
+        </blockquote>
+        <cite>Laura Hernández · Directora de la Red de Monitoreo Comunitario</cite>
+      </section>
+
+      <section class="reto-section" aria-labelledby="galeria" data-animate="section">
+        <header data-animate-item>
+          <h2 id="galeria">Galería de acciones urbanas</h2>
+          <p>Iniciativas ciudadanas y gubernamentales que dan vida al plan Respira CDMX.</p>
+        </header>
+        <div class="reto-gallery">
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80"
+              alt="Sensores ambientales instalados en una escuela pública"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Escuelas monitorean la calidad del aire y comparten datos abiertos con la ciudadanía.</figcaption>
+          </figure>
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=900&q=80"
+              alt="Corredor ciclista con vegetación urbana"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Corredores ciclistas verdes conectan colonias y fomentan movilidad activa.</figcaption>
+          </figure>
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1464790719320-516ecd75af6c?auto=format&fit=crop&w=900&q=80"
+              alt="Centro de distribución con bicicletas de carga"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Microhubs logísticos realizan la última milla con bicicletas eléctricas de carga.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="reto-section" aria-labelledby="cronologia" data-animate="timeline">
+        <header data-animate-item>
+          <h2 id="cronologia">Cronología de acciones</h2>
+          <p>Hitos que consolidan la transformación metropolitana hacia un aire respirable.</p>
+        </header>
         <ol class="timeline">
           <li class="timeline-item" data-year="2018" data-animate-item>
             Lanzamiento del plan Respira CDMX y actualización de normas de ozono y partículas en coordinación metropolitana.
@@ -588,7 +281,8 @@
             Implementación de microhubs logísticos y red de sensores comunitarios con datos abiertos y API pública.
           </li>
           <li class="timeline-item" data-year="2021" data-animate-item>
-            Creación de la zona de bajas emisiones en el Centro Histórico con verificación inteligente y apoyo a comercios locales.
+            Creación de la zona de bajas emisiones en el Centro Histórico con verificación inteligente y apoyo a comercios
+            locales.
           </li>
           <li class="timeline-item" data-year="2022" data-animate-item>
             Fondo climático para proyectos comunitarios y expansión del teletrabajo en dependencias y empresas aliadas.
@@ -599,56 +293,61 @@
         </ol>
       </section>
 
-      <section class="critic-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
-        <h2 id="criticas">Críticas y debates abiertos</h2>
-        <p>
-          Estos cuestionamientos ayudan a mejorar la justicia ambiental y la eficacia de las políticas de aire limpio.
-        </p>
+      <section class="reto-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
+        <header data-animate-item>
+          <h2 id="criticas">Críticas y debates abiertos</h2>
+          <p>Cuestiones clave para mantener la legitimidad y eficacia del programa de aire limpio.</p>
+        </header>
         <div class="flip-grid">
           <div class="flip-card" data-animate-item>
-            <button type="button" aria-pressed="false" aria-label="Subsidios focalizados">
+            <button type="button" aria-pressed="false" aria-label="Subsidios al transporte">
               <span class="card-face front">Subsidios al transporte</span>
-              <span class="card-face back">Operadores de microbuses reclaman apoyos más ágiles para renovar flotas y evitar pérdida de
-                ingresos.</span>
+              <span class="card-face back"
+                >Operadores de microbuses reclaman apoyos ágiles para renovar flotas y evitar pérdida de ingresos.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Gestión de baterías">
               <span class="card-face front">Gestión de baterías</span>
-              <span class="card-face back">Organizaciones ambientales piden cadenas de reciclaje certificadas para baterías de buses y
-                bicicletas eléctricas.</span>
+              <span class="card-face back"
+                >Organizaciones ambientales piden cadenas certificadas para reciclar baterías de buses y bicicletas
+                eléctricas.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Accesibilidad económica">
               <span class="card-face front">Acceso equitativo</span>
-              <span class="card-face back">Personas de bajos ingresos temen que la zona de bajas emisiones encarezca servicios y vivienda
-                en el centro.</span>
+              <span class="card-face back"
+                >Personas de bajos ingresos temen que la zona de bajas emisiones encarezca servicios y vivienda en el centro.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
-            <button type="button" aria-pressed="false" aria-label="Industria metropolitana">
+            <button type="button" aria-pressed="false" aria-label="Coordinación industrial">
               <span class="card-face front">Coordinación industrial</span>
-              <span class="card-face back">Empresas de estados colindantes piden reglas homogéneas para evitar desventajas competitivas en
-                emisiones.</span>
+              <span class="card-face back"
+                >Empresas de estados colindantes piden reglas homogéneas para evitar desventajas competitivas en emisiones.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Financiamiento comunitario">
               <span class="card-face front">Financiamiento comunitario</span>
-              <span class="card-face back">Comités vecinales demandan que el fondo climático tenga convocatorias más inclusivas y asistencia
-                técnica continua.</span>
+              <span class="card-face back"
+                >Comités vecinales demandan convocatorias inclusivas y asistencia técnica para el fondo climático.</span
+              >
             </button>
           </div>
         </div>
       </section>
 
-      <section class="map-section" aria-labelledby="mapa" data-animate="section">
-        <h2 id="mapa">Localización del caso</h2>
-        <p>
-          El programa se centra en la cuenca del Valle de México. El mapa destaca el Centro Histórico de Ciudad de México
-          (19.4326° N, -99.1332° O) como nodo de la zona de bajas emisiones.
-        </p>
+      <section class="reto-section map-section" aria-labelledby="mapa" data-animate="section">
+        <header data-animate-item>
+          <h2 id="mapa">Localización del caso</h2>
+          <p>El Centro Histórico (19.4326° N, -99.1332° O) concentra la zona de bajas emisiones de Respira CDMX.</p>
+        </header>
         <div
           id="map-aire"
           role="application"
@@ -664,24 +363,29 @@
         ></div>
       </section>
 
-      <section aria-labelledby="fuentes" data-animate="section">
-        <h2 id="fuentes">Fuentes</h2>
-        <ul>
-          <li><a href="https://aire.cdmx.gob.mx/" target="_blank" rel="noopener">Añadir fuente</a></li>
-          <li><a href="https://www.cepal.org" target="_blank" rel="noopener">Añadir fuente</a></li>
-          <li><a href="https://www.wri.org" target="_blank" rel="noopener">Añadir fuente</a></li>
+      <section class="reto-section" aria-labelledby="fuentes" data-animate="section">
+        <header data-animate-item>
+          <h2 id="fuentes">Fuentes abiertas y recursos</h2>
+          <p>Explora datos, regulaciones y reportes técnicos del plan Respira CDMX.</p>
+        </header>
+        <ul class="reto-list">
+          <li><a href="https://aire.cdmx.gob.mx/" target="_blank" rel="noopener">Secretaría del Medio Ambiente CDMX</a></li>
+          <li><a href="https://www.cepal.org" target="_blank" rel="noopener">Estudios de la CEPAL sobre movilidad limpia</a></li>
+          <li><a href="https://www.wri.org" target="_blank" rel="noopener">World Resources Institute · Calidad del aire</a></li>
         </ul>
       </section>
 
-      <section class="cta-section" aria-label="Acciones finales" data-animate="section">
-        <a class="cta-button" href="../index.html">Volver a la página principal</a>
-        <a class="cta-button secondary" href="reto-biodiversidad.html">Ir al reto de biodiversidad</a>
+      <section class="reto-section" aria-label="Acciones finales" data-animate="section">
+        <div class="reto-cta">
+          <a class="reto-button is-primary" href="../index.html">Volver a la página principal</a>
+          <a class="reto-button" href="reto-biodiversidad.html">Ir al reto de biodiversidad</a>
+        </div>
       </section>
     </main>
 
     <footer>
       <p>Recurso educativo abierto del programa “Sostenibilidad 2030”.</p>
-      <small>Contenido de libre uso para fines académicos. Datos cartográficos &copy; OpenStreetMap colaboradores.</small>
+      <small>Datos cartográficos &copy; OpenStreetMap colaboradores. Contenido de libre uso para fines académicos.</small>
     </footer>
 
     <script

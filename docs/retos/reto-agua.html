@@ -41,437 +41,42 @@
       integrity="sha256-o9N1j7kG6Lk4C0qVdLScqqfQjYkB7RviG3LrjPMo4n8="
       crossorigin=""
     />
-    <style>
-      :root {
-        color-scheme: light dark;
-        --color-bg: #f1f5f9;
-        --color-bg-alt: rgba(15, 23, 42, 0.05);
-        --color-text: #0f172a;
-        --color-muted: rgba(15, 23, 42, 0.65);
-        --color-accent: #0ea5e9;
-        --color-accent-soft: rgba(14, 165, 233, 0.1);
-        --color-surface: #ffffff;
-        --shadow-lg: 0 30px 60px -35px rgba(15, 23, 42, 0.45);
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        background: var(--color-bg);
-        color: var(--color-text);
-        font-family: inherit;
-        line-height: 1.6;
-      }
-
-      a {
-        color: var(--color-accent);
-      }
-
-      a:focus-visible,
-      button:focus-visible,
-      [tabindex]:focus-visible {
-        outline: 3px solid var(--color-accent);
-        outline-offset: 4px;
-      }
-
-      .skip-link {
-        position: absolute;
-        left: 1rem;
-        top: -100vh;
-        padding: 0.75rem 1.25rem;
-        background: var(--color-accent);
-        color: #fff;
-        border-radius: 999px;
-        font-weight: 600;
-        transition: top 0.3s ease;
-        z-index: 1000;
-      }
-
-      .skip-link:focus {
-        top: 1rem;
-      }
-
-      header {
-        background: var(--color-surface);
-        position: sticky;
-        top: 0;
-        z-index: 900;
-        box-shadow: 0 10px 30px -20px rgba(15, 23, 42, 0.4);
-      }
-
-      .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.25rem clamp(1.5rem, 4vw, 4rem);
-      }
-
-      .logo {
-        font-family: "Playfair Display", serif;
-        font-size: 1.35rem;
-        letter-spacing: 0.05em;
-      }
-
-      nav[aria-label="breadcrumb"] {
-        background: var(--color-accent-soft);
-      }
-
-      .breadcrumb {
-        display: flex;
-        gap: 0.5rem;
-        list-style: none;
-        margin: 0;
-        padding: 0.75rem clamp(1.5rem, 4vw, 4rem);
-        font-size: 0.95rem;
-      }
-
-      .breadcrumb li {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .breadcrumb li::after {
-        content: "/";
-        color: var(--color-muted);
-      }
-
-      .breadcrumb li:last-child::after {
-        content: "";
-      }
-
-      .hero {
-        position: relative;
-        padding: clamp(4rem, 12vw, 7rem) clamp(1.5rem, 4vw, 4rem);
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(56, 189, 248, 0.25));
-        overflow: hidden;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("https://images.unsplash.com/photo-1501612780327-45045538702b?auto=format&fit=crop&w=1600&q=80");
-        background-size: cover;
-        background-position: center;
-        opacity: 0.25;
-        mix-blend-mode: multiply;
-        z-index: 0;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 60rem;
-      }
-
-      .hero-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-muted);
-      }
-
-      .hero-title {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2.5rem, 6vw, 3.75rem);
-        margin: 0.75rem 0;
-      }
-
-      .hero-summary {
-        max-width: 45rem;
-        font-size: 1.05rem;
-        color: var(--color-muted);
-      }
-
-      main {
-        padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 4rem) 6rem;
-        display: grid;
-        gap: clamp(3rem, 8vw, 4.5rem);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(14, 165, 233, 0.08));
-      }
-
-      .case-summary {
-        display: grid;
-        gap: 2rem;
-      }
-
-      .case-summary article {
-        background: var(--color-surface);
-        padding: clamp(1.75rem, 4vw, 2.5rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .case-summary article::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(120deg, rgba(14, 165, 233, 0.12), transparent 60%);
-        z-index: 0;
-      }
-
-      .case-summary h2,
-      .case-summary h3 {
-        margin-top: 0;
-        font-family: "Playfair Display", serif;
-      }
-
-      .case-summary p {
-        position: relative;
-        z-index: 1;
-        margin-bottom: 1rem;
-        color: var(--color-muted);
-      }
-
-      .impact-section {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .impact-card {
-        background: var(--color-surface);
-        border-radius: 1.25rem;
-        padding: 2rem;
-        box-shadow: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-      }
-
-      .impact-card h2 {
-        margin-top: 0;
-        font-family: "Playfair Display", serif;
-        font-size: 1.6rem;
-      }
-
-      .impact-card ul {
-        margin: 1rem 0 0;
-        padding-left: 1.2rem;
-        color: var(--color-muted);
-      }
-
-      .chip-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.25rem;
-      }
-
-      .chip {
-        background: var(--color-accent-soft);
-        color: var(--color-accent);
-        padding: 0.5rem 0.95rem;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-
-      .timeline-section {
-        background: var(--color-surface);
-        padding: clamp(2rem, 5vw, 3rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      .timeline-section h2 {
-        font-family: "Playfair Display", serif;
-      }
-
-      .timeline {
-        list-style: none;
-        margin: 2rem 0 0;
-        padding: 0;
-        position: relative;
-      }
-
-      .timeline::before {
-        content: "";
-        position: absolute;
-        left: 1rem;
-        top: 0.5rem;
-        bottom: 0.5rem;
-        width: 3px;
-        background: linear-gradient(180deg, rgba(14, 165, 233, 0.4), transparent);
-      }
-
-      .timeline-item {
-        position: relative;
-        padding-left: 3rem;
-        margin-bottom: 1.75rem;
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.5s ease, transform 0.6s ease;
-      }
-
-      .timeline-item[data-visible="true"] {
-        opacity: 1;
-        transform: none;
-      }
-
-      .timeline-item::before {
-        content: attr(data-year);
-        position: absolute;
-        left: 0;
-        top: 0;
-        background: var(--color-accent);
-        color: #fff;
-        border-radius: 999px;
-        padding: 0.35rem 0.75rem;
-        font-size: 0.85rem;
-        font-weight: 600;
-      }
-
-      .critic-section {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .flip-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 1.25rem;
-      }
-
-      .flip-card {
-        perspective: 1200px;
-      }
-
-      .flip-card button {
-        width: 100%;
-        border: none;
-        background: transparent;
-        padding: 0;
-        cursor: pointer;
-        position: relative;
-        height: 200px;
-      }
-
-      .flip-card button:focus-visible {
-        outline: none;
-      }
-
-      .flip-card button:focus-visible .card-face,
-      .flip-card button:hover .card-face {
-        box-shadow: 0 30px 60px -25px rgba(14, 165, 233, 0.55);
-      }
-
-      .card-face {
-        position: absolute;
-        inset: 0;
-        background: var(--color-surface);
-        border-radius: 1.25rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1.5rem;
-        backface-visibility: hidden;
-        box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.45);
-        transition: transform 0.8s ease;
-        text-align: center;
-      }
-
-      .card-face.back {
-        transform: rotateY(180deg);
-        color: var(--color-muted);
-      }
-
-      .flip-card button[aria-pressed="true"] .front {
-        transform: rotateY(180deg);
-      }
-
-      .flip-card button[aria-pressed="true"] .back {
-        transform: rotateY(360deg);
-      }
-
-      .map-section {
-        background: var(--color-surface);
-        padding: clamp(2rem, 5vw, 3rem);
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      #map-agua {
-        width: 100%;
-        min-height: 320px;
-        border-radius: 1rem;
-      }
-
-      .cta-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .cta-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.9rem 1.6rem;
-        border-radius: 999px;
-        background: var(--color-accent);
-        color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .cta-button.secondary {
-        background: transparent;
-        color: var(--color-accent);
-        border: 2px solid var(--color-accent);
-      }
-
-      .cta-button:hover,
-      .cta-button:focus-visible {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px -20px rgba(14, 165, 233, 0.6);
-      }
-
-      footer {
-        padding: 3rem clamp(1.5rem, 4vw, 4rem);
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-
-      footer a {
-        color: #7dd3fc;
-      }
-
-      @media (max-width: 768px) {
-        .top-bar {
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .timeline::before {
-          left: 0.75rem;
-        }
-
-        .timeline-item {
-          padding-left: 2.5rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../styles/retos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.js" defer></script>
   </head>
-  <body data-barba="wrapper">
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <header>
-      <div class="top-bar">
-        <a class="logo" href="../index.html">Sostenibilidad 2030</a>
-        <span>Ruta de aprendizaje: Agua segura</span>
+  <body class="reto-page" data-reto="agua" data-barba="wrapper">
+    <a class="reto-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+    <header class="reto-header">
+      <div class="reto-header__top">
+        <a class="reto-header__brand" href="../index.html">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            role="img"
+            aria-hidden="true"
+          >
+            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" />
+            <path
+              d="M18 36c10-4 16-12 18-24 8 8 12 20 6 32-4 8-12 12-20 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span>Sostenibilidad 2030</span>
+        </a>
+        <div class="reto-header__meta">
+          <span class="reto-pill">Reto agua</span>
+          <span>Agadir · Marruecos</span>
+          <a href="#mapa">Ir al mapa</a>
+        </div>
       </div>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" data-animate="breadcrumb">
+      <nav aria-label="Ruta de navegación">
+        <ol class="reto-breadcrumb">
           <li><a href="../index.html">Inicio</a></li>
           <li><a href="../index.html#retos">Retos</a></li>
           <li aria-current="page">Agua</li>
@@ -479,114 +84,207 @@
       </nav>
     </header>
 
-    <section class="hero" data-animate="hero">
-      <div class="hero-content">
-        <span class="hero-kicker">Reto global 2</span>
-        <h1 class="hero-title">Agua dulce garantizada para Agadir</h1>
-        <p class="hero-summary">
-          Frente a una sequía prolongada, Marruecos impulsa en Agadir la mayor planta de desalinización alimentada por energía
-          solar del continente africano. El proyecto combina usos urbanos y agrícolas, reorganiza derechos de agua y promueve una
-          gobernanza participativa para proteger a comunidades rurales costeras.
-        </p>
-      </div>
-    </section>
+    <main id="contenido-principal" class="reto-main" data-barba="container" data-barba-namespace="reto-agua">
+      <section class="reto-hero" data-animate="section">
+        <div class="reto-hero__content" data-animate-item>
+          <span class="reto-hero__badge">Reto global 2</span>
+          <h1 class="reto-hero__title">Agua dulce garantizada para Agadir</h1>
+          <p class="reto-hero__summary">
+            Frente a una sequía prolongada, Marruecos impulsa en Agadir la mayor planta de desalinización alimentada por
+            energía solar del continente africano. El proyecto combina usos urbanos y agrícolas, reorganiza derechos de
+            agua y promueve una gobernanza participativa para proteger a comunidades rurales costeras.
+          </p>
+          <div class="reto-hero__actions">
+            <a class="reto-button is-primary" href="#mapa">Explorar ubicación</a>
+            <a class="reto-button" href="#fuentes">Ver fuentes abiertas</a>
+          </div>
+          <div class="reto-hero__stats">
+            <div class="reto-stat" data-hover-card>
+              <strong>150&nbsp;000 m³</strong>
+              <span>Producción diaria de agua desalada garantizada para la ciudad.</span>
+            </div>
+            <div class="reto-stat" data-hover-card>
+              <strong>275&nbsp;000 tCO₂</strong>
+              <span>Emisiones evitadas al operar con campos solares fotovoltaicos.</span>
+            </div>
+            <div class="reto-stat" data-hover-card>
+              <strong>40&nbsp;ha</strong>
+              <span>De manglar y dunas restauradas con soluciones basadas en la naturaleza.</span>
+            </div>
+          </div>
+        </div>
+        <div class="reto-hero__media" data-animate-item>
+          <figure class="reto-hero__visual" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1000&q=80"
+              alt="Operaria supervisando paneles solares cerca de la costa de Agadir"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div class="reto-hero__ornament" aria-hidden="true"></div>
+        </div>
+      </section>
 
-    <main id="contenido-principal" data-barba="container" data-barba-namespace="reto-agua">
-      <section class="case-summary" aria-labelledby="resumen-caso" data-animate="section">
-        <article>
+      <section class="reto-section" aria-labelledby="resumen-caso" data-animate="section">
+        <header data-animate-item>
           <h2 id="resumen-caso">Contexto del caso</h2>
           <p>
-            Agadir y la región de Souss-Massa sufren sequías recurrentes que han reducido a menos del 15 % la capacidad de sus
-            embalses. La agricultura intensiva, orientada a exportaciones hortofrutícolas, compite por un recurso cada vez más
-            escaso con el suministro doméstico. El gobierno marroquí, en alianza con la Oficina Nacional de Electricidad y Agua
-            Potable (ONEE) y un consorcio privado, desarrolló una planta de desalinización modular ubicada en Cap Ghir, a 44
-            kilómetros de la ciudad. La instalación utiliza energía fotovoltaica para reducir el coste energético —tradicionalmente
-            el mayor obstáculo— y produce 150.000 m³ diarios, ampliables a 275.000 m³.
+            La región de Souss-Massa sufre sequías recurrentes que han reducido los embalses a menos del 15&nbsp;% de su
+            capacidad. El consorcio público-privado liderado por la ONEE impulsa una planta de desalinización modular en Cap
+            Ghir que prioriza usos urbanos y agrícolas con energía renovable.
           </p>
-          <p>
-            El modelo combina un contrato de concesión de 30 años y participación financiera de agricultores, quienes aseguran
-            volúmenes para riego mediante acuerdos de compra anticipada. A cambio, deben implementar riego por goteo eficiente y
-            sistemas de monitoreo digital de consumo. El proyecto incluye una red de tuberías dual para abastecer agua potable a la
-            ciudad y agua desalada mezclada para uso agrícola. Los impactos se monitorean con estaciones de calidad del agua y
-            sensores marinos que controlan la salmuera devuelta al océano Atlántico.
-          </p>
-        </article>
-        <article>
-          <h3 id="aprendizajes">Aprendizajes clave</h3>
-          <p>
-            El proyecto demuestra que la desalinización puede ser socialmente aceptable cuando se integra con energías renovables,
-            tarifas progresivas y compromisos de eficiencia en toda la cuenca. Las cooperativas agrícolas participan en mesas de
-            diálogo que definen prioridades de inversión y gestionan fondos de compensación para pequeños productores. Se instalaron
-            estaciones meteorológicas comunitarias que alimentan plataformas abiertas y alertan sobre riesgos de heladas, optimizando
-            el uso del agua desalada.
-          </p>
-          <p>
-            La infraestructura incorpora soluciones basadas en la naturaleza: humedales artificiales que depuran parte del efluente
-            antes de su retorno al mar y barreras vegetales para reducir la intrusión salina en acuíferos costeros. Además, se
-            promueven programas de educación hídrica en escuelas rurales y campañas de ahorro en hoteles de la zona turística.
-            Estas acciones fortalecen la percepción pública de la planta como elemento de resiliencia compartida.
-          </p>
-        </article>
-        <article>
+        </header>
+        <div class="reto-grid-two">
+          <article data-animate-item>
+            <p>
+              Agadir y su periferia agrícola compiten por un recurso cada vez más escaso. El proyecto combina un contrato de
+              concesión de 30 años y participación financiera de agricultores, quienes aseguran volúmenes para riego mediante
+              acuerdos de compra anticipada. A cambio, implementan riego por goteo eficiente y sistemas digitales de
+              monitoreo de consumo.
+            </p>
+            <p>
+              La instalación produce 150&nbsp;000 m³ diarios —ampliables a 275&nbsp;000 m³— utilizando energía fotovoltaica, el
+              componente más costoso en la desalinización tradicional. Una red dual de tuberías abastece agua potable a la
+              ciudad y mezcla agua desalada para uso agrícola. Los impactos se monitorean con estaciones de calidad del agua y
+              sensores marinos que controlan la salmuera devuelta al Atlántico.
+            </p>
+          </article>
+          <article data-animate-item>
+            <figure class="reto-figure">
+              <img
+                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80"
+                alt="Vista aérea de una planta desalinizadora junto al océano"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                La planta se integra en un corredor energético solar y eólico, con humedales artificiales como barrera
+                natural.
+              </figcaption>
+            </figure>
+            <h3 id="aprendizajes">Aprendizajes clave</h3>
+            <p>
+              El proyecto demuestra que la desalinización puede ser socialmente aceptable cuando se integra con energías
+              renovables, tarifas progresivas y compromisos de eficiencia en toda la cuenca. Las cooperativas agrícolas
+              participan en mesas de diálogo que priorizan inversiones y gestionan fondos de compensación para pequeños
+              productores.
+            </p>
+            <p>
+              Estaciones meteorológicas comunitarias alimentan plataformas abiertas y alertan sobre riesgos de heladas,
+              optimizando el uso del agua. Los humedales artificiales depuran efluentes antes de su retorno al mar y reducen la
+              intrusión salina en acuíferos costeros.
+            </p>
+          </article>
+        </div>
+        <article class="reto-highlight" data-animate-item aria-labelledby="desafios">
           <h3 id="desafios">Desafíos pendientes</h3>
           <p>
-            Persisten interrogantes sobre la capacidad de pago de pequeños agricultores ante incrementos tarifarios. Para mitigar el
-            riesgo, el gobierno ofrece microcréditos verdes y asistencia técnica, aunque su cobertura es desigual. También se debate
-            la sostenibilidad de los acuíferos ante posibles filtraciones de salmuera y la necesidad de reforzar la fiscalización
+            Persisten interrogantes sobre la capacidad de pago de pequeñas cooperativas ante incrementos tarifarios. El
+            gobierno ofrece microcréditos verdes y asistencia técnica, aunque su cobertura es desigual. También se debate la
+            sostenibilidad de los acuíferos ante posibles filtraciones de salmuera y la necesidad de reforzar la fiscalización
             ambiental independiente.
           </p>
           <p>
-            El proyecto debe coordinarse con políticas de ordenamiento costero para evitar la expansión urbana no planificada que
-            aumente la demanda hídrica. Organizaciones civiles exigen mayor transparencia en los contratos de concesión y
-            participación directa en el comité de seguimiento. La resiliencia hídrica dependerá de mantener balances ecológicos en la
-            cuenca y de ampliar soluciones descentralizadas como captación de agua pluvial y reutilización en industrias pesqueras.
+            Organizaciones civiles exigen mayor transparencia en los contratos de concesión y participación directa en el
+            comité de seguimiento. La resiliencia hídrica dependerá de equilibrar los usos urbanos con soluciones
+            descentralizadas como captación de lluvia y reutilización en industrias pesqueras.
           </p>
         </article>
       </section>
 
-      <section class="impact-section" aria-labelledby="impacto-ambiental" data-animate="section">
-        <article class="impact-card">
-          <h2 id="impacto-ambiental">Impacto ambiental</h2>
-          <p>
-            La planta solar-desalinizadora reduce la presión sobre embalses y acuíferos, al tiempo que minimiza las emisiones al
-            utilizar energía renovable. Los humedales artificiales recuperan biodiversidad costera y filtran nutrientes de retorno.
-          </p>
-          <ul>
-            <li>Reducción del 60 % de extracciones del acuífero de Souss-Massa en cinco años.</li>
-            <li>Instalación de 200 hectáreas de paneles solares que evitan 275.000 tCO₂ equivalentes anuales.</li>
-            <li>Monitoreo continuo de salmuera con sensores que garantizan mezclas inferiores a 35 g/L al retorno al mar.</li>
-            <li>Recuperación de 40 hectáreas de manglar y dunas estabilizadas con vegetación nativa.</li>
-          </ul>
-        </article>
-        <article class="impact-card" aria-labelledby="impacto-personas">
-          <h2 id="impacto-personas">Impacto en personas y economía</h2>
-          <p>
-            La seguridad hídrica favorece el turismo, la pesca artesanal y la agroexportación, evitando pérdidas económicas millonarias
-            por racionamientos. El programa crea más de 1.500 empleos directos e indirectos y fortalece la resiliencia alimentaria
-            regional.
-          </p>
-          <div class="chip-list" role="list">
-            <span class="chip" role="listitem">Agricultura resiliente</span>
-            <span class="chip" role="listitem">Turismo costero</span>
-            <span class="chip" role="listitem">Pesca artesanal</span>
-            <span class="chip" role="listitem">Innovación tecnológica</span>
-            <span class="chip" role="listitem">Servicios urbanos</span>
-          </div>
-        </article>
+      <section class="reto-section" aria-labelledby="impacto-ambiental" data-animate="section">
+        <header data-animate-item>
+          <h2 id="impacto-ambiental">Impactos ambientales y sociales</h2>
+          <p>Un análisis de co-beneficios climáticos, económicos y comunitarios tras los primeros años de operación.</p>
+        </header>
+        <div class="reto-impact-grid">
+          <article class="reto-impact" data-hover-card data-animate-item>
+            <h3>Impacto ambiental</h3>
+            <p>
+              La planta solar-desalinizadora reduce la presión sobre embalses y acuíferos al utilizar energía renovable. Los
+              humedales artificiales recuperan biodiversidad costera y filtran nutrientes de retorno.
+            </p>
+            <ul class="reto-list">
+              <li>Reducción del 60&nbsp;% de extracciones del acuífero de Souss-Massa en cinco años.</li>
+              <li>Instalación de 200 hectáreas de paneles solares que evitan 275&nbsp;000 tCO₂ equivalentes anuales.</li>
+              <li>Monitoreo continuo de salmuera que garantiza mezclas inferiores a 35 g/L al retorno al mar.</li>
+              <li>Recuperación de 40 hectáreas de manglar y dunas estabilizadas con vegetación nativa.</li>
+            </ul>
+          </article>
+          <article class="reto-impact" data-hover-card data-animate-item aria-labelledby="impacto-personas">
+            <h3 id="impacto-personas">Impacto en personas y economía</h3>
+            <p>
+              La seguridad hídrica favorece el turismo, la pesca artesanal y la agroexportación, evitando pérdidas millonarias
+              por racionamientos. El programa crea más de 1&nbsp;500 empleos directos e indirectos y fortalece la resiliencia
+              alimentaria regional.
+            </p>
+            <ul class="reto-list">
+              <li>Contratos de abastecimiento escalonados que priorizan escuelas, centros de salud y hogares vulnerables.</li>
+              <li>Plataformas digitales de monitoreo con datos abiertos para agricultores y ciudadanía.</li>
+              <li>Programas de educación hídrica en 120 escuelas rurales y campañas de ahorro en hoteles y restaurantes.</li>
+              <li>Fondos solidarios para pequeños productores que financian sistemas de riego tecnificado.</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
-      <section class="timeline-section" aria-labelledby="timeline" data-animate="timeline" data-scroll-trigger>
-        <h2 id="timeline">Cronología de la intervención</h2>
-        <p>
-          La transición hídrica se implementa en etapas para garantizar estabilidad financiera, aceptación social y protección
-          ambiental.
-        </p>
+      <section class="reto-quote" data-animate="section">
+        <blockquote>
+          “La alianza público-privada solo funciona porque las comunidades campesinas participan en la fiscalización y toman
+          decisiones sobre la distribución del agua.”
+        </blockquote>
+        <cite>Malika Berrada · Coordinadora del Consejo Hídrico de Souss-Massa</cite>
+      </section>
+
+      <section class="reto-section" aria-labelledby="galeria" data-animate="section">
+        <header data-animate-item>
+          <h2 id="galeria">Galería de iniciativas complementarias</h2>
+          <p>Imágenes que ilustran la transformación territorial alrededor de la planta desalinizadora.</p>
+        </header>
+        <div class="reto-gallery">
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1505731132164-cca90383e1af?auto=format&fit=crop&w=900&q=80"
+              alt="Agricultores revisando sensores de humedad en un invernadero"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Productores modernizan riego con sensores conectados financiados por el proyecto.</figcaption>
+          </figure>
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+              alt="Humedal artificial rodeado de vegetación y aves"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Humedales artificiales filtran la salmuera y crean hábitats para aves migratorias.</figcaption>
+          </figure>
+          <figure data-hover-card>
+            <img
+              src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?auto=format&fit=crop&w=900&q=80"
+              alt="Operadoras ajustando paneles solares con el océano al fondo"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Cooperativas femeninas administran parte del campo solar y reciben capacitación técnica.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="reto-section" aria-labelledby="cronologia" data-animate="timeline">
+        <header data-animate-item>
+          <h2 id="cronologia">Cronología del proyecto</h2>
+          <p>Hitos clave que consolidan la resiliencia hídrica para Agadir y su región agrícola.</p>
+        </header>
         <ol class="timeline">
           <li class="timeline-item" data-year="2016" data-animate-item>
             Firma del acuerdo público-privado y evaluación ambiental estratégica de la planta y del emisario submarino.
           </li>
           <li class="timeline-item" data-year="2017" data-animate-item>
-            Instalación de granjas solares piloto y creación de la mesa de gobernanza con municipios, agricultores y sociedad civil.
+            Instalación de granjas solares piloto y creación de la mesa de gobernanza con municipios, agricultores y sociedad
+            civil.
           </li>
           <li class="timeline-item" data-year="2019" data-animate-item>
             Construcción de la primera fase de desalinización, ductos principales y humedales de biofiltración.
@@ -606,56 +304,64 @@
         </ol>
       </section>
 
-      <section class="critic-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
-        <h2 id="criticas">Críticas y debates abiertos</h2>
-        <p>
-          La gobernanza hídrica requiere atender objeciones de diversos actores para evitar conflictos y ampliar la legitimidad del
-          proyecto.
-        </p>
+      <section class="reto-section" aria-labelledby="criticas" data-animate="flip-cards" data-scroll-trigger>
+        <header data-animate-item>
+          <h2 id="criticas">Críticas y debates abiertos</h2>
+          <p>Actores comunitarios plantean dudas que guían la mejora continua del proyecto hídrico.</p>
+        </header>
         <div class="flip-grid">
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Costo de agua">
               <span class="card-face front">Costo creciente para agricultores</span>
-              <span class="card-face back">Pequeñas cooperativas temen no poder asumir pagos fijos y solicitan tarifas estacionales
-                flexibles.</span>
+              <span class="card-face back"
+                >Pequeñas cooperativas temen no poder asumir pagos fijos y solicitan tarifas estacionales flexibles.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Gestión de salmuera">
               <span class="card-face front">Gestión de salmuera</span>
-              <span class="card-face back">Organizaciones marinas piden reforzar los sistemas de dilución y monitoreo de impactos en
-                hábitats sensibles como praderas de posidonia.</span>
+              <span class="card-face back"
+                >Organizaciones marinas piden reforzar los sistemas de dilución y monitoreo de impactos en hábitats
+                sensibles.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Transparencia contractual">
               <span class="card-face front">Transparencia contractual</span>
-              <span class="card-face back">Colectivos ciudadanos reclaman acceso público a los contratos de concesión y a los indicadores
-                financieros del proyecto.</span>
+              <span class="card-face back"
+                >Colectivos ciudadanos reclaman acceso público a los contratos de concesión y a los indicadores financieros del
+                proyecto.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Conservación de acuíferos">
               <span class="card-face front">Protección de acuíferos</span>
-              <span class="card-face back">Expertos hidrogeólogos piden reforzar los límites de extracción y restaurar zonas de recarga en
-                el alto atlas para evitar subsidencia.</span>
+              <span class="card-face back"
+                >Expertos hidrogeólogos piden reforzar los límites de extracción y restaurar zonas de recarga en el Alto Atlas
+                para evitar subsidencia.</span
+              >
             </button>
           </div>
           <div class="flip-card" data-animate-item>
             <button type="button" aria-pressed="false" aria-label="Equidad territorial">
               <span class="card-face front">Equidad territorial</span>
-              <span class="card-face back">Municipios vecinos sin acceso a la red cuestionan la priorización de áreas turísticas y demandan
-                planes de extensión solidaria.</span>
+              <span class="card-face back"
+                >Municipios vecinos sin acceso a la red cuestionan la priorización de áreas turísticas y demandan planes de
+                extensión solidaria.</span
+              >
             </button>
           </div>
         </div>
       </section>
 
-      <section class="map-section" aria-labelledby="mapa" data-animate="section">
-        <h2 id="mapa">Localización del caso</h2>
-        <p>
-          La planta se localiza cerca de Cap Ghir, al norte de Agadir (31.7917° N, -7.0926° O), en la costa atlántica de Marruecos.
-        </p>
+      <section class="reto-section map-section" aria-labelledby="mapa" data-animate="section">
+        <header data-animate-item>
+          <h2 id="mapa">Localización del caso</h2>
+          <p>La planta se ubica cerca de Cap Ghir, al norte de Agadir (31.7917° N, -7.0926° O) en la costa atlántica.</p>
+        </header>
         <div
           id="map-agua"
           role="application"
@@ -671,24 +377,29 @@
         ></div>
       </section>
 
-      <section aria-labelledby="fuentes" data-animate="section">
-        <h2 id="fuentes">Fuentes</h2>
-        <ul>
-          <li><a href="https://www.one.org.ma/" target="_blank" rel="noopener">Añadir fuente</a></li>
-          <li><a href="https://www.desaldata.com" target="_blank" rel="noopener">Añadir fuente</a></li>
-          <li><a href="https://www.iwa-network.org" target="_blank" rel="noopener">Añadir fuente</a></li>
+      <section class="reto-section" aria-labelledby="fuentes" data-animate="section">
+        <header data-animate-item>
+          <h2 id="fuentes">Fuentes abiertas y recursos</h2>
+          <p>Documentos y plataformas que permiten profundizar en la gobernanza hídrica de Souss-Massa.</p>
+        </header>
+        <ul class="reto-list">
+          <li><a href="https://www.one.org.ma/" target="_blank" rel="noopener">Oficina Nacional de Electricidad y Agua</a></li>
+          <li><a href="https://www.desaldata.com" target="_blank" rel="noopener">Base de datos global de desalinizadoras</a></li>
+          <li><a href="https://www.iwa-network.org" target="_blank" rel="noopener">Asociación Internacional del Agua</a></li>
         </ul>
       </section>
 
-      <section class="cta-section" aria-label="Acciones finales" data-animate="section">
-        <a class="cta-button" href="../index.html">Volver a la página principal</a>
-        <a class="cta-button secondary" href="reto-aire.html">Ir al reto de calidad del aire</a>
+      <section class="reto-section" aria-label="Acciones finales" data-animate="section">
+        <div class="reto-cta">
+          <a class="reto-button is-primary" href="../index.html">Volver a la página principal</a>
+          <a class="reto-button" href="reto-aire.html">Ir al reto de calidad del aire</a>
+        </div>
       </section>
     </main>
 
     <footer>
       <p>Recurso educativo abierto del programa “Sostenibilidad 2030”.</p>
-      <small>Contenido de libre uso para fines académicos. Datos cartográficos &copy; OpenStreetMap colaboradores.</small>
+      <small>Datos cartográficos &copy; OpenStreetMap colaboradores. Contenido de libre uso para fines académicos.</small>
     </footer>
 
     <script

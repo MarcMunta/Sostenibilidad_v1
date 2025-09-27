@@ -220,6 +220,7 @@
     retos.forEach((reto) => {
       const card = document.createElement('article');
       card.className = 'reto-card';
+      card.dataset.hoverCard = 'true';
       card.dataset.retoId = reto.id;
       card.setAttribute('role', 'group');
       card.setAttribute('aria-label', reto.nombre);
@@ -323,6 +324,61 @@
     });
   }
 
+  function initHoverCards() {
+    const cards = document.querySelectorAll('[data-hover-card]');
+    if (!cards.length) return;
+
+    const pointerMoveHandler = (event) => {
+      const card = event.currentTarget;
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--pointer-x', `${x}%`);
+      card.style.setProperty('--pointer-y', `${y}%`);
+    };
+
+    const pointerEnterHandler = (event) => {
+      const card = event.currentTarget;
+      if (!card) return;
+      card.dataset.hoverActive = 'true';
+    };
+
+    const pointerLeaveHandler = (event) => {
+      const card = event.currentTarget;
+      if (!card) return;
+      card.dataset.hoverActive = 'false';
+      card.style.removeProperty('--pointer-x');
+      card.style.removeProperty('--pointer-y');
+    };
+
+    cards.forEach((card) => {
+      if (card.dataset.hoverBound === 'true') {
+        return;
+      }
+
+      card.addEventListener('pointermove', pointerMoveHandler);
+      card.addEventListener('pointerenter', pointerEnterHandler);
+      card.addEventListener('pointerleave', pointerLeaveHandler);
+      card.addEventListener('focusin', pointerEnterHandler);
+      card.addEventListener('focusout', pointerLeaveHandler);
+
+      addCleanup(() => {
+        card.removeEventListener('pointermove', pointerMoveHandler);
+        card.removeEventListener('pointerenter', pointerEnterHandler);
+        card.removeEventListener('pointerleave', pointerLeaveHandler);
+        card.removeEventListener('focusin', pointerEnterHandler);
+        card.removeEventListener('focusout', pointerLeaveHandler);
+        card.style.removeProperty('--pointer-x');
+        card.style.removeProperty('--pointer-y');
+        delete card.dataset.hoverActive;
+        delete card.dataset.hoverBound;
+      });
+
+      card.dataset.hoverBound = 'true';
+    });
+  }
+
   function initPrefetch() {
     const prefetched = new Set();
     const links = document.querySelectorAll('a[href]');
@@ -373,6 +429,7 @@
     initNavHighlight();
     initPrefetch();
     parseAndRenderRetos();
+    initHoverCards();
 
     if (window.AnimationManager && typeof window.AnimationManager.init === 'function') {
       window.AnimationManager.init();
