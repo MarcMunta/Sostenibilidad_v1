@@ -385,7 +385,7 @@
     links.forEach((link) => {
       const href = link.getAttribute('href');
       if (!href || href.startsWith('#') || link.dataset.prefetchBound === 'true') return;
-      const url = new URL(href, window.location.origin);
+      const url = new URL(href, window.location.href);
       if (url.origin !== window.location.origin) return;
 
       const prefetch = () => {

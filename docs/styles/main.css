@@ -808,6 +808,15 @@ nav {
   text-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
 }
 
+.leaflet-marker-icon {
+  transition: none !important;
+}
+
+.leaflet-marker-icon:is(:hover, :focus) {
+  transform: none !important;
+  filter: none !important;
+}
+
 .map-marker--mini {
   font-size: clamp(1.6rem, 2.5vw, 1.9rem);
 }
