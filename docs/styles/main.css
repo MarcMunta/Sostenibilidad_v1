@@ -555,6 +555,33 @@ body.has-mobile-nav-open {
   filter: brightness(0.65);
 }
 
+.hero-media__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(15, 23, 42, 0.82)),
+    var(--hero-fallback-image, #0f172a);
+  background-size: cover;
+  background-position: center;
+  color: #f8fafc;
+  transition: opacity 0.3s ease;
+}
+
+.hero-media__fallback[hidden] {
+  opacity: 0;
+}
+
+.hero-media__fallback-content {
+  max-width: min(520px, 80vw);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
