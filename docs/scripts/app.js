@@ -13,6 +13,18 @@
     overlay: null,
     navLinks: [],
     initialScrollBehavior: null,
+    mapObserver: null,
+  };
+
+  const assetState = {
+    leafletPromise: null,
+    leafletStylePromise: null,
+    countUpPromise: null,
+    scrollPromise: null,
+    mapDependenciesPromise: null,
+    leafletStyleLoaded: Boolean(
+      document.querySelector('link[data-leaflet-style], link[href*="leaflet.css"]'),
+    ),
   };
 
   function addCleanup(fn) {
@@ -30,6 +42,319 @@
         console.error('Error en limpieza de página', error);
       }
     }
+  }
+
+  function ensureLeafletStyle() {
+    if (assetState.leafletStyleLoaded) {
+      return Promise.resolve();
+    }
+
+    const existing = document.querySelector('link[data-leaflet-style], link[href*="leaflet.css"]');
+    if (existing) {
+      assetState.leafletStyleLoaded = true;
+      return Promise.resolve(existing);
+    }
+
+    if (assetState.leafletStylePromise) {
+      return assetState.leafletStylePromise;
+    }
+
+    assetState.leafletStylePromise = new Promise((resolve, reject) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      link.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+      link.crossOrigin = 'anonymous';
+      link.dataset.leafletStyle = 'true';
+      link.addEventListener('load', () => {
+        assetState.leafletStyleLoaded = true;
+        assetState.leafletStylePromise = null;
+        resolve(link);
+      });
+      link.addEventListener('error', () => {
+        assetState.leafletStylePromise = null;
+        reject(new Error('No se pudo cargar la hoja de estilos de Leaflet.'));
+      });
+      document.head.appendChild(link);
+    });
+
+    return assetState.leafletStylePromise;
+  }
+
+  function ensureLeafletScript() {
+    if (typeof window.L !== 'undefined' && typeof window.L.map === 'function') {
+      return Promise.resolve(window.L);
+    }
+
+    if (assetState.leafletPromise) {
+      return assetState.leafletPromise;
+    }
+
+    const existing = document.querySelector('script[data-leaflet-script]');
+    if (existing) {
+      assetState.leafletPromise = new Promise((resolve, reject) => {
+        existing.addEventListener('load', () => {
+          assetState.leafletPromise = null;
+          resolve(window.L);
+        }, { once: true });
+        existing.addEventListener('error', () => {
+          assetState.leafletPromise = null;
+          reject(new Error('No se pudo cargar Leaflet.'));
+        }, { once: true });
+      });
+      return assetState.leafletPromise;
+    }
+
+    assetState.leafletPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+      script.crossOrigin = 'anonymous';
+      script.async = true;
+      script.dataset.leafletScript = 'true';
+      script.addEventListener('load', () => {
+        assetState.leafletPromise = null;
+        resolve(window.L);
+      });
+      script.addEventListener('error', () => {
+        assetState.leafletPromise = null;
+        reject(new Error('No se pudo cargar Leaflet.'));
+      });
+      document.head.appendChild(script);
+    });
+
+    return assetState.leafletPromise;
+  }
+
+  function ensureCountUp() {
+    if (typeof window.CountUp !== 'undefined') {
+      return Promise.resolve(window.CountUp);
+    }
+
+    if (assetState.countUpPromise) {
+      return assetState.countUpPromise;
+    }
+
+    const existing = document.querySelector('script[data-countup-script]');
+    if (existing) {
+      assetState.countUpPromise = new Promise((resolve, reject) => {
+        existing.addEventListener('load', () => {
+          assetState.countUpPromise = null;
+          resolve(window.CountUp);
+        }, { once: true });
+        existing.addEventListener('error', () => {
+          assetState.countUpPromise = null;
+          reject(new Error('No se pudo cargar CountUp.'));
+        }, { once: true });
+      });
+      return assetState.countUpPromise;
+    }
+
+    assetState.countUpPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js';
+      script.crossOrigin = 'anonymous';
+      script.referrerPolicy = 'no-referrer';
+      script.async = true;
+      script.dataset.countupScript = 'true';
+      script.addEventListener('load', () => {
+        assetState.countUpPromise = null;
+        resolve(window.CountUp);
+      });
+      script.addEventListener('error', () => {
+        assetState.countUpPromise = null;
+        reject(new Error('No se pudo cargar CountUp.'));
+      });
+      document.head.appendChild(script);
+    });
+
+    return assetState.countUpPromise;
+  }
+
+  function ensureScrollModules() {
+    if (typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined') {
+      return Promise.resolve({ gsap: window.gsap, ScrollTrigger: window.ScrollTrigger });
+    }
+
+    if (assetState.scrollPromise) {
+      return assetState.scrollPromise;
+    }
+
+    const loadGsap = () =>
+      new Promise((resolve, reject) => {
+        const existing = document.querySelector('script[data-gsap-script], script[src*="/gsap.min.js"]');
+        if (existing && !existing.dataset.gsapBound) {
+          existing.dataset.gsapBound = 'true';
+          existing.addEventListener('load', () => resolve(window.gsap), { once: true });
+          existing.addEventListener('error', () => reject(new Error('No se pudo cargar GSAP.')), {
+            once: true,
+          });
+          return;
+        }
+
+        if (typeof window.gsap !== 'undefined') {
+          resolve(window.gsap);
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+        script.async = true;
+        script.dataset.gsapScript = 'true';
+        script.addEventListener('load', () => resolve(window.gsap));
+        script.addEventListener('error', () => reject(new Error('No se pudo cargar GSAP.')));
+        document.head.appendChild(script);
+      });
+
+    const loadScrollTrigger = () =>
+      new Promise((resolve, reject) => {
+        const existing = document.querySelector('script[data-scrolltrigger-script], script[src*="ScrollTrigger.min.js"]');
+        if (existing && !existing.dataset.scrollTriggerBound) {
+          existing.dataset.scrollTriggerBound = 'true';
+          existing.addEventListener('load', () => resolve(window.ScrollTrigger), {
+            once: true,
+          });
+          existing.addEventListener('error', () => reject(new Error('No se pudo cargar ScrollTrigger.')), {
+            once: true,
+          });
+          return;
+        }
+
+        if (typeof window.ScrollTrigger !== 'undefined') {
+          resolve(window.ScrollTrigger);
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js';
+        script.async = true;
+        script.dataset.scrolltriggerScript = 'true';
+        script.addEventListener('load', () => resolve(window.ScrollTrigger));
+        script.addEventListener('error', () => reject(new Error('No se pudo cargar ScrollTrigger.')));
+        document.head.appendChild(script);
+      });
+
+    assetState.scrollPromise = loadGsap()
+      .catch((error) => {
+        console.warn(error.message);
+        return window.gsap;
+      })
+      .then((gsapInstance) => {
+        if (typeof window.ScrollTrigger !== 'undefined') {
+          return { gsap: gsapInstance || window.gsap, ScrollTrigger: window.ScrollTrigger };
+        }
+        return loadScrollTrigger()
+          .catch((error) => {
+            console.warn(error.message);
+            return window.ScrollTrigger;
+          })
+          .then((scrollTrigger) => ({ gsap: gsapInstance || window.gsap, ScrollTrigger: scrollTrigger }));
+      })
+      .finally(() => {
+        assetState.scrollPromise = null;
+      });
+
+    return assetState.scrollPromise;
+  }
+
+  function loadMapDependencies() {
+    if (assetState.mapDependenciesPromise) {
+      return assetState.mapDependenciesPromise;
+    }
+
+    const optionalDependencies = [
+      ensureCountUp().catch((error) => {
+        console.warn(error.message);
+        return null;
+      }),
+      ensureScrollModules().catch((error) => {
+        console.warn(error.message);
+        return null;
+      }),
+    ];
+
+    assetState.mapDependenciesPromise = Promise.all([
+      ensureLeafletStyle().catch((error) => {
+        console.warn(error.message);
+        return null;
+      }),
+      ensureLeafletScript(),
+      Promise.all(optionalDependencies),
+    ])
+      .then(([, leaflet]) => {
+        if (window.MapManager) {
+          if (typeof window.MapManager.hydrateWithLeaflet === 'function') {
+            window.MapManager.hydrateWithLeaflet(leaflet);
+          } else if (typeof window.MapManager.initPage === 'function') {
+            window.MapManager.initPage({ retosData: state.retosData });
+          }
+        }
+        return leaflet;
+      })
+      .catch((error) => {
+        console.error('No se pudieron cargar las dependencias del mapa', error);
+        throw error;
+      })
+      .finally(() => {
+        assetState.mapDependenciesPromise = null;
+      });
+
+    return assetState.mapDependenciesPromise;
+  }
+
+  function disconnectMapObserver() {
+    if (state.mapObserver && typeof state.mapObserver.disconnect === 'function') {
+      state.mapObserver.disconnect();
+    }
+    state.mapObserver = null;
+  }
+
+  function observeMapsForDependencies() {
+    disconnectMapObserver();
+
+    const targets = Array.from(
+      document.querySelectorAll('#mapa-global, [id^="map-"]'),
+    ).filter((element) => element instanceof Element);
+
+    if (!targets.length) {
+      return;
+    }
+
+    let triggered = false;
+    const triggerLoad = () => {
+      if (triggered) return;
+      triggered = true;
+      loadMapDependencies().catch(() => {});
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      triggerLoad();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+          triggerLoad();
+          obs.disconnect();
+          state.mapObserver = null;
+        });
+      },
+      { rootMargin: '200px 0px', threshold: 0.15 },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    state.mapObserver = observer;
+
+    addCleanup(() => {
+      observer.disconnect();
+      if (state.mapObserver === observer) {
+        state.mapObserver = null;
+      }
+    });
   }
 
   function setupLenis() {
@@ -700,6 +1025,8 @@
       window.MapManager.initPage({ retosData: state.retosData });
     }
 
+    observeMapsForDependencies();
+
     if (window.feather && typeof window.feather.replace === 'function') {
       window.feather.replace();
     }
@@ -713,6 +1040,8 @@
       state.sectionObserver.disconnect();
       state.sectionObserver = null;
     }
+
+    disconnectMapObserver();
 
     runCleanups();
     if (window.AnimationManager && typeof window.AnimationManager.destroy === 'function') {
