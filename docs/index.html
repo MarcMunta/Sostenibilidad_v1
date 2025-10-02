@@ -137,6 +137,7 @@
       <section id="hero" aria-labelledby="hero-heading">
         <div class="hero-media" aria-hidden="true">
           <video
+            id="hero-video"
             src="assets/video/hero.mp4"
             autoplay
             muted
@@ -144,6 +145,13 @@
             playsinline
             poster="https://source.unsplash.com/collection/190727/1280x720?earth"
           ></video>
+          <div class="hero-media__fallback" data-hero-motion-fallback hidden>
+            <div class="hero-media__fallback-content">
+              <p>
+                La reproducción automática del vídeo se ha desactivado según tu preferencia de movimiento reducido.
+              </p>
+            </div>
+          </div>
         </div>
         <div class="hero-overlay" aria-hidden="true"></div>
         <div class="parallax-layer" data-depth="0.2" aria-hidden="true">
