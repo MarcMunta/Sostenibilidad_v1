@@ -102,16 +102,34 @@
           </svg>
           <span>Sostenibilidad 2030</span>
         </a>
-        <ul class="nav-links">
-          <li><a href="#hero">Inicio</a></li>
-          <li><a href="#retos">Los 4 retos</a></li>
-          <li><a href="#mapa-global">Mapa global</a></li>
-          <li><a href="#footer">Recursos</a></li>
-        </ul>
-        <button class="theme-toggle" type="button" aria-pressed="false">
-          <span aria-hidden="true" data-feather="moon"></span>
-          <span>Modo</span>
-        </button>
+        <div class="nav-panel" id="menu-principal" data-open="true">
+          <ul class="nav-links">
+            <li><a href="#hero">Inicio</a></li>
+            <li><a href="#retos">Los 4 retos</a></li>
+            <li><a href="#mapa-global">Mapa global</a></li>
+            <li><a href="#footer">Recursos</a></li>
+          </ul>
+        </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-pressed="false">
+            <span aria-hidden="true" data-feather="moon"></span>
+            <span>Modo</span>
+          </button>
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-controls="menu-principal"
+            aria-expanded="false"
+            aria-label="Abrir menú"
+          >
+            <span class="nav-toggle__icon" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+            <span class="nav-toggle__label">Menú</span>
+          </button>
+        </div>
       </nav>
     </header>
 
