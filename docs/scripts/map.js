@@ -10,10 +10,27 @@
     detailsPanel: null,
     activeRetoId: null,
     cleanups: [],
+    leaflet: null,
   };
 
+  function getLeaflet() {
+    if (state.leaflet && typeof state.leaflet.map === 'function') {
+      return state.leaflet;
+    }
+    if (typeof window.L !== 'undefined' && typeof window.L.map === 'function') {
+      return window.L;
+    }
+    return null;
+  }
+
   function isLeafletReady() {
-    return typeof window.L !== 'undefined' && typeof window.L.map === 'function';
+    return !!getLeaflet();
+  }
+
+  function clearContainer(container) {
+    if (container) {
+      container.innerHTML = '';
+    }
   }
 
   function registerCleanup(fn) {
@@ -87,7 +104,12 @@
 
   function createIcon(reto) {
     const markerEmoji = reto.emoji || '📍';
-    return window.L.divIcon({
+    const L = getLeaflet();
+    if (!L) {
+      return null;
+    }
+
+    return L.divIcon({
       className: 'map-marker',
       html: `<span aria-hidden="true">${markerEmoji}</span>`,
       iconSize: [48, 48],
@@ -127,7 +149,10 @@
       map.setView([20, 0], 2);
       return;
     }
-    const bounds = window.L.latLngBounds(retos.map((reto) => reto.coordenadas));
+    const L = getLeaflet();
+    if (!L) return;
+
+    const bounds = L.latLngBounds(retos.map((reto) => reto.coordenadas));
     map.fitBounds(bounds, { padding: [40, 40] });
   }
 
@@ -138,13 +163,17 @@
     prepareDetailsPanel();
     ensureLazyImages(container.parentElement);
 
-    if (!isLeafletReady()) {
+    const L = getLeaflet();
+
+    if (!L) {
       container.innerHTML = '<p class="map-fallback">No se pudo cargar el mapa interactivo. Consulta la lista de retos para obtener detalles.</p>';
       updateDetails(null);
       return;
     }
 
-    const map = window.L.map(container, {
+    clearContainer(container);
+
+    const map = L.map(container, {
       zoomControl: true,
       preferCanvas: false,
       worldCopyJump: false,
@@ -152,13 +181,13 @@
       minZoom: 2,
     });
 
-    const worldBounds = window.L.latLngBounds(
-      window.L.latLng(-90, -180),
-      window.L.latLng(90, 180)
+    const worldBounds = L.latLngBounds(
+      L.latLng(-90, -180),
+      L.latLng(90, 180)
     );
     map.setMaxBounds(worldBounds);
 
-    window.L
+    L
       .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contribuidores',
@@ -171,8 +200,11 @@
 
     state.retos.forEach((reto) => {
       if (!Array.isArray(reto.coordenadas) || reto.coordenadas.length !== 2) return;
-      const marker = window.L.marker(reto.coordenadas, {
-        icon: createIcon(reto),
+      const icon = createIcon(reto);
+      if (!icon) return;
+
+      const marker = L.marker(reto.coordenadas, {
+        icon,
         keyboard: true,
         title: reto.nombre,
       });
@@ -218,13 +250,17 @@
     const miniMapContainers = document.querySelectorAll('[id^="map-"][data-map-lat]');
     if (!miniMapContainers.length) return;
 
+    const L = getLeaflet();
+
     miniMapContainers.forEach((container) => {
       ensureLazyImages(container.parentElement);
 
-      if (!isLeafletReady()) {
+      if (!L) {
         container.innerHTML = '<p class="map-fallback">Activa la vista de mapa para explorar la ubicación.</p>';
         return;
       }
+
+      clearContainer(container);
 
       const lat = Number.parseFloat(container.dataset.mapLat);
       const lng = Number.parseFloat(container.dataset.mapLng);
@@ -235,7 +271,7 @@
 
       const safeZoom = Number.isFinite(zoom) ? zoom : 10;
 
-      const map = window.L.map(container, {
+      const map = L.map(container, {
         zoomControl: true,
         scrollWheelZoom: false,
         dragging: true,
@@ -244,15 +280,15 @@
         minZoom: Math.max(3, Math.min(safeZoom, 12) - 2),
       });
 
-      const worldBounds = window.L.latLngBounds(
-        window.L.latLng(-90, -180),
-        window.L.latLng(90, 180)
+      const worldBounds = L.latLngBounds(
+        L.latLng(-90, -180),
+        L.latLng(90, 180)
       );
       map.setMaxBounds(worldBounds);
 
       map.setView([lat, lng], safeZoom);
 
-      window.L
+      L
         .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '&copy; OpenStreetMap contribuidores',
@@ -261,8 +297,8 @@
         })
         .addTo(map);
 
-      const marker = window.L.marker([lat, lng], {
-        icon: window.L.divIcon({
+      const marker = L.marker([lat, lng], {
+        icon: L.divIcon({
           className: 'map-marker map-marker--mini',
           html: `<span aria-hidden="true">${container.dataset.markerEmoji || '📍'}</span>`,
           iconSize: [36, 36],
@@ -351,13 +387,29 @@
     }
 
     destroy();
+    initGlobalMap();
+    initMiniMaps();
+  }
+
+  function hydrateWithLeaflet(leafletInstance) {
+    if (leafletInstance && typeof leafletInstance.map === 'function') {
+      state.leaflet = leafletInstance;
+    } else if (!state.leaflet) {
+      const globalLeaflet = typeof window.L !== 'undefined' ? window.L : null;
+      if (globalLeaflet && typeof globalLeaflet.map === 'function') {
+        state.leaflet = globalLeaflet;
+      }
+    }
 
     if (!isLeafletReady()) {
-      initGlobalMap();
-      initMiniMaps();
       return;
     }
 
+    if (state.maps.size) {
+      return;
+    }
+
+    destroy();
     initGlobalMap();
     initMiniMaps();
   }
@@ -367,5 +419,6 @@
     destroy,
     setRetosData,
     focusOnReto,
+    hydrateWithLeaflet,
   };
 })();
