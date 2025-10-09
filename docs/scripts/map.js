@@ -244,6 +244,10 @@
     state.globalMap = map;
     state.maps.set(container, map);
     updateDetails(null);
+
+    if (state.activeRetoId) {
+      focusOnReto(state.activeRetoId);
+    }
   }
 
   function initMiniMaps() {
@@ -363,13 +367,17 @@
 
   function focusOnReto(retoId) {
     if (!retoId) return;
-    const marker = state.globalMarkers.get(retoId);
     const reto = state.retos.find((item) => item.id === retoId);
-    if (!marker || !reto) return;
+    if (!reto) return;
 
     state.activeRetoId = retoId;
     updateDetails(reto);
     window.dispatchEvent(new CustomEvent('map:focus', { detail: retoId }));
+
+    const marker = state.globalMarkers.get(retoId);
+    if (!marker) {
+      return;
+    }
 
     if (state.globalMap && marker.getLatLng) {
       const duration = prefersReducedMotion.matches ? 0 : 0.85;
