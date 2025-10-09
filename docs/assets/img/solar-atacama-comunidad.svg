@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" role="img" aria-labelledby="title desc">
+  <title id="title">Cooperativa solar comunitaria de Atacama</title>
+  <desc id="desc">Ilustración de una comunidad organizada frente a paneles solares y una red eléctrica.</desc>
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#facc15" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <rect width="760" height="520" fill="#fefce8" />
+  <path d="M0 360 L760 360 L760 520 L0 520 Z" fill="url(#ground)" />
+  <g stroke="#fbbf24" stroke-width="6" fill="none">
+    <path d="M80 180 Q200 100 320 180 T560 180" />
+    <circle cx="80" cy="180" r="10" fill="#facc15" />
+    <circle cx="320" cy="180" r="10" fill="#facc15" />
+    <circle cx="560" cy="180" r="10" fill="#facc15" />
+  </g>
+  <g transform="translate(140,260) skewX(-8)">
+    <rect width="180" height="90" rx="8" fill="url(#panel)" />
+    <line x1="0" y1="30" x2="180" y2="30" stroke="#60a5fa" stroke-width="2" />
+    <line x1="0" y1="60" x2="180" y2="60" stroke="#60a5fa" stroke-width="2" />
+  </g>
+  <g transform="translate(360,290) skewX(-8)">
+    <rect width="200" height="90" rx="8" fill="url(#panel)" />
+    <line x1="0" y1="30" x2="200" y2="30" stroke="#60a5fa" stroke-width="2" />
+    <line x1="0" y1="60" x2="200" y2="60" stroke="#60a5fa" stroke-width="2" />
+  </g>
+  <g fill="#0f172a">
+    <circle cx="180" cy="340" r="30" />
+    <path d="M160 380 Q180 400 200 380" fill="#0f172a" />
+    <circle cx="320" cy="340" r="30" />
+    <path d="M300 380 Q320 400 340 380" fill="#0f172a" />
+    <circle cx="460" cy="340" r="30" />
+    <path d="M440 380 Q460 400 480 380" fill="#0f172a" />
+  </g>
+  <g fill="#fb923c">
+    <circle cx="220" cy="350" r="18" />
+    <path d="M205 380 Q220 398 235 380" fill="#fb923c" />
+    <circle cx="360" cy="350" r="18" />
+    <path d="M345 380 Q360 398 375 380" fill="#fb923c" />
+    <circle cx="500" cy="350" r="18" />
+    <path d="M485 380 Q500 398 515 380" fill="#fb923c" />
+  </g>
+</svg>

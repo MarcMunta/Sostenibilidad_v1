@@ -838,6 +838,11 @@
       mapButton.textContent = 'Ver en el mapa';
 
       const focusReto = () => {
+        const dependenciesPromise = loadMapDependencies();
+        if (dependenciesPromise && typeof dependenciesPromise.catch === 'function') {
+          dependenciesPromise.catch(() => {});
+        }
+
         if (window.MapManager && typeof window.MapManager.focusOnReto === 'function') {
           window.MapManager.focusOnReto(reto.id);
         } else {

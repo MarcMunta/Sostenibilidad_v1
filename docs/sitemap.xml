@@ -7,6 +7,9 @@
     <loc>retos/reto-clima.html</loc>
   </url>
   <url>
+    <loc>retos/reto-energia.html</loc>
+  </url>
+  <url>
     <loc>retos/reto-agua.html</loc>
   </url>
   <url>
@@ -14,5 +17,8 @@
   </url>
   <url>
     <loc>retos/reto-aire.html</loc>
+  </url>
+  <url>
+    <loc>retos/reto-ciudades.html</loc>
   </url>
 </urlset>
