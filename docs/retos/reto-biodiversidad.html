@@ -41,8 +41,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.js" defer></script>
   </head>
   <body class="reto-page" data-reto="biodiversidad" data-barba="wrapper">
-    <a class="reto-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <header class="reto-header">
+    <div
+      data-barba="container"
+      data-barba-namespace="reto-biodiversidad"
+      data-body-class="reto-page"
+      data-reto="biodiversidad"
+    >
+      <a class="reto-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+      <header class="reto-header">
       <div class="reto-header__top">
         <a class="reto-header__brand" href="../index.html">
           <svg
@@ -78,7 +84,7 @@
       </nav>
     </header>
 
-    <main id="contenido-principal" class="reto-main" data-barba="container" data-barba-namespace="reto-biodiversidad">
+      <main id="contenido-principal" class="reto-main">
       <section class="reto-hero" data-animate="section">
         <div class="reto-hero__content" data-animate-item>
           <span class="reto-hero__badge">Reto global 4</span>
@@ -375,7 +381,8 @@
           <a class="reto-button" href="reto-ciudades.html">Ir al reto de ciudades circulares</a>
         </div>
       </section>
-    </main>
+      </main>
+    </div>
 
     <footer>
       <p>Recurso educativo abierto del programa “Sostenibilidad 2030”.</p>
