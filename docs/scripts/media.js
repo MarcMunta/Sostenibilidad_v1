@@ -64,32 +64,58 @@ docReady(() => {
   /**
    * Hero video autoplay with reduced-motion safety
    */
-  const heroVideo = document.getElementById('bgVideo');
-  const heroContainer = document.querySelector('.hero-video');
+  const heroVideo = document.getElementById('hero-video') || document.getElementById('bgVideo');
+  let heroContainer = null;
   let motionFallback = null;
+
+  if (heroVideo && typeof heroVideo.closest === 'function') {
+    heroContainer = heroVideo.closest('.hero-media, .hero-video');
+  }
+
+  if (!heroContainer) {
+    heroContainer = document.querySelector('.hero-media') || document.querySelector('.hero-video');
+  }
+
   if (heroContainer) {
-    motionFallback = heroContainer.querySelector('[data-motion-disabled]');
+    motionFallback =
+      heroContainer.querySelector('[data-hero-motion-fallback]') ||
+      heroContainer.querySelector('[data-motion-disabled]');
+  }
+
+  if (!motionFallback) {
+    motionFallback =
+      document.querySelector('[data-hero-motion-fallback]') ||
+      document.querySelector('[data-motion-disabled]');
   }
 
   const syncHeroVideo = () => {
     if (!heroVideo) return;
     if (prefersReducedMotion.matches) {
-      heroVideo.pause();
+      if (typeof heroVideo.pause === 'function') {
+        heroVideo.pause();
+      }
+      heroVideo.autoplay = false;
       heroVideo.removeAttribute('autoplay');
       heroVideo.setAttribute('aria-hidden', 'true');
       heroVideo.setAttribute('tabindex', '-1');
       if (motionFallback) {
         motionFallback.hidden = false;
+        motionFallback.setAttribute('aria-hidden', 'false');
       }
     } else {
       heroVideo.setAttribute('aria-hidden', 'false');
       heroVideo.removeAttribute('tabindex');
+      heroVideo.autoplay = true;
+      heroVideo.setAttribute('autoplay', '');
       if (motionFallback) {
         motionFallback.hidden = true;
+        motionFallback.setAttribute('aria-hidden', 'true');
       }
-      heroVideo.play().catch(() => {
-        /* Autoplay might be blocked; ignore silently */
-      });
+      if (typeof heroVideo.play === 'function') {
+        heroVideo.play().catch(() => {
+          /* Autoplay might be blocked; ignore silently */
+        });
+      }
     }
   };
 
