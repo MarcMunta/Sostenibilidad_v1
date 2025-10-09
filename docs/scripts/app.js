@@ -44,6 +44,31 @@
     }
   }
 
+  function syncBodyAttributes(container) {
+    if (!container) {
+      return;
+    }
+
+    const body = document.body;
+    const targetClassName = container.dataset.bodyClass || '';
+
+    body.className = targetClassName;
+
+    Object.keys(body.dataset).forEach((key) => {
+      if (key !== 'barba') {
+        delete body.dataset[key];
+      }
+    });
+
+    Object.keys(container.dataset).forEach((key) => {
+      if (key === 'bodyClass') {
+        return;
+      }
+
+      body.dataset[key] = container.dataset[key];
+    });
+  }
+
   function ensureLeafletStyle() {
     if (assetState.leafletStyleLoaded) {
       return Promise.resolve();
@@ -1108,6 +1133,7 @@
 
   function initBarba() {
     if (!window.barba) {
+      syncBodyAttributes(document.querySelector('[data-barba="container"]'));
       initPage();
       focusMain(true);
       return;
@@ -1119,12 +1145,16 @@
       teardownPage();
     });
 
-    window.barba.hooks.afterEnter(() => {
+    window.barba.hooks.afterEnter((data) => {
+      const nextContainer = data && data.next && data.next.container;
+      syncBodyAttributes(nextContainer);
       initPage();
       focusMain();
     });
 
-    window.barba.hooks.once(() => {
+    window.barba.hooks.once((data) => {
+      const nextContainer = data && data.next && data.next.container;
+      syncBodyAttributes(nextContainer);
       initPage();
       focusMain(true);
     });

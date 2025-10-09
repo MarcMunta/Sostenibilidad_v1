@@ -59,9 +59,10 @@
     <script src="https://unpkg.com/feather-icons" defer></script>
   </head>
   <body data-barba="wrapper">
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+    <div data-barba="container" data-barba-namespace="home" data-body-class="">
+      <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
 
-    <header>
+      <header>
       <nav aria-label="Menú principal">
         <a class="brand" href="#hero">
           <span class="sr-only">Ir al inicio</span>
@@ -114,9 +115,9 @@
           </button>
         </div>
       </nav>
-    </header>
+      </header>
 
-    <main id="contenido-principal" data-barba="container" data-barba-namespace="home">
+      <main id="contenido-principal">
       <section id="hero" aria-labelledby="hero-heading">
         <div class="hero-media" aria-hidden="true">
           <video
@@ -427,7 +428,8 @@
           }
         </script>
       </section>
-    </main>
+      </main>
+    </div>
 
     <footer id="footer">
       <div>
