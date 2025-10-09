@@ -1141,6 +1141,29 @@
 
     const overlay = createOverlay();
 
+    function scrollToHash(hash) {
+      if (!hash || hash === '#') {
+        return;
+      }
+
+      let target;
+      try {
+        target = document.querySelector(hash);
+      } catch (error) {
+        return;
+      }
+
+      if (!target) {
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        target.scrollIntoView({
+          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+        });
+      });
+    }
+
     window.barba.hooks.beforeLeave(() => {
       teardownPage();
     });
@@ -1149,6 +1172,8 @@
       const nextContainer = data && data.next && data.next.container;
       syncBodyAttributes(nextContainer);
       initPage();
+      const hash = (data && data.next && data.next.url && data.next.url.hash) || window.location.hash;
+      scrollToHash(hash);
       focusMain();
     });
 
@@ -1156,6 +1181,8 @@
       const nextContainer = data && data.next && data.next.container;
       syncBodyAttributes(nextContainer);
       initPage();
+      const hash = (data && data.next && data.next.url && data.next.url.hash) || window.location.hash;
+      scrollToHash(hash);
       focusMain(true);
     });
 
