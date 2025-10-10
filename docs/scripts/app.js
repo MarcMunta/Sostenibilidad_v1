@@ -16,6 +16,10 @@
     mapObserver: null,
   };
 
+  const CONFIG = {
+    disableBarba: true,
+  };
+
   const assetState = {
     leafletPromise: null,
     leafletStylePromise: null,
@@ -1207,7 +1211,8 @@
   }
 
   function initBarba() {
-    if (!window.barba) {
+    const shouldUseBarba = Boolean(window.barba && !CONFIG.disableBarba);
+    if (!shouldUseBarba) {
       syncBodyAttributes(document.querySelector('[data-barba="container"]'));
       initPage();
       focusMain(true);
@@ -1239,13 +1244,71 @@
       });
     }
 
-    window.barba.hooks.beforeLeave(() => {
+    const cleanupStaleContainers = (activeContainer) => {
+      if (!(activeContainer instanceof HTMLElement)) {
+        return;
+      }
+
+      const containers = Array.from(document.querySelectorAll('[data-barba="container"]'));
+      containers.forEach((element) => {
+        if (element === activeContainer || element.tagName === 'BODY') {
+          return;
+        }
+
+        if (activeContainer.contains(element)) {
+          return;
+        }
+
+        if (element.parentNode) {
+          element.parentNode.removeChild(element);
+        }
+      });
+    };
+
+    const markContainerInactive = (container) => {
+      if (!(container instanceof HTMLElement)) {
+        return;
+      }
+
+      const targets = [container, ...container.querySelectorAll('[data-barba="container"]')].filter(
+        (element) => element instanceof HTMLElement,
+      );
+
+      targets.forEach((element) => {
+        element.setAttribute('aria-hidden', 'true');
+        element.setAttribute('inert', '');
+        element.style.pointerEvents = 'none';
+      });
+    };
+
+    const restoreContainer = (container) => {
+      if (!(container instanceof HTMLElement)) {
+        return;
+      }
+
+      const targets = [container, ...container.querySelectorAll('[data-barba="container"]')].filter(
+        (element) => element instanceof HTMLElement,
+      );
+
+      targets.forEach((element) => {
+        element.removeAttribute('aria-hidden');
+        element.removeAttribute('inert');
+        element.style.removeProperty('pointer-events');
+      });
+    };
+
+    window.barba.hooks.beforeLeave((data) => {
       teardownPage();
+      if (data && data.current) {
+        markContainerInactive(data.current.container);
+      }
     });
 
     window.barba.hooks.afterEnter((data) => {
       const nextContainer = data && data.next && data.next.container;
       syncBodyAttributes(nextContainer);
+      restoreContainer(nextContainer);
+      cleanupStaleContainers(nextContainer);
       initPage();
       const hash = (data && data.next && data.next.url && data.next.url.hash) || window.location.hash;
       scrollToHash(hash);
@@ -1255,6 +1318,8 @@
     window.barba.hooks.once((data) => {
       const nextContainer = data && data.next && data.next.container;
       syncBodyAttributes(nextContainer);
+      restoreContainer(nextContainer);
+      cleanupStaleContainers(nextContainer);
       initPage();
       const hash = (data && data.next && data.next.url && data.next.url.hash) || window.location.hash;
       scrollToHash(hash);
