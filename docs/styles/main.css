@@ -1375,6 +1375,12 @@ footer small {
     z-index: var(--z-overlay);
   }
 
+  html.no-js .nav-panel {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .nav-panel[data-open="true"] {
     transform: translateX(0);
     opacity: 1;
@@ -1393,6 +1399,10 @@ footer small {
 
   .nav-toggle {
     display: inline-flex;
+  }
+
+  html.no-js .nav-toggle {
+    display: none;
   }
 
   .hero-content {

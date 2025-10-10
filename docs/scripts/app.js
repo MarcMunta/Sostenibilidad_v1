@@ -1,4 +1,10 @@
 (function () {
+  const docElement = document.documentElement;
+  if (docElement.classList.contains('no-js')) {
+    docElement.classList.remove('no-js');
+  }
+  docElement.classList.add('js-enabled');
+
   const THEME_STORAGE_KEY = 'sostenibilidad-theme';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
