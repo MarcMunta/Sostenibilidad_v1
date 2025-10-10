@@ -767,6 +767,16 @@ html[data-theme="dark"] .reto-page {
   box-shadow: var(--reto-shadow-soft);
 }
 
+.reto-section [id^="map-"] {
+  display: block;
+  width: 100%;
+  min-height: clamp(280px, 45vw, 420px);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--reto-border) 80%, transparent);
+  box-shadow: var(--reto-shadow-soft);
+}
+
 .reto-cta {
   display: flex;
   flex-wrap: wrap;
