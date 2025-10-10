@@ -13,7 +13,7 @@
   --reto-text: #0f172a;
   --reto-muted: rgba(15, 23, 42, 0.68);
   --reto-border: rgba(148, 163, 184, 0.28);
-  --reto-hero-image: url("https://images.unsplash.com/photo-1501612780327-45045538702b?auto=format&fit=crop&w=1800&q=80");
+  --reto-hero-image: url("../assets/img/solar-atacama-hero.svg");
   --reto-gradient: radial-gradient(circle at top left, rgba(56, 189, 248, 0.3), transparent 55%),
     radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.26), transparent 60%),
     linear-gradient(180deg, rgba(241, 245, 249, 0.82), rgba(14, 165, 233, 0.15));
@@ -58,7 +58,7 @@ html[data-theme="dark"] .reto-page {
   --reto-accent: #22d3ee;
   --reto-accent-strong: #0284c7;
   --reto-accent-soft: rgba(14, 165, 233, 0.18);
-  --reto-hero-image: url("https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=2000&q=80");
+  --reto-hero-image: url("../assets/img/agua-hero.svg");
   --reto-gradient: radial-gradient(circle at 10% 10%, rgba(45, 212, 191, 0.22), transparent 52%),
     radial-gradient(circle at 80% 12%, rgba(59, 130, 246, 0.18), transparent 60%),
     linear-gradient(180deg, rgba(236, 254, 255, 0.95), rgba(14, 165, 233, 0.18));
@@ -68,7 +68,7 @@ html[data-theme="dark"] .reto-page {
   --reto-accent: #f97316;
   --reto-accent-strong: #ea580c;
   --reto-accent-soft: rgba(249, 115, 22, 0.16);
-  --reto-hero-image: url("https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=2000&q=80");
+  --reto-hero-image: url("../assets/img/aire-hero.svg");
   --reto-gradient: radial-gradient(circle at 12% 10%, rgba(249, 168, 37, 0.22), transparent 48%),
     radial-gradient(circle at 85% 15%, rgba(249, 115, 22, 0.18), transparent 55%),
     linear-gradient(180deg, rgba(255, 248, 237, 0.92), rgba(249, 115, 22, 0.12));
@@ -78,7 +78,7 @@ html[data-theme="dark"] .reto-page {
   --reto-accent: #4ade80;
   --reto-accent-strong: #16a34a;
   --reto-accent-soft: rgba(74, 222, 128, 0.18);
-  --reto-hero-image: url("https://images.unsplash.com/photo-1529312266912-b33cfce2de10?auto=format&fit=crop&w=2000&q=80");
+  --reto-hero-image: url("../assets/img/biodiversidad-hero.svg");
   --reto-gradient: radial-gradient(circle at 20% 15%, rgba(52, 211, 153, 0.28), transparent 54%),
     radial-gradient(circle at 80% 20%, rgba(134, 239, 172, 0.22), transparent 58%),
     linear-gradient(180deg, rgba(240, 253, 244, 0.94), rgba(34, 197, 94, 0.12));
@@ -88,7 +88,7 @@ html[data-theme="dark"] .reto-page {
   --reto-accent: #8b5cf6;
   --reto-accent-strong: #7c3aed;
   --reto-accent-soft: rgba(139, 92, 246, 0.16);
-  --reto-hero-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2000&q=80");
+  --reto-hero-image: url("../assets/img/ciudades-hero.svg");
   --reto-gradient: radial-gradient(circle at 18% 18%, rgba(129, 140, 248, 0.24), transparent 52%),
     radial-gradient(circle at 82% 20%, rgba(139, 92, 246, 0.2), transparent 58%),
     linear-gradient(180deg, rgba(237, 233, 254, 0.94), rgba(139, 92, 246, 0.12));
@@ -98,7 +98,7 @@ html[data-theme="dark"] .reto-page {
   --reto-accent: #60a5fa;
   --reto-accent-strong: #2563eb;
   --reto-accent-soft: rgba(96, 165, 250, 0.16);
-  --reto-hero-image: url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2000&q=80");
+  --reto-hero-image: url("../assets/img/clima-hero.svg");
   --reto-gradient: radial-gradient(circle at 15% 15%, rgba(96, 165, 250, 0.28), transparent 50%),
     radial-gradient(circle at 80% 18%, rgba(37, 99, 235, 0.24), transparent 60%),
     linear-gradient(180deg, rgba(240, 249, 255, 0.95), rgba(37, 99, 235, 0.12));

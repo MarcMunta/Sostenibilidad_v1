@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+  <defs>
+    <linearGradient id="agua-solar-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#9f1239" />
+    </linearGradient>
+    <linearGradient id="agua-solar-panels" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect width="480" height="360" rx="32" fill="url(#agua-solar-bg)" />
+  <g opacity="0.7" transform="translate(40,180)">
+    <path d="M0 60 L120 0 L200 30 L80 90 Z" fill="url(#agua-solar-panels)" />
+    <path d="M120 50 L240 -10 L320 20 L200 80 Z" fill="url(#agua-solar-panels)" transform="translate(20,10)" />
+    <path d="M240 40 L360 -20 L440 10 L320 70 Z" fill="url(#agua-solar-panels)" transform="translate(30,20)" />
+  </g>
+  <circle cx="360" cy="120" r="48" fill="#fde68a" opacity="0.85" />
+  <circle cx="360" cy="120" r="30" fill="#f97316" opacity="0.7" />
+  <path d="M40 300 Q160 280 240 300 T440 300" fill="none" stroke="#fef3c7" stroke-width="6" stroke-linecap="round" opacity="0.35" />
+</svg>

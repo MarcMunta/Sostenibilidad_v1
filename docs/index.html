@@ -20,7 +20,7 @@
       property="og:description"
       content="Descubre iniciativas inspiradoras y datos clave sobre los desafíos ambientales que marcan nuestro futuro."
     />
-    <meta property="og:image" content="https://ejemplo.org/assets/og-image.jpg" />
+    <meta property="og:image" content="https://ejemplo.org/sostenibilidad/assets/img/hero-aurora.svg" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -30,7 +30,7 @@
       name="twitter:description"
       content="Recorre los retos de sostenibilidad con experiencias inmersivas, mapas interactivos y datos en vivo."
     />
-    <meta name="twitter:image" content="https://ejemplo.org/assets/twitter-card.jpg" />
+    <meta name="twitter:image" content="https://ejemplo.org/sostenibilidad/assets/img/hero-aurora.svg" />
 
     <link rel="canonical" href="https://ejemplo.org/sostenibilidad" />
 
@@ -119,23 +119,27 @@
 
       <main id="contenido-principal">
       <section id="hero" aria-labelledby="hero-heading">
-        <div class="hero-media" aria-hidden="true">
-          <video
-            id="hero-video"
-            src="assets/video/hero.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-            poster="https://source.unsplash.com/collection/190727/1280x720?earth"
-          ></video>
-          <div class="hero-media__fallback" data-hero-motion-fallback hidden>
-            <div class="hero-media__fallback-content">
-              <p>
-                La reproducción automática del vídeo se ha desactivado según tu preferencia de movimiento reducido.
-              </p>
-            </div>
-          </div>
+        <div
+          class="hero-media"
+          aria-hidden="true"
+          data-hero-container
+          style="--hero-fallback-image: url('assets/img/hero-aurora.svg');"
+        >
+          <picture class="hero-media__image" data-lqip data-lqip-src="assets/img/hero-aurora.svg">
+            <source type="image/svg+xml" srcset="assets/img/hero-aurora.svg" />
+            <img
+              class="hero-media__poster"
+              src="assets/img/hero-aurora.svg"
+              width="1600"
+              height="1000"
+              alt="Ilustración de un valle sostenible iluminado por auroras"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              data-hero-img
+              data-fallback-src="assets/img/hero-aurora.svg"
+            />
+          </picture>
         </div>
         <div class="hero-overlay" aria-hidden="true"></div>
         <div class="parallax-layer" data-depth="0.2" aria-hidden="true">
@@ -399,8 +403,8 @@
                 "nombre": "Gestión del agua",
                 "resumen": "Desalinización con energías renovables para comunidades costeras en Marruecos.",
                 "coordenadas": [31.7917, -7.0926],
-                "imagen": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=960&q=80",
-                "imagenAlt": "Tuberías y depósitos de una planta de desalinización junto al mar",
+                "imagen": "assets/img/agua-hero.svg",
+                "imagenAlt": "Ilustración minimalista de una planta desalinizadora junto al mar",
                 "ruta": "retos/reto-agua.html",
                 "emoji": "💧"
               },
@@ -409,8 +413,8 @@
                 "nombre": "Regenerar la biodiversidad",
                 "resumen": "Corredores biológicos amazónicos que conectan 12 reservas indígenas.",
                 "coordenadas": [-3.4653, -62.2159],
-                "imagen": "https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=960&q=80",
-                "imagenAlt": "Selva amazónica cubierta de niebla al amanecer",
+                "imagen": "assets/img/biodiversidad-hero.svg",
+                "imagenAlt": "Ilustración de corredores biológicos y selva amazónica",
                 "ruta": "retos/reto-biodiversidad.html",
                 "emoji": "🌱"
               },
@@ -419,8 +423,8 @@
                 "nombre": "Ciudades circulares",
                 "resumen": "Red de movilidad eléctrica y reciclaje modular en Helsinki.",
                 "coordenadas": [60.1699, 24.9384],
-                "imagen": "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=960&q=80",
-                "imagenAlt": "Tranvía eléctrico circulando por una avenida moderna de Helsinki",
+                "imagen": "assets/img/ciudades-hero.svg",
+                "imagenAlt": "Ilustración de tranvías eléctricos y rascacielos circulares",
                 "ruta": "retos/reto-ciudades.html",
                 "emoji": "🏙️"
               }

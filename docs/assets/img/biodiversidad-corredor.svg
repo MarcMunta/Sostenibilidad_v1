@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="bio-corredor-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#14532d" />
+    </linearGradient>
+    <linearGradient id="bio-path" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#fb923c" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#bio-corredor-bg)" />
+  <path d="M40 380 Q200 300 320 340 T600 300 L600 480 L40 480 Z" fill="#166534" opacity="0.8" />
+  <path d="M100 420 Q220 320 320 340 Q420 360 520 300 L560 320 L520 480 L120 480 Z" fill="url(#bio-path)" opacity="0.8" />
+  <g fill="#bbf7d0" opacity="0.75">
+    <circle cx="160" cy="220" r="50" />
+    <circle cx="260" cy="200" r="56" />
+    <circle cx="360" cy="220" r="54" />
+    <circle cx="460" cy="200" r="52" />
+  </g>
+  <g fill="#0f172a" opacity="0.4">
+    <rect x="180" y="300" width="36" height="120" rx="14" />
+    <rect x="280" y="290" width="40" height="130" rx="16" />
+    <rect x="380" y="300" width="36" height="120" rx="14" />
+  </g>
+  <path d="M120 140 C160 100 220 100 260 140 S360 180 400 140 S480 100 520 140" fill="none" stroke="#fef9c3" stroke-width="8" opacity="0.35" stroke-linecap="round" />
+</svg>

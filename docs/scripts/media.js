@@ -1,3 +1,10 @@
+const assetsBase = new URL('../assets/', import.meta.url);
+const assetUrl = (path) => new URL(path, assetsBase).href;
+
+if (typeof window !== 'undefined' && typeof window.assetUrl !== 'function') {
+  window.assetUrl = assetUrl;
+}
+
 const docReady = (fn) => {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', fn, { once: true });
@@ -7,187 +14,142 @@ const docReady = (fn) => {
 };
 
 docReady(() => {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const noop = () => {};
+  const prefersReducedMotion =
+    typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)')
+      : {
+          matches: false,
+          addEventListener: noop,
+          removeEventListener: noop,
+          addListener: noop,
+          removeListener: noop,
+        };
+  const supportsIntersectionObserver = 'IntersectionObserver' in window;
 
   /**
    * Lazy load responsive <picture> elements with blur-up effect
    */
-  const pictureObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const container = entry.target;
-      const picture = container.matches('picture') ? container : container.querySelector('picture');
-      if (!picture) return;
-      container.dataset.state = 'loading';
-      const img = picture.querySelector('img');
-      const onLoad = () => {
-        container.classList.add('is-loaded');
-        container.dataset.state = 'loaded';
-      };
+  const hydratePicture = (container) => {
+    const picture = container.matches('picture') ? container : container.querySelector('picture');
+    if (!picture) return;
+    container.dataset.state = 'loading';
+    const img = picture.querySelector('img');
+    const onLoad = () => {
+      container.classList.add('is-loaded');
+      container.dataset.state = 'loaded';
+    };
 
-      if (img) {
-        if (img.dataset.src) {
-          img.src = img.dataset.src;
-        }
-        if (img.dataset.srcset) {
-          img.srcset = img.dataset.srcset;
-        }
-        const lqipSrc = container.dataset.lqipSrc || picture.dataset.lqipSrc;
-        if (lqipSrc) {
-          container.style.setProperty('--lqip', `url("${lqipSrc}") center/cover no-repeat`);
-        }
-        if (!img.complete) {
-          img.addEventListener('load', onLoad, { once: true });
-          img.addEventListener('error', () => {
+    if (img) {
+      if (img.dataset.src) {
+        img.src = img.dataset.src;
+      }
+      if (img.dataset.srcset) {
+        img.srcset = img.dataset.srcset;
+      }
+      const lqipSrc = container.dataset.lqipSrc || picture.dataset.lqipSrc;
+      if (lqipSrc) {
+        container.style.setProperty('--lqip', `url("${lqipSrc}") center/cover no-repeat`);
+      }
+      if (!img.complete) {
+        img.addEventListener('load', onLoad, { once: true });
+        img.addEventListener(
+          'error',
+          () => {
             container.dataset.state = 'error';
             container.classList.add('is-loaded');
-          }, { once: true });
-        } else {
-          onLoad();
-        }
-      }
-
-      picture.querySelectorAll('source').forEach((source) => {
-        if (source.dataset.srcset) {
-          source.srcset = source.dataset.srcset;
-        }
-      });
-
-      observer.unobserve(container);
-    });
-  }, { rootMargin: '200px 0px' });
-
-  document
-    .querySelectorAll('.media-img[data-lqip], picture[data-lqip]')
-    .forEach((pic) => pictureObserver.observe(pic));
-
-  /**
-   * Hero video autoplay with reduced-motion safety
-   */
-  const heroVideo = document.getElementById('hero-video') || document.getElementById('bgVideo');
-  let heroContainer = null;
-  let motionFallback = null;
-
-  if (heroVideo && typeof heroVideo.closest === 'function') {
-    heroContainer = heroVideo.closest('.hero-media, .hero-video');
-  }
-
-  if (!heroContainer) {
-    heroContainer = document.querySelector('.hero-media') || document.querySelector('.hero-video');
-  }
-
-  if (heroContainer) {
-    motionFallback =
-      heroContainer.querySelector('[data-hero-motion-fallback]') ||
-      heroContainer.querySelector('[data-motion-disabled]');
-  }
-
-  if (!motionFallback) {
-    motionFallback =
-      document.querySelector('[data-hero-motion-fallback]') ||
-      document.querySelector('[data-motion-disabled]');
-  }
-
-  const syncHeroVideo = () => {
-    if (!heroVideo) return;
-    if (prefersReducedMotion.matches) {
-      if (typeof heroVideo.pause === 'function') {
-        heroVideo.pause();
-      }
-      heroVideo.autoplay = false;
-      heroVideo.removeAttribute('autoplay');
-      heroVideo.setAttribute('aria-hidden', 'true');
-      heroVideo.setAttribute('tabindex', '-1');
-      if (motionFallback) {
-        motionFallback.hidden = false;
-        motionFallback.setAttribute('aria-hidden', 'false');
-      }
-    } else {
-      heroVideo.setAttribute('aria-hidden', 'false');
-      heroVideo.removeAttribute('tabindex');
-      heroVideo.autoplay = true;
-      heroVideo.setAttribute('autoplay', '');
-      if (motionFallback) {
-        motionFallback.hidden = true;
-        motionFallback.setAttribute('aria-hidden', 'true');
-      }
-      if (typeof heroVideo.play === 'function') {
-        heroVideo.play().catch(() => {
-          /* Autoplay might be blocked; ignore silently */
-        });
+          },
+          { once: true },
+        );
+      } else {
+        onLoad();
       }
     }
+
+    picture.querySelectorAll('source').forEach((source) => {
+      if (source.dataset.srcset) {
+        source.srcset = source.dataset.srcset;
+      }
+    });
   };
 
-  if (typeof prefersReducedMotion.addEventListener === 'function') {
-    prefersReducedMotion.addEventListener('change', syncHeroVideo);
-  } else if (typeof prefersReducedMotion.addListener === 'function') {
-    prefersReducedMotion.addListener(syncHeroVideo);
+  const lazyTargets = document.querySelectorAll('.media-img[data-lqip], picture[data-lqip]');
+
+  if (supportsIntersectionObserver && lazyTargets.length) {
+    const pictureObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const container = entry.target;
+        hydratePicture(container);
+        observer.unobserve(container);
+      });
+    }, { rootMargin: '200px 0px' });
+
+    lazyTargets.forEach((target) => pictureObserver.observe(target));
+  } else if (lazyTargets.length) {
+    lazyTargets.forEach((target) => hydratePicture(target));
   }
-  syncHeroVideo();
 
   /**
-   * Ambient audio toggle
+   * Hero imagery progressive loading
    */
-  const ambientAudio = document.getElementById('amb');
-  const audioButton = document.getElementById('btnAudio');
-  const muteAll = document.getElementById('btnMuteAll');
+  const heroImages = document.querySelectorAll('[data-hero-img]');
+  heroImages.forEach((img) => {
+    const container =
+      img.closest('[data-hero-container]') ||
+      img.closest('.hero-media, .hero-visual, figure');
 
-  if (ambientAudio) {
-    ambientAudio.volume = 0.25;
-    ambientAudio.preload = 'none';
+    if (!container) return;
 
-    const establishAudioGraph = (() => {
-      let initialized = false;
-      let context; let source; let filter;
-      return () => {
-        if (initialized || !window.AudioContext) return () => {};
-        context = new AudioContext();
-        source = context.createMediaElementSource(ambientAudio);
-        filter = context.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 3800;
-        source.connect(filter).connect(context.destination);
-        initialized = true;
-        return () => context.resume();
-      };
-    })();
-
-    const toggleAudio = async () => {
-      if (ambientAudio.paused) {
-        const resume = establishAudioGraph();
-        if (typeof resume === 'function') {
-          await resume();
-        }
+    const updateFallbackVisual = (src) => {
+      if (!src) return;
+      let finalSrc = src;
+      if (typeof src === 'string' && !src.startsWith('data:')) {
         try {
-          await ambientAudio.play();
-          if (audioButton) {
-            audioButton.setAttribute('aria-pressed', 'true');
-          }
+          finalSrc = new URL(src, window.location.href).href;
         } catch (error) {
-          console.warn('Audio playback was prevented by the browser', error);
+          finalSrc = src;
         }
-      } else {
-        ambientAudio.pause();
-        if (audioButton) {
-          audioButton.setAttribute('aria-pressed', 'false');
-        }
+      }
+      if (container.style && typeof container.style.setProperty === 'function') {
+        container.style.setProperty('--hero-fallback-image', `url("${finalSrc}")`);
       }
     };
 
-    if (audioButton) {
-      audioButton.addEventListener('click', toggleAudio);
+    const markLoaded = () => {
+      container.classList.add('is-loaded');
+    };
+
+    const fallbackSource = img.dataset.fallbackSrc || img.currentSrc || img.src;
+    updateFallbackVisual(fallbackSource);
+
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
+    } else {
+      img.addEventListener('load', markLoaded, { once: true });
     }
 
-    if (muteAll) {
-      muteAll.addEventListener('click', () => {
-        const isMuted = ambientAudio.muted;
-        ambientAudio.muted = !isMuted;
-        muteAll.setAttribute('aria-pressed', String(!isMuted));
-        muteAll.textContent = ambientAudio.muted ? '🔇' : '🔊';
-      });
-    }
-  }
+    img.addEventListener(
+      'error',
+      () => {
+        container.classList.remove('is-loaded');
+      },
+      { once: true },
+    );
+  });
+
+  /**
+   * Mensajes dinámicos para notas visuales
+   */
+  const visualNotes = document.querySelectorAll('.notas-visuales');
+  visualNotes.forEach((note) => {
+    const emphasize = note.querySelector('h2');
+    if (!emphasize || emphasize.innerHTML.includes('notas-visuales__keyword')) return;
+    emphasize.innerHTML = emphasize.textContent.replace(
+      /(visual)/i,
+      '<span class="notas-visuales__keyword">$1</span>',
+    );
+  });
 
   /**
    * Lottie animations on intersection with reduced motion fallback
@@ -322,73 +284,86 @@ docReady(() => {
    */
   const mapSection = document.querySelector('[data-map]');
   if (mapSection) {
-    const mapObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
+    const activateMap = async () => {
+      if (mapSection.dataset.state === 'loaded' || mapSection.dataset.state === 'loading') {
+        return;
+      }
 
-        const activateMap = async () => {
-          try {
-            const leafletCssHref = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-            if (!document.querySelector(`link[href="${leafletCssHref}"]`)) {
-              const cssLink = document.createElement('link');
-              cssLink.rel = 'stylesheet';
-              cssLink.href = leafletCssHref;
-              cssLink.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
-              cssLink.crossOrigin = 'anonymous';
-              document.head.append(cssLink);
-            }
+      mapSection.dataset.state = 'loading';
 
-            const leafletModule = await import('https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js');
-            const L = leafletModule && leafletModule.default ? leafletModule.default : leafletModule;
+      try {
+        const leafletCssHref = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        if (!document.querySelector(`link[href="${leafletCssHref}"]`)) {
+          const cssLink = document.createElement('link');
+          cssLink.rel = 'stylesheet';
+          cssLink.href = leafletCssHref;
+          cssLink.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+          cssLink.crossOrigin = 'anonymous';
+          document.head.append(cssLink);
+        }
 
-            const map = L.map('map', {
-              zoomControl: true,
-              scrollWheelZoom: false,
-            }).setView([40.4168, -3.7038], 5);
+        const leafletModule = await import('https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js');
+        const L = leafletModule && leafletModule.default ? leafletModule.default : leafletModule;
 
-            const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-              maxZoom: 18,
-            });
-            tiles.addTo(map);
+        const map = L.map('map', {
+          zoomControl: true,
+          scrollWheelZoom: false,
+        }).setView([40.4168, -3.7038], 5);
 
-            const leafIcon = L.icon({
-              iconUrl: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><title>Ubicación ecológica</title><circle cx="30" cy="30" r="26" fill="#1f824b"/><path d="M30 12c6.6 0 12 5.4 12 12 0 8.4-12 24-12 24S18 32.4 18 24c0-6.6 5.4-12 12-12z" fill="#c9f4da"/></svg>`),
-              iconSize: [60, 60],
-              iconAnchor: [30, 55],
-              popupAnchor: [0, -50],
-            });
+        const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 18,
+        });
+        tiles.addTo(map);
 
-            const popupHtml = `
-              <article class="map-card">
-                <picture class="media-img" data-lqip>
-                  <source type="image/avif" data-srcset="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=480&q=45 480w, https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=50 800w">
-                  <source type="image/webp" data-srcset="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=480&q=50 480w, https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=55 800w">
-                  <img data-src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=640&q=60" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=24&q=10" alt="Sendero natural en reserva ecológica" width="640" height="426" loading="lazy" decoding="async">
-                </picture>
-                <p style="margin:0.75rem 0 0;font-size:0.85rem;">Sustituir por imágenes con licencia válida y atribución.</p>
-              </article>`;
+        const leafIcon = L.icon({
+          iconUrl:
+            'data:image/svg+xml;charset=UTF-8,' +
+            encodeURIComponent(
+              `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><title>Ubicación ecológica</title><circle cx="30" cy="30" r="26" fill="#1f824b"/><path d="M30 12c6.6 0 12 5.4 12 12 0 8.4-12 24-12 24S18 32.4 18 24c0-6.6 5.4-12 12-12z" fill="#c9f4da"/></svg>`,
+            ),
+          iconSize: [60, 60],
+          iconAnchor: [30, 55],
+          popupAnchor: [0, -50],
+        });
 
-            L.marker([43.2627, -2.9253], { icon: leafIcon })
-              .addTo(map)
-              .bindPopup(popupHtml);
+        const popupImage = assetUrl('img/aire-hero.svg');
+        const popupHtml = `
+          <article class="map-card">
+            <picture class="media-img" data-lqip data-lqip-src="${popupImage}" style="--lqip:url('${popupImage}')">
+              <source type="image/svg+xml" data-srcset="${popupImage}">
+              <img data-src="${popupImage}" src="${popupImage}" alt="Ilustración de paisaje resiliente" width="640" height="426" loading="lazy" decoding="async">
+            </picture>
+            <p style="margin:0.75rem 0 0;font-size:0.85rem;">Visual educativo generado localmente para la demo del mapa.</p>
+          </article>`;
 
-            mapSection.dataset.state = 'loaded';
-            const placeholder = mapSection.querySelector('.map-placeholder');
-            if (placeholder && typeof placeholder.remove === 'function') {
-              placeholder.remove();
-            }
-          } catch (error) {
-            console.error('Error loading map resources', error);
-            mapSection.dataset.state = 'error';
-          }
-        };
+        L.marker([43.2627, -2.9253], { icon: leafIcon })
+          .addTo(map)
+          .bindPopup(popupHtml);
 
-        activateMap();
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: '200px 0px' });
+        mapSection.dataset.state = 'loaded';
+        const placeholder = mapSection.querySelector('.map-placeholder');
+        if (placeholder && typeof placeholder.remove === 'function') {
+          placeholder.remove();
+        }
+      } catch (error) {
+        console.error('Error loading map resources', error);
+        mapSection.dataset.state = 'error';
+      }
+    };
 
-    mapObserver.observe(mapSection);
+    if (supportsIntersectionObserver) {
+      const mapObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          activateMap();
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '200px 0px' });
+
+      mapObserver.observe(mapSection);
+    } else {
+      activateMap();
+    }
   }
 });

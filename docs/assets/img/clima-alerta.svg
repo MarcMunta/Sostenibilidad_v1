@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="clima-alert-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+    <linearGradient id="clima-alert-device" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#clima-alert-bg)" />
+  <g transform="translate(120,120)">
+    <rect x="0" y="40" width="200" height="220" rx="32" fill="#0f172a" opacity="0.6" />
+    <rect x="28" y="74" width="144" height="150" rx="24" fill="#3b82f6" />
+    <rect x="60" y="30" width="80" height="-36" rx="18" fill="#bfdbfe" />
+    <path d="M60 140 L100 80 L140 140 Z" fill="#f8fafc" />
+    <circle cx="100" cy="190" r="18" fill="#f8fafc" />
+  </g>
+  <g transform="translate(360,120)">
+    <rect x="0" y="60" width="200" height="160" rx="28" fill="#0f172a" opacity="0.6" />
+    <rect x="28" y="92" width="144" height="100" rx="24" fill="url(#clima-alert-device)" />
+    <path d="M60 150 L100 90 L140 150 Z" fill="#0f172a" opacity="0.6" />
+    <circle cx="100" cy="150" r="22" fill="#f8fafc" />
+  </g>
+  <path d="M60 360 Q200 320 320 340 T580 330" fill="none" stroke="#fef3c7" stroke-width="10" stroke-linecap="round" opacity="0.35" />
+</svg>
