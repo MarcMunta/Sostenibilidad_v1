@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+  <defs>
+    <linearGradient id="bio-eco-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#166534" />
+    </linearGradient>
+  </defs>
+  <rect width="480" height="360" rx="32" fill="url(#bio-eco-bg)" />
+  <g fill="#22c55e" opacity="0.8">
+    <rect x="90" y="200" width="60" height="120" rx="16" />
+    <rect x="180" y="170" width="70" height="150" rx="18" />
+    <rect x="280" y="190" width="70" height="130" rx="18" />
+    <rect x="370" y="160" width="60" height="160" rx="18" />
+  </g>
+  <g fill="#bbf7d0" opacity="0.75">
+    <circle cx="120" cy="160" r="28" />
+    <circle cx="215" cy="130" r="32" />
+    <circle cx="315" cy="150" r="30" />
+    <circle cx="400" cy="120" r="34" />
+  </g>
+  <path d="M80 240 Q160 180 240 220 T400 200" fill="none" stroke="#fef9c3" stroke-width="6" stroke-linecap="round" opacity="0.4" />
+  <path d="M90 250 L150 230 L180 240 L220 210 L260 220 L300 200 L340 210 L380 190" fill="none" stroke="#fde68a" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+</svg>

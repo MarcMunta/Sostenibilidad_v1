@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="poster-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#155e75" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+    <linearGradient id="poster-wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#poster-bg)" />
+  <path d="M0 520 Q320 440 640 500 T1280 460 L1600 500 L1600 900 L0 900 Z" fill="url(#poster-wave)" opacity="0.7" />
+  <path d="M0 640 Q280 580 560 620 T1120 600 L1600 640" fill="none" stroke="#fef3c7" stroke-width="28" stroke-linecap="round" opacity="0.4" />
+  <g fill="#f8fafc" opacity="0.85">
+    <circle cx="360" cy="260" r="110" />
+    <circle cx="640" cy="220" r="130" />
+    <circle cx="940" cy="260" r="120" />
+    <circle cx="1230" cy="220" r="110" />
+  </g>
+</svg>

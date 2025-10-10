@@ -477,66 +477,6 @@
     toggle.dataset.themeBound = 'true';
   }
 
-  function initHeroMotionPreference() {
-    const heroVideo = document.getElementById('hero-video');
-    if (!heroVideo) return;
-
-    const fallback = document.querySelector('[data-hero-motion-fallback]');
-    const shouldAutoplay = heroVideo.hasAttribute('autoplay');
-
-    if (fallback) {
-      const poster = heroVideo.getAttribute('poster');
-      if (poster) {
-        fallback.style.setProperty('--hero-fallback-image', `url("${poster}")`);
-      }
-    }
-
-    const applyPreference = (reduceMotion) => {
-      if (reduceMotion) {
-        heroVideo.pause();
-        heroVideo.removeAttribute('autoplay');
-        if (fallback) {
-          fallback.hidden = false;
-        }
-      } else {
-        if (fallback) {
-          fallback.hidden = true;
-        }
-        if (shouldAutoplay) {
-          heroVideo.setAttribute('autoplay', '');
-        }
-        const playPromise = heroVideo.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {});
-        }
-      }
-    };
-
-    const handleMotionChange = (event) => {
-      const matches = event && typeof event.matches === 'boolean' ? event.matches : prefersReducedMotion.matches;
-      applyPreference(matches);
-    };
-
-    applyPreference(prefersReducedMotion.matches);
-
-    if (typeof prefersReducedMotion.addEventListener === 'function') {
-      prefersReducedMotion.addEventListener('change', handleMotionChange);
-      addCleanup(() => prefersReducedMotion.removeEventListener('change', handleMotionChange));
-    } else if (typeof prefersReducedMotion.addListener === 'function') {
-      prefersReducedMotion.addListener(handleMotionChange);
-      addCleanup(() => prefersReducedMotion.removeListener(handleMotionChange));
-    }
-
-    addCleanup(() => {
-      if (fallback) {
-        fallback.hidden = true;
-      }
-      if (shouldAutoplay && !prefersReducedMotion.matches) {
-        heroVideo.setAttribute('autoplay', '');
-      }
-    });
-  }
-
   function focusMain(initial = false) {
     const main = document.querySelector('#contenido-principal');
     if (!main) return;
@@ -1040,7 +980,6 @@
   function initPage() {
     ensureLazyImages();
     initThemeToggle();
-    initHeroMotionPreference();
     initMobileMenu();
     initNavHighlight();
     initPrefetch();

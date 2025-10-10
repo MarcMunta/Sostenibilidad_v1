@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+  <defs>
+    <linearGradient id="clima-res-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+  </defs>
+  <rect width="480" height="360" rx="32" fill="url(#clima-res-bg)" />
+  <g fill="#f8fafc" opacity="0.85">
+    <rect x="90" y="200" width="80" height="120" rx="26" />
+    <rect x="200" y="170" width="90" height="150" rx="30" />
+    <rect x="320" y="210" width="70" height="110" rx="24" />
+  </g>
+  <g fill="#22d3ee" opacity="0.75">
+    <circle cx="130" cy="150" r="32" />
+    <circle cx="245" cy="120" r="38" />
+    <circle cx="355" cy="150" r="32" />
+  </g>
+  <path d="M80 240 Q160 180 240 220 T400 200" fill="none" stroke="#fef3c7" stroke-width="8" stroke-linecap="round" opacity="0.4" />
+  <path d="M80 260 L150 230 L210 250 L270 210 L340 230 L400 210" fill="none" stroke="#fde68a" stroke-width="10" stroke-linecap="round" opacity="0.6" />
+</svg>

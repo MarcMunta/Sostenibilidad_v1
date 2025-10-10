@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+  <defs>
+    <linearGradient id="aire-mov-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+  </defs>
+  <rect width="480" height="360" rx="32" fill="url(#aire-mov-bg)" />
+  <path d="M40 240 Q160 200 240 220 T440 210 L440 340 L40 340 Z" fill="#0ea5e9" opacity="0.75" />
+  <g fill="#f8fafc" opacity="0.9">
+    <rect x="120" y="160" width="80" height="90" rx="24" />
+    <rect x="220" y="140" width="90" height="110" rx="28" />
+    <rect x="330" y="180" width="60" height="70" rx="20" />
+  </g>
+  <g fill="#0f172a" opacity="0.4">
+    <rect x="144" y="188" width="36" height="20" rx="8" />
+    <rect x="144" y="220" width="36" height="20" rx="8" />
+    <rect x="244" y="172" width="44" height="24" rx="10" />
+    <rect x="244" y="210" width="44" height="24" rx="10" />
+    <rect x="348" y="206" width="24" height="22" rx="8" />
+  </g>
+  <path d="M80 120 Q160 60 240 100 T400 90" fill="none" stroke="#f8fafc" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+  <circle cx="320" cy="80" r="24" fill="#facc15" opacity="0.85" />
+  <circle cx="320" cy="80" r="16" fill="#f59e0b" opacity="0.8" />
+</svg>

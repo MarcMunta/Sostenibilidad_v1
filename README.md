@@ -19,7 +19,7 @@ Este repositorio contiene una demo educativa de los cuatro grandes retos de sost
 - `docs/retos/`: casos detallados para cada reto (HTML estático).
 - `docs/styles/main.css`: hoja de estilos global con tokens y componentes.
 - `docs/scripts/animations.js`, `docs/scripts/map.js`, `docs/scripts/app.js`: lógica de animaciones, mapa interactivo y comportamiento general.
-- `docs/assets/`: recursos multimedia (animaciones Lottie, imágenes de referencia, vídeo, audio y favicon en SVG).
+- `docs/assets/`: recursos multimedia (animaciones Lottie, fotografías de referencia, audio y favicon en SVG).
 - `docs/404.html`: página de error personalizada enlazando con la portada.
 - `docs/robots.txt` y `docs/sitemap.xml`: archivos mínimos para SEO adaptados a rutas relativas.
 
@@ -42,7 +42,8 @@ El listado mostrado en el mapa y en el panel lateral se alimenta del bloque `<sc
 ## Actualizar textos e imágenes
 
 - **Textos principales:** edítalos directamente en `index.html` o en los archivos específicos dentro de `retos/`. Los elementos con la clase `split-ready` están segmentados palabra a palabra para animaciones; mantén las etiquetas `<span>` al editar títulos.
-- **Imágenes del mapa y las tarjetas:** utiliza URLs de Unsplash Source para evitar almacenar binarios. Puedes documentar la URL correspondiente en `assets/img/*.json` y reutilizarla en el JSON de retos o en cualquier `<img>`. Ejemplo: `https://source.unsplash.com/collection/2290905/800x600?solar`.
+- **Imágenes del mapa y las tarjetas:** las ilustraciones SVG se alojan en `docs/assets/img/`. Reutiliza los archivos existentes o añade nuevos recursos vectoriales para mantener la ligereza del proyecto.
+- **Hero principal:** la ilustración vectorial animada se encuentra en `docs/assets/img/hero-aurora.svg` y fue diseñada exclusivamente para el proyecto con licencia CC0. Puedes editar sus gradientes y figuras directamente en un editor SVG.
 - **Iconos animados:** cada figura con clase `.reto-icon` contiene un SVG decorativo marcado con `aria-hidden="true"`. Mantén esa estructura para evitar que los lectores de pantalla anuncien información redundante.
 
 ## Modificar variables CSS
@@ -75,7 +76,7 @@ Los iconos de los retos ahora son SVG inline animados mediante CSS (`styles/icon
 ## Optimizar rendimiento y accesibilidad
 
 - **Imágenes:** fija dimensiones en la URL de Unsplash Source (`/800x600`) y añade `loading="lazy"` y `decoding="async"` (ya configurado en los scripts). Considera sustituirlas por versiones optimizadas alojadas en un CDN propio si el proyecto pasa a producción.
-- **Vídeos:** proporciona un `poster` ligero y comprime el archivo (`ffmpeg -crf 23 -preset slow`).
+- **Vídeos (opcional):** si necesitas reintroducir clips, proporciona un `poster` ligero y comprime el archivo (`ffmpeg -crf 23 -preset slow`).
 - **Preloads y preconnect:** la cabecera ya incluye `preconnect` para Google Fonts. Añade `<link rel="preload">` para recursos críticos si incorporas nuevas fuentes o scripts pesados.
 - **JavaScript:** evita bloquear el hilo principal. Usa `defer` o `type="module"` y elimina dependencias no utilizadas.
 - **Accesibilidad:** mantén textos alternativos, roles descriptivos y foco visible. Revisa contrastes con herramientas como Lighthouse o axe.
