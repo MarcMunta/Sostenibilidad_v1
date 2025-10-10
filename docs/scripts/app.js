@@ -795,7 +795,15 @@
           container.style.backgroundImage = cssValue;
         }
 
-        if (img && !img.dataset.fallbackSrc) {
+        if (container.hasAttribute && container.hasAttribute('data-hero-fallback')) {
+          container.dataset.heroFallback = absolute;
+        }
+
+        if (picture && picture.dataset && picture.hasAttribute && picture.hasAttribute('data-hero-fallback')) {
+          picture.dataset.heroFallback = absolute;
+        }
+
+        if (img) {
           img.dataset.fallbackSrc = absolute;
         }
       };
@@ -818,6 +826,14 @@
       if (lqipSource) {
         const absoluteLqip = toAbsoluteUrl(lqipSource);
         container.style.setProperty('--lqip', `url("${absoluteLqip}") center/cover no-repeat`);
+
+        if (container.hasAttribute && container.hasAttribute('data-lqip-src')) {
+          container.dataset.lqipSrc = absoluteLqip;
+        }
+
+        if (picture && picture.dataset && picture.hasAttribute && picture.hasAttribute('data-lqip-src')) {
+          picture.dataset.lqipSrc = absoluteLqip;
+        }
       }
 
       const markLoaded = () => {
