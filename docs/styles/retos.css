@@ -148,8 +148,21 @@ html[data-theme="dark"] .reto-page {
   top: 0;
   z-index: 900;
   backdrop-filter: blur(18px);
+  background-color: rgba(255, 255, 255, 0.92);
   background: color-mix(in srgb, var(--reto-surface) 80%, transparent);
   box-shadow: var(--reto-nav-shadow);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  isolation: isolate;
+}
+
+.reto-header__top,
+.reto-breadcrumb,
+.reto-main,
+.reto-page footer {
+  width: 100%;
+  max-width: var(--reto-max-width);
+  margin-inline: auto;
+  box-sizing: border-box;
 }
 
 .reto-header__top {
@@ -192,6 +205,7 @@ html[data-theme="dark"] .reto-page {
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.85rem;
+  background-color: rgba(255, 255, 255, 0.55);
   background: color-mix(in srgb, var(--reto-accent-soft) 70%, transparent);
   border-radius: var(--reto-radius-pill);
   font-weight: 600;
@@ -203,6 +217,7 @@ html[data-theme="dark"] .reto-page {
 .reto-breadcrumb {
   margin: 0;
   padding: 0.75rem clamp(1.75rem, 5vw, 4.25rem);
+  background-color: rgba(255, 255, 255, 0.58);
   background: color-mix(in srgb, var(--reto-accent-soft) 65%, transparent);
   list-style: none;
   display: flex;
@@ -326,7 +341,9 @@ html[data-theme="dark"] .reto-page {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+  border: 1px solid rgba(148, 163, 184, 0.25);
   border: 1px solid color-mix(in srgb, var(--reto-accent-strong) 55%, transparent);
+  background-color: rgba(255, 255, 255, 0.94);
   background: color-mix(in srgb, var(--reto-accent-soft) 65%, rgba(255, 255, 255, 0.85));
   color: var(--reto-accent-strong);
   transition: transform 220ms ease, box-shadow 220ms ease;
@@ -339,6 +356,7 @@ html[data-theme="dark"] .reto-page {
 }
 
 .reto-button.is-primary {
+  background-color: var(--reto-accent-strong);
   background: linear-gradient(140deg, var(--reto-accent-strong), color-mix(in srgb, var(--reto-accent) 70%, white));
   color: #fff;
   box-shadow: 0 20px 38px -22px rgba(15, 118, 110, 0.55);
@@ -355,6 +373,7 @@ html[data-theme="dark"] .reto-page {
   position: relative;
   padding: 1.1rem;
   border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
   background: color-mix(in srgb, var(--reto-surface) 85%, transparent);
   border: 1px solid var(--reto-border);
   box-shadow: 0 20px 40px -28px rgba(15, 23, 42, 0.38);
@@ -396,7 +415,6 @@ html[data-theme="dark"] .reto-page {
 .reto-hero__visual {
   position: relative;
   width: min(420px, 90%);
-  aspect-ratio: 4 / 5;
   border-radius: var(--reto-radius-lg);
   overflow: hidden;
   box-shadow: var(--reto-shadow-strong);
@@ -406,8 +424,7 @@ html[data-theme="dark"] .reto-page {
 
 .reto-hero__visual img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
@@ -464,7 +481,9 @@ html[data-theme="dark"] .reto-page {
   position: relative;
   padding: clamp(2.5rem, 4vw, 3.5rem);
   border-radius: var(--reto-radius-lg);
+  background-color: rgba(255, 255, 255, 0.95);
   background: color-mix(in srgb, var(--reto-surface) 92%, transparent);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   border: 1px solid color-mix(in srgb, var(--reto-border) 80%, transparent);
   box-shadow: var(--reto-shadow-soft);
   overflow: hidden;
