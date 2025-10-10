@@ -260,7 +260,8 @@
       ensureLazyImages(container.parentElement);
 
       if (!L) {
-        container.innerHTML = '<p class="map-fallback">Activa la vista de mapa para explorar la ubicación.</p>';
+        container.innerHTML =
+          '<p class="map-fallback">Cargando mapa interactivo…</p>';
         return;
       }
 

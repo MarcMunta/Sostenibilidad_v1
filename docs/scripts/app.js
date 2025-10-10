@@ -1132,6 +1132,8 @@
     parseAndRenderRetos();
     initHoverCards();
 
+    const mapTargets = document.querySelectorAll('#mapa-global, [id^="map-"]');
+
     if (window.AnimationManager && typeof window.AnimationManager.init === 'function') {
       window.AnimationManager.init();
     }
@@ -1141,6 +1143,13 @@
     }
 
     observeMapsForDependencies();
+
+    if (
+      mapTargets.length &&
+      (typeof window.L === 'undefined' || typeof window.L.map !== 'function')
+    ) {
+      loadMapDependencies().catch(() => {});
+    }
 
     if (window.feather && typeof window.feather.replace === 'function') {
       window.feather.replace();
