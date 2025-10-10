@@ -151,9 +151,17 @@
     return assetState.leafletPromise;
   }
 
+  function normalizeCountUpGlobal() {
+    if (typeof window.CountUp === 'undefined' && typeof window.countUp !== 'undefined') {
+      window.CountUp = window.countUp;
+    }
+    return window.CountUp;
+  }
+
   function ensureCountUp() {
-    if (typeof window.CountUp !== 'undefined') {
-      return Promise.resolve(window.CountUp);
+    const existingGlobal = normalizeCountUpGlobal();
+    if (typeof existingGlobal !== 'undefined') {
+      return Promise.resolve(existingGlobal);
     }
 
     if (assetState.countUpPromise) {
@@ -165,7 +173,8 @@
       assetState.countUpPromise = new Promise((resolve, reject) => {
         existing.addEventListener('load', () => {
           assetState.countUpPromise = null;
-          resolve(window.CountUp);
+          const global = normalizeCountUpGlobal();
+          resolve(global);
         }, { once: true });
         existing.addEventListener('error', () => {
           assetState.countUpPromise = null;
@@ -184,7 +193,8 @@
       script.dataset.countupScript = 'true';
       script.addEventListener('load', () => {
         assetState.countUpPromise = null;
-        resolve(window.CountUp);
+        const global = normalizeCountUpGlobal();
+        resolve(global);
       });
       script.addEventListener('error', () => {
         assetState.countUpPromise = null;
