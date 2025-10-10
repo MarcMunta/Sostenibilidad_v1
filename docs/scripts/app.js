@@ -608,11 +608,27 @@
 
     const toggleLabel = toggle.querySelector('.nav-toggle__label');
 
-    const setAriaHidden = (open) => {
+    const setNavVisibility = (isVisible) => {
       if (mobileQuery.matches) {
-        panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+        if (isVisible) {
+          panel.removeAttribute('aria-hidden');
+        } else {
+          panel.setAttribute('aria-hidden', 'true');
+        }
+
+        navLinks.forEach((link) => {
+          if (isVisible) {
+            link.removeAttribute('tabindex');
+          } else {
+            link.setAttribute('tabindex', '-1');
+          }
+        });
       } else {
         panel.removeAttribute('aria-hidden');
+
+        navLinks.forEach((link) => {
+          link.removeAttribute('tabindex');
+        });
       }
     };
 
@@ -683,7 +699,7 @@
       lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       toggle.setAttribute('aria-expanded', 'true');
       panel.dataset.open = 'true';
-      setAriaHidden(true);
+      setNavVisibility(true);
       updateToggleLabel(true);
       document.body.classList.add('has-mobile-nav-open');
       document.addEventListener('keydown', handleKeydown);
@@ -702,7 +718,7 @@
     const closeMenu = ({ restoreFocus = true, force = false } = {}) => {
       if (!isOpen && !force) {
         panel.dataset.open = 'false';
-        setAriaHidden(false);
+        setNavVisibility(false);
         updateToggleLabel(false);
         toggle.setAttribute('aria-expanded', 'false');
         document.body.classList.remove('has-mobile-nav-open');
@@ -713,7 +729,7 @@
       isOpen = false;
       panel.dataset.open = 'false';
       toggle.setAttribute('aria-expanded', 'false');
-      setAriaHidden(false);
+      setNavVisibility(false);
       updateToggleLabel(false);
       document.body.classList.remove('has-mobile-nav-open');
       removeDocumentListeners();
@@ -751,7 +767,7 @@
         panel.dataset.open = 'true';
         toggle.setAttribute('aria-expanded', 'false');
         updateToggleLabel(false);
-        setAriaHidden(true);
+        setNavVisibility(true);
         document.body.classList.remove('has-mobile-nav-open');
         removeDocumentListeners();
         lastFocused = null;
@@ -782,7 +798,7 @@
         mobileQuery.removeListener(handleMobileChange);
       }
       panel.dataset.open = 'true';
-      panel.removeAttribute('aria-hidden');
+      setNavVisibility(true);
       toggle.setAttribute('aria-expanded', 'false');
       updateToggleLabel(false);
       document.body.classList.remove('has-mobile-nav-open');
