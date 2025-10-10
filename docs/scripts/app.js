@@ -535,21 +535,61 @@
       }
     });
 
+    let activeLink = null;
+    const sections = Array.from(sectionMap.keys());
+
+    const setActiveLink = (nextLink) => {
+      if (!nextLink || nextLink === activeLink) {
+        return;
+      }
+      state.navLinks.forEach((item) => item.classList.remove('is-active'));
+      nextLink.classList.add('is-active');
+      activeLink = nextLink;
+    };
+
+    if (sections.length) {
+      const firstLink = sectionMap.get(sections[0]);
+      setActiveLink(firstLink);
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          const link = sectionMap.get(entry.target);
-          if (!link) return;
-          if (entry.isIntersecting) {
-            state.navLinks.forEach((item) => item.classList.remove('is-active'));
-            link.classList.add('is-active');
-          }
-        });
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries.length) {
+          const { target } = visibleEntries[0];
+          const link = sectionMap.get(target);
+          setActiveLink(link);
+          return;
+        }
+
+        const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        const viewportBottom = scrollTop + window.innerHeight;
+
+        if (scrollTop <= 0 && sections.length) {
+          setActiveLink(sectionMap.get(sections[0]));
+          return;
+        }
+
+        const lastSection = sections[sections.length - 1];
+        if (
+          lastSection &&
+          viewportBottom >=
+            (lastSection.offsetTop || 0) + (lastSection.offsetHeight || 0) - window.innerHeight * 0.1
+        ) {
+          setActiveLink(sectionMap.get(lastSection));
+        }
       },
-      { threshold: 0.55 }
+      {
+        root: null,
+        rootMargin: '-45% 0px -45% 0px',
+        threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
+      }
     );
 
-    sectionMap.forEach((_, section) => observer.observe(section));
+    sections.forEach((section) => observer.observe(section));
     state.sectionObserver = observer;
   }
 
