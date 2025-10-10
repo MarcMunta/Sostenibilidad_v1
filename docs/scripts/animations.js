@@ -14,6 +14,20 @@
   const splitCache = new WeakSet();
   const configCache = new Map();
 
+  function resolveCountUpConstructor() {
+    const namespaces = [window.CountUp, window.countUp];
+    for (const namespace of namespaces) {
+      if (!namespace) continue;
+      if (typeof namespace === 'function') {
+        return namespace;
+      }
+      if (typeof namespace.CountUp === 'function') {
+        return namespace.CountUp;
+      }
+    }
+    return null;
+  }
+
   async function loadJsonConfig(path) {
     if (!path) return null;
     const cacheKey = path;
@@ -492,8 +506,6 @@
     const kpis = document.querySelectorAll('.kpi');
     if (!kpis.length) return;
 
-    const CountUp = window.CountUp && window.CountUp.CountUp ? window.CountUp.CountUp : window.CountUp;
-
     const observer = registerObserver(
       new IntersectionObserver((entries, obs) => {
         entries.forEach((entry) => {
@@ -502,6 +514,7 @@
           const valueEl = element.querySelector('.kpi-value');
           const fallbackText = valueEl ? valueEl.textContent : '0';
           const target = Number.parseFloat(element.dataset.target || fallbackText || '0');
+          const CountUp = resolveCountUpConstructor();
 
           if (!valueEl) {
             obs.unobserve(element);
