@@ -23,7 +23,7 @@
   --reto-radius-md: 1.25rem;
   --reto-radius-lg: 2.25rem;
   --reto-radius-pill: 999px;
-  --reto-max-width: min(1100px, 92vw);
+  --reto-max-width: min(1180px, 94vw);
   --reto-hero-height: clamp(520px, 78vh, 720px);
   --reto-ornament: rgba(255, 255, 255, 0.55);
 
@@ -148,11 +148,26 @@ html[data-theme="dark"] .reto-page {
   top: 0;
   z-index: 900;
   backdrop-filter: blur(18px);
-  background-color: rgba(255, 255, 255, 0.92);
-  background: color-mix(in srgb, var(--reto-surface) 80%, transparent);
-  box-shadow: var(--reto-nav-shadow);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  background: color-mix(in srgb, var(--reto-surface) 75%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--reto-border) 70%, transparent);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
   isolation: isolate;
+  overflow: hidden;
+}
+
+.reto-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--reto-accent) 45%, transparent) 0%,
+      transparent 65%
+    ),
+    linear-gradient(120deg, color-mix(in srgb, var(--reto-accent-soft) 65%, transparent), transparent 70%);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .reto-header__top,
@@ -183,12 +198,17 @@ html[data-theme="dark"] .reto-page {
   gap: 0.65rem;
   text-decoration: none;
   font-weight: 600;
+  transition: transform 180ms ease;
 }
 
 .reto-header__brand svg {
   width: 28px;
   height: 28px;
   color: var(--reto-accent-strong);
+}
+
+.reto-header__brand:is(:hover, :focus-visible) {
+  transform: translateY(-1px);
 }
 
 .reto-header__meta {
@@ -198,6 +218,18 @@ html[data-theme="dark"] .reto-page {
   align-items: center;
   font-size: 0.95rem;
   color: var(--reto-muted);
+}
+
+.reto-header__meta a {
+  color: var(--reto-accent-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.reto-header__meta a:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
 }
 
 .reto-pill {
@@ -217,13 +249,15 @@ html[data-theme="dark"] .reto-page {
 .reto-breadcrumb {
   margin: 0;
   padding: 0.75rem clamp(1.75rem, 5vw, 4.25rem);
-  background-color: rgba(255, 255, 255, 0.58);
-  background: color-mix(in srgb, var(--reto-accent-soft) 65%, transparent);
+  background: color-mix(in srgb, var(--reto-surface) 78%, transparent);
   list-style: none;
   display: flex;
   gap: 0.65rem;
   flex-wrap: wrap;
   font-size: 0.95rem;
+  border-top: 1px solid color-mix(in srgb, var(--reto-border) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--reto-border) 35%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .reto-breadcrumb li {
@@ -263,8 +297,14 @@ html[data-theme="dark"] .reto-page {
   align-items: center;
   gap: clamp(2rem, 6vw, 3rem);
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  padding: clamp(3rem, 6vw, 5rem) clamp(1.75rem, 7vw, 6rem);
+  padding: clamp(3rem, 6vw, 5rem) clamp(2rem, 7vw, 5.5rem);
   overflow: hidden;
+  max-width: var(--reto-max-width);
+  margin-inline: auto;
+  border-radius: var(--reto-radius-lg);
+  background: color-mix(in srgb, var(--reto-surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--reto-border) 65%, transparent);
+  box-shadow: var(--reto-shadow-strong);
 }
 
 .reto-hero::before {
@@ -274,7 +314,7 @@ html[data-theme="dark"] .reto-page {
   background-image: var(--reto-hero-image);
   background-size: cover;
   background-position: center;
-  opacity: 0.18;
+  opacity: 0.22;
   mix-blend-mode: multiply;
   z-index: 0;
 }
@@ -283,7 +323,7 @@ html[data-theme="dark"] .reto-page {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0));
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
   z-index: 0;
 }
 
@@ -293,6 +333,12 @@ html[data-theme="dark"] .reto-page {
   max-width: 620px;
   display: grid;
   gap: 1.1rem;
+  padding: clamp(1.75rem, 4vw, 2.6rem);
+  border-radius: var(--reto-radius-lg);
+  background: color-mix(in srgb, var(--reto-surface-strong) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--reto-border) 70%, transparent);
+  box-shadow: var(--reto-shadow-soft);
+  backdrop-filter: blur(12px);
 }
 
 .reto-hero__badge {
@@ -322,6 +368,7 @@ html[data-theme="dark"] .reto-page {
 .reto-hero__summary {
   font-size: 1.05rem;
   color: var(--reto-muted);
+  max-width: 58ch;
 }
 
 .reto-hero__actions {
@@ -367,6 +414,7 @@ html[data-theme="dark"] .reto-page {
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   margin-top: 1.5rem;
+  padding-top: 0.5rem;
 }
 
 .reto-stat {
@@ -374,9 +422,10 @@ html[data-theme="dark"] .reto-page {
   padding: 1.1rem;
   border-radius: 1rem;
   background-color: rgba(255, 255, 255, 0.9);
-  background: color-mix(in srgb, var(--reto-surface) 85%, transparent);
-  border: 1px solid var(--reto-border);
-  box-shadow: 0 20px 40px -28px rgba(15, 23, 42, 0.38);
+  background: color-mix(in srgb, var(--reto-surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--reto-border) 70%, transparent);
+  box-shadow: 0 22px 45px -26px rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(10px);
   overflow: hidden;
 }
 
@@ -410,15 +459,17 @@ html[data-theme="dark"] .reto-page {
   align-self: stretch;
   display: grid;
   place-items: center;
+  padding: clamp(1.25rem, 3vw, 2rem);
 }
 
 .reto-hero__visual {
   position: relative;
-  width: min(420px, 90%);
+  width: min(480px, 100%);
   border-radius: var(--reto-radius-lg);
   overflow: hidden;
   box-shadow: var(--reto-shadow-strong);
-  background: color-mix(in srgb, rgba(255, 255, 255, 0.96) 65%, transparent);
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.96) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--reto-border) 60%, transparent);
   animation: floatY 8s ease-in-out infinite;
 }
 
@@ -442,9 +493,10 @@ html[data-theme="dark"] .reto-page {
   width: clamp(120px, 24vw, 180px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), transparent 65%);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), transparent 65%),
+    linear-gradient(180deg, color-mix(in srgb, var(--reto-accent) 40%, transparent), transparent 70%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
-  opacity: 0.7;
+  opacity: 0.65;
   backdrop-filter: blur(4px);
   animation: floatX 9s ease-in-out infinite;
 }

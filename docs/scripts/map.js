@@ -33,6 +33,15 @@
     }
   }
 
+  function resolveUrl(path) {
+    if (!path) return '';
+    try {
+      return new URL(path, window.location.href).href;
+    } catch (error) {
+      return path;
+    }
+  }
+
   function registerCleanup(fn) {
     if (typeof fn === 'function') {
       state.cleanups.push(fn);
@@ -54,51 +63,111 @@
     const panel = document.querySelector('.map-panel');
     if (!panel) return;
 
+    const details = panel.querySelector('.map-details');
+    const titleElement = panel.querySelector('[data-map-title]');
+    const summaryElement = panel.querySelector('[data-map-summary]');
+    const imageElement = panel.querySelector('[data-map-image]');
+    const linkElement = panel.querySelector('[data-map-link]');
+
     state.detailsPanel = {
-      title: panel.querySelector('[data-map-title]'),
-      summary: panel.querySelector('[data-map-summary]'),
-      image: panel.querySelector('[data-map-image]'),
-      link: panel.querySelector('[data-map-link]'),
+      title: titleElement,
+      summary: summaryElement,
+      image: imageElement,
+      link: linkElement,
       container: panel,
+      details,
+      placeholder: resolveUrl(
+        (details && (details.dataset.placeholderImage || details.dataset.placeholder)) ||
+          panel.dataset.placeholderImage ||
+          (imageElement && (imageElement.dataset.placeholderImage || imageElement.dataset.placeholder)) ||
+          ''
+      ),
+      defaultTitle: titleElement?.textContent?.trim() || 'Selecciona un reto',
+      defaultSummary:
+        summaryElement?.textContent?.trim() ||
+        'Interactúa con el mapa para conocer los datos clave de cada caso.',
     };
+
+    if (details && !details.dataset.state) {
+      details.dataset.state = 'idle';
+    }
+    if (!panel.dataset.state) {
+      panel.dataset.state = 'idle';
+    }
   }
 
   function updateDetails(reto) {
     if (!state.detailsPanel) return;
-    const { title, summary, image, link, container } = state.detailsPanel;
+    const {
+      title,
+      summary,
+      image,
+      link,
+      container,
+      details,
+      placeholder,
+      defaultTitle,
+      defaultSummary,
+    } = state.detailsPanel;
+
+    const placeholderAlt =
+      'Ilustración de un mapa con un marcador indicando que selecciones un reto para ver los detalles';
 
     if (title) {
-      title.textContent = reto ? `${reto.emoji || '📍'} ${reto.nombre}` : 'Selecciona un reto';
+      title.textContent = reto ? `${reto.emoji || '📍'} ${reto.nombre}` : defaultTitle;
     }
 
     if (summary) {
-      summary.textContent = reto ? reto.resumen : 'Los datos aparecerán aquí cuando interactúes con el mapa.';
+      summary.textContent = reto ? reto.resumen : defaultSummary;
     }
 
     if (image) {
       if (reto && reto.imagen) {
-        image.src = reto.imagen;
+        image.src = resolveUrl(reto.imagen);
         image.alt = reto.imagenAlt || `Vista representativa del reto ${reto.nombre}`;
         image.hidden = false;
+        image.dataset.state = 'media';
+      } else if (placeholder) {
+        image.src = resolveUrl(placeholder);
+        image.alt = reto
+          ? `Ilustración genérica para el reto ${reto.nombre}`
+          : placeholderAlt;
+        image.hidden = false;
+        image.dataset.state = 'placeholder';
       } else {
         image.hidden = true;
         image.removeAttribute('src');
-        image.alt = 'Vista ilustrativa del reto seleccionado en el mapa global';
+        image.alt = reto
+          ? `Representación del reto ${reto.nombre}`
+          : 'Vista ilustrativa del reto seleccionado en el mapa global';
+        delete image.dataset.state;
       }
     }
 
     if (link) {
       if (reto && reto.ruta) {
         link.href = reto.ruta;
+        link.setAttribute('aria-label', `Abrir la ficha del reto ${reto.nombre}`);
         link.hidden = false;
       } else {
         link.hidden = true;
         link.removeAttribute('href');
+        link.removeAttribute('aria-label');
       }
     }
 
     if (container) {
-      container.dataset.activeReto = reto ? reto.id : '';
+      if (reto && reto.id) {
+        container.dataset.activeReto = reto.id;
+        container.dataset.state = 'active';
+      } else {
+        delete container.dataset.activeReto;
+        container.dataset.state = 'idle';
+      }
+    }
+
+    if (details) {
+      details.dataset.state = reto ? 'active' : 'idle';
     }
   }
 
