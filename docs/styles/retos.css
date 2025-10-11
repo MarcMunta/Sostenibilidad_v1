@@ -23,7 +23,7 @@
   --reto-radius-md: 1.25rem;
   --reto-radius-lg: 2.25rem;
   --reto-radius-pill: 999px;
-  --reto-max-width: min(1180px, 94vw);
+  --reto-max-width: min(1600px, 95vw);
   --reto-hero-height: clamp(520px, 78vh, 720px);
   --reto-ornament: rgba(255, 255, 255, 0.55);
 
@@ -174,8 +174,7 @@ html[data-theme="dark"] .reto-page {
 .reto-breadcrumb,
 .reto-main,
 .reto-page footer {
-  width: 100%;
-  max-width: var(--reto-max-width);
+  width: min(100%, var(--reto-max-width));
   margin-inline: auto;
   box-sizing: border-box;
 }
@@ -294,12 +293,12 @@ html[data-theme="dark"] .reto-page {
   position: relative;
   min-height: var(--reto-hero-height);
   display: grid;
-  align-items: center;
-  gap: clamp(2rem, 6vw, 3rem);
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: stretch;
+  gap: clamp(2rem, 6vw, 3.25rem);
+  grid-template-columns: minmax(320px, 1.05fr) minmax(320px, 0.95fr);
   padding: clamp(3rem, 6vw, 5rem) clamp(2rem, 7vw, 5.5rem);
   overflow: hidden;
-  max-width: var(--reto-max-width);
+  width: min(100%, var(--reto-max-width));
   margin-inline: auto;
   border-radius: var(--reto-radius-lg);
   background: color-mix(in srgb, var(--reto-surface) 88%, transparent);
@@ -330,7 +329,7 @@ html[data-theme="dark"] .reto-page {
 .reto-hero__content {
   position: relative;
   z-index: 1;
-  max-width: 620px;
+  width: min(100%, clamp(640px, 58vw, 780px));
   display: grid;
   gap: 1.1rem;
   padding: clamp(1.75rem, 4vw, 2.6rem);
@@ -459,12 +458,12 @@ html[data-theme="dark"] .reto-page {
   align-self: stretch;
   display: grid;
   place-items: center;
-  padding: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
 }
 
 .reto-hero__visual {
   position: relative;
-  width: min(480px, 100%);
+  width: min(560px, 100%);
   border-radius: var(--reto-radius-lg);
   overflow: hidden;
   box-shadow: var(--reto-shadow-strong);
