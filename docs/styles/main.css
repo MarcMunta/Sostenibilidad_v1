@@ -98,6 +98,8 @@ a:focus-visible {
   --shadow-md: 0 16px 30px rgba(15, 23, 42, 0.28);
   --shadow-lg: 0 24px 50px rgba(14, 165, 233, 0.35);
 
+  --map-popup-width: clamp(360px, 56vw, 520px);
+
   --z-base: 0;
   --z-content: 10;
   --z-nav: 900;
@@ -982,7 +984,7 @@ body.has-mobile-nav-open {
   font-size: clamp(1rem, 1.8vw, 1.1rem);
   line-height: 1.6;
   width: 100%;
-  max-width: clamp(320px, 50vw, 480px);
+  max-width: var(--map-popup-width);
   margin: 0;
   padding: clamp(var(--space-md), 2.4vw, var(--space-xl));
   box-sizing: border-box;
@@ -1000,13 +1002,17 @@ body.has-mobile-nav-open {
   box-shadow: var(--shadow-lg);
   background: color-mix(in srgb, var(--color-elevated) 75%, var(--color-surface));
   backdrop-filter: blur(14px);
+  inline-size: var(--map-popup-width);
+  min-inline-size: var(--map-popup-width);
+  max-inline-size: min(var(--map-popup-width), calc(100vw - var(--space-xl)));
+  width: var(--map-popup-width);
 }
 
 .map-popup {
   display: grid;
   gap: clamp(var(--space-sm), 1.4vw, var(--space-md));
   width: 100%;
-  max-width: clamp(320px, 50vw, 480px);
+  max-width: var(--map-popup-width);
   justify-items: center;
   animation: map-popup-rise var(--transition-long);
 }
@@ -1122,8 +1128,13 @@ body.has-mobile-nav-open {
 
 @media (max-width: 600px) {
   .leaflet-popup-content,
-  .map-popup {
+  .map-popup,
+  .leaflet-popup-content-wrapper {
     width: min(88vw, 420px);
+    inline-size: min(88vw, 420px);
+    min-inline-size: 0;
+    max-inline-size: none;
+    max-width: none;
   }
 }
 
