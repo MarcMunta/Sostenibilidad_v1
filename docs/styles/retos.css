@@ -675,8 +675,8 @@ html[data-theme="dark"] .reto-page {
 
 .reto-gallery {
   display: grid;
-  gap: 1.1rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .reto-gallery figure {
@@ -686,6 +686,17 @@ html[data-theme="dark"] .reto-page {
   border-radius: 1.35rem;
   box-shadow: var(--reto-shadow-soft);
   border: 1px solid color-mix(in srgb, var(--reto-border) 75%, transparent);
+  aspect-ratio: 4 / 3;
+}
+
+.reto-gallery figure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .reto-gallery figure a {
@@ -701,6 +712,10 @@ html[data-theme="dark"] .reto-page {
   object-fit: cover;
   transition: transform 360ms ease;
 }
+.reto-gallery figure:hover::before,
+.reto-gallery figure:focus-within::before {
+  opacity: 1;
+}
 
 .reto-gallery figure:hover img,
 .reto-gallery figure:focus-within img {
@@ -714,12 +729,19 @@ html[data-theme="dark"] .reto-page {
   background: linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.75));
   color: #fff;
   font-size: 0.95rem;
+  z-index: 1;
 }
 
 .reto-gallery figcaption a {
   color: inherit;
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.6);
+}
+
+@media (min-width: 1400px) {
+  .reto-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
 }
 
 .reto-quote {
