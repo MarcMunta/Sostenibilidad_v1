@@ -938,6 +938,7 @@ body.has-mobile-nav-open {
   box-shadow: var(--shadow-md);
 }
 
+
 .map-marker {
   display: grid;
   place-items: center;
@@ -947,8 +948,17 @@ body.has-mobile-nav-open {
   text-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
 }
 
+.map-marker span {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  pointer-events: none;
+}
+
 .leaflet-marker-icon {
   transition: none !important;
+  cursor: pointer;
 }
 
 .leaflet-marker-icon:is(:hover, :focus) {
