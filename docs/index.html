@@ -62,59 +62,61 @@
     <div data-barba="container" data-barba-namespace="home" data-body-class="">
       <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
 
-      <header>
-      <nav aria-label="Menú principal">
-        <a class="brand" href="#hero">
-          <span class="sr-only">Ir al inicio</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 64 64"
-            role="img"
-            aria-labelledby="logo-title logo-desc"
-          >
-            <title id="logo-title">Sostenibilidad 2030</title>
-            <desc id="logo-desc">Logotipo circular con hoja y ondas que representan equilibrio ambiental</desc>
-            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" />
-            <path
-              d="M18 36c10-4 16-12 18-24 8 8 12 20 6 32-4 8-12 12-20 10"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
-          </svg>
-          <span>Sostenibilidad 2030</span>
-        </a>
-        <div class="nav-panel" id="menu-principal" data-open="false">
-          <ul class="nav-links">
-            <li><a href="#hero">Inicio</a></li>
-            <li><a href="#retos">Los 4 retos</a></li>
-            <li><a href="#mapa-global">Mapa global</a></li>
-            <li><a href="#footer">Recursos</a></li>
-          </ul>
+      <header class="site-header" data-animate="section">
+        <div class="site-header__inner">
+          <a class="brand site-header__brand" href="#hero">
+            <span class="sr-only">Ir al inicio</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 64 64"
+              role="img"
+              aria-labelledby="logo-title logo-desc"
+            >
+              <title id="logo-title">Sostenibilidad 2030</title>
+              <desc id="logo-desc">Logotipo circular con hoja y ondas que representan equilibrio ambiental</desc>
+              <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" />
+              <path
+                d="M18 36c10-4 16-12 18-24 8 8 12 20 6 32-4 8-12 12-20 10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            <span>Sostenibilidad 2030</span>
+          </a>
+          <nav class="site-header__nav" aria-label="Menú principal">
+            <div class="nav-panel" id="menu-principal" data-open="false">
+              <ul class="nav-links">
+                <li><a href="#hero">Inicio</a></li>
+                <li><a href="#retos">Los 4 retos</a></li>
+                <li><a href="#mapa-global">Mapa global</a></li>
+                <li><a href="#footer">Recursos</a></li>
+              </ul>
+            </div>
+          </nav>
+          <div class="nav-actions">
+            <button class="theme-toggle" type="button" aria-pressed="false">
+              <span aria-hidden="true" data-feather="moon"></span>
+              <span>Modo</span>
+            </button>
+            <button
+              class="nav-toggle"
+              type="button"
+              aria-controls="menu-principal"
+              aria-expanded="false"
+              aria-label="Abrir menú"
+            >
+              <span class="nav-toggle__icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <span class="nav-toggle__label">Menú</span>
+            </button>
+          </div>
         </div>
-        <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-pressed="false">
-            <span aria-hidden="true" data-feather="moon"></span>
-            <span>Modo</span>
-          </button>
-          <button
-            class="nav-toggle"
-            type="button"
-            aria-controls="menu-principal"
-            aria-expanded="false"
-            aria-label="Abrir menú"
-          >
-            <span class="nav-toggle__icon" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-            <span class="nav-toggle__label">Menú</span>
-          </button>
-        </div>
-      </nav>
       </header>
 
       <main id="contenido-principal">
@@ -359,19 +361,25 @@
         <div class="map-container" role="presentation">
           <div id="map" role="application" aria-label="Mapa de proyectos de sostenibilidad"></div>
         </div>
-        <aside class="map-panel" aria-live="polite" aria-atomic="true">
+        <aside
+          class="map-panel"
+          aria-live="polite"
+          aria-atomic="true"
+          data-state="idle"
+        >
           <h2 id="mapa-global-heading">Mapa global de iniciativas</h2>
           <p>
             Selecciona un marcador para descubrir datos, historias y recursos de aprendizaje sobre cada reto.
           </p>
-          <div class="map-details">
+          <div class="map-details" data-placeholder-image="assets/img/mapa-placeholder.svg" data-state="idle">
             <h3 data-map-title>Selecciona un reto</h3>
-            <p data-map-summary>Los datos aparecerán aquí cuando interactúes con el mapa.</p>
+            <p data-map-summary>Interactúa con el mapa para conocer los datos clave de cada caso.</p>
             <img
               data-map-image
               alt="Vista ilustrativa del reto seleccionado en el mapa global"
               hidden
               loading="lazy"
+              data-placeholder-image="assets/img/mapa-placeholder.svg"
             />
             <a data-map-link href="#" target="_blank" rel="noopener" hidden>Explorar recurso</a>
           </div>
