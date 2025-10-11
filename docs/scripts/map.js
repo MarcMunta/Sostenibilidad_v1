@@ -401,9 +401,13 @@
         autoPanPaddingTopLeft: popupPadding.topLeft,
         autoPanPaddingBottomRight: popupPadding.bottomRight,
       });
-      marker.on('popupopen', (event) => {
+      const activateMarker = () => {
         state.activeRetoId = reto.id;
         updateDetails(reto);
+      };
+
+      marker.on('popupopen', (event) => {
+        activateMarker();
         window.dispatchEvent(new CustomEvent('map:focus', { detail: reto.id }));
         window.requestAnimationFrame(() => adjustPopupPosition(marker, { animate: false }));
         const popupElement = event.popup.getElement();
@@ -415,9 +419,25 @@
         }
       });
 
-      marker.on('click keypress', () => {
-        state.activeRetoId = reto.id;
-        updateDetails(reto);
+      marker.on('click', () => {
+        activateMarker();
+        if (typeof marker.openPopup === 'function') {
+          marker.openPopup();
+        }
+      });
+
+      marker.on('keypress', (event) => {
+        const key = event?.originalEvent?.key || event?.key;
+        if (key && !['Enter', ' ', 'Spacebar'].includes(key)) {
+          return;
+        }
+        if (event?.originalEvent?.preventDefault) {
+          event.originalEvent.preventDefault();
+        }
+        activateMarker();
+        if (typeof marker.openPopup === 'function') {
+          marker.openPopup();
+        }
       });
 
       marker.addTo(map);
