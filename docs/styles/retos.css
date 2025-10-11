@@ -688,6 +688,13 @@ html[data-theme="dark"] .reto-page {
   border: 1px solid color-mix(in srgb, var(--reto-border) 75%, transparent);
 }
 
+.reto-gallery figure a {
+  display: block;
+  line-height: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
 .reto-gallery img {
   width: 100%;
   height: 100%;
@@ -707,6 +714,12 @@ html[data-theme="dark"] .reto-page {
   background: linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.75));
   color: #fff;
   font-size: 0.95rem;
+}
+
+.reto-gallery figcaption a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
 }
 
 .reto-quote {
