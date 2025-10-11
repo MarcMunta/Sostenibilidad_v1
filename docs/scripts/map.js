@@ -213,6 +213,122 @@
     `;
   }
 
+  function getNavHeight() {
+    const nav = document.querySelector('nav');
+    if (!nav) return 0;
+    const rect = typeof nav.getBoundingClientRect === 'function' ? nav.getBoundingClientRect() : null;
+    return Math.max(nav.offsetHeight || 0, rect?.height || 0, 0);
+  }
+
+  function getPopupPadding() {
+    const basePadding = 32;
+    const navHeight = getNavHeight();
+    const topPadding = basePadding + navHeight + 48;
+    const bottomPadding = basePadding + 24;
+    const sidePadding = basePadding;
+
+    const L = getLeaflet();
+    const toPoint = (x, y) =>
+      L && typeof L.point === 'function'
+        ? L.point(x, y)
+        : [x, y];
+
+    return {
+      topLeft: toPoint(sidePadding, topPadding),
+      bottomRight: toPoint(sidePadding, bottomPadding),
+    };
+  }
+
+  function adjustPopupPosition(marker, { animate = true } = {}) {
+    if (!state.globalMap || !marker || typeof marker.getLatLng !== 'function') {
+      return;
+    }
+
+    const map = state.globalMap;
+    const L = getLeaflet();
+    if (!L || typeof map.getSize !== 'function') {
+      return;
+    }
+
+    const latlng = marker.getLatLng();
+    const popup = typeof marker.getPopup === 'function' ? marker.getPopup() : null;
+    const padding = getPopupPadding();
+
+    if (popup) {
+      popup.options.autoPanPaddingTopLeft = padding.topLeft;
+      popup.options.autoPanPaddingBottomRight = padding.bottomRight;
+    }
+
+    const shouldAnimate = animate && !prefersReducedMotion.matches;
+
+    if (typeof map.panInside === 'function') {
+      map.panInside(latlng, {
+        paddingTopLeft: padding.topLeft,
+        paddingBottomRight: padding.bottomRight,
+        animate: shouldAnimate,
+        duration: shouldAnimate ? 0.65 : 0,
+      });
+    } else {
+      map.panTo(latlng, {
+        animate: shouldAnimate,
+        duration: shouldAnimate ? 0.65 : 0,
+      });
+    }
+
+    if (popup && typeof popup.update === 'function') {
+      popup.update();
+    }
+
+    const popupElement = popup && typeof popup.getElement === 'function' ? popup.getElement() : null;
+    if (!popupElement || typeof popupElement.getBoundingClientRect !== 'function') {
+      return;
+    }
+
+    const rect = popupElement.getBoundingClientRect();
+    const mapRect = map.getContainer().getBoundingClientRect();
+    const navHeight = getNavHeight();
+    const topLimit = navHeight + 16;
+    const margin = 16;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    if (rect.top < topLimit) {
+      offsetY += topLimit - rect.top;
+    }
+    if (rect.bottom > mapRect.bottom - margin) {
+      offsetY -= rect.bottom - (mapRect.bottom - margin);
+    }
+    if (rect.left < mapRect.left + margin) {
+      offsetX += mapRect.left + margin - rect.left;
+    }
+    if (rect.right > mapRect.right - margin) {
+      offsetX -= rect.right - (mapRect.right - margin);
+    }
+
+    if (offsetX !== 0 || offsetY !== 0) {
+      if (typeof map.panBy === 'function') {
+        map.panBy(L.point(-offsetX, -offsetY), { animate: false });
+      } else {
+        const centerPoint = map.latLngToContainerPoint(map.getCenter());
+        const targetPoint = centerPoint.add(L.point(offsetX, offsetY).multiplyBy(-1));
+        const targetLatLng = map.containerPointToLatLng(targetPoint);
+        map.panTo(targetLatLng, { animate: false });
+      }
+
+      if (popup && typeof popup.update === 'function') {
+        popup.update();
+      }
+    }
+  }
+
+  function refreshActivePopupPosition() {
+    if (!state.activeRetoId) return;
+    const marker = state.globalMarkers.get(state.activeRetoId);
+    if (!marker) return;
+    adjustPopupPosition(marker, { animate: false });
+  }
+
   function fitMapToRetos(map, retos) {
     if (!retos.length) {
       map.setView([20, 0], 2);
@@ -278,11 +394,18 @@
         title: reto.nombre,
       });
 
-      marker.bindPopup(renderPopupContent(reto), { closeButton: true });
+      const popupPadding = getPopupPadding();
+      marker.bindPopup(renderPopupContent(reto), {
+        closeButton: true,
+        autoPan: true,
+        autoPanPaddingTopLeft: popupPadding.topLeft,
+        autoPanPaddingBottomRight: popupPadding.bottomRight,
+      });
       marker.on('popupopen', (event) => {
         state.activeRetoId = reto.id;
         updateDetails(reto);
         window.dispatchEvent(new CustomEvent('map:focus', { detail: reto.id }));
+        adjustPopupPosition(marker, { animate: false });
         const popupElement = event.popup.getElement();
         if (popupElement) {
           const focusable = popupElement.querySelector('a, button');
@@ -303,6 +426,7 @@
 
     const resize = () => {
       map.invalidateSize();
+      refreshActivePopupPosition();
     };
 
     window.addEventListener('resize', resize);
@@ -456,6 +580,10 @@
         duration,
       });
       marker.openPopup();
+      if (duration > 0) {
+        state.globalMap.once('moveend', () => adjustPopupPosition(marker, { animate: false }));
+      }
+      adjustPopupPosition(marker, { animate: false });
     }
   }
 
