@@ -397,7 +397,7 @@
       const popupPadding = getPopupPadding();
       marker.bindPopup(renderPopupContent(reto), {
         closeButton: true,
-        autoPan: true,
+        autoPan: false,
         autoPanPaddingTopLeft: popupPadding.topLeft,
         autoPanPaddingBottomRight: popupPadding.bottomRight,
       });
@@ -405,7 +405,7 @@
         state.activeRetoId = reto.id;
         updateDetails(reto);
         window.dispatchEvent(new CustomEvent('map:focus', { detail: reto.id }));
-        adjustPopupPosition(marker, { animate: false });
+        window.requestAnimationFrame(() => adjustPopupPosition(marker, { animate: false }));
         const popupElement = event.popup.getElement();
         if (popupElement) {
           const focusable = popupElement.querySelector('a, button');
@@ -574,16 +574,34 @@
     }
 
     if (state.globalMap && marker.getLatLng) {
-      const duration = prefersReducedMotion.matches ? 0 : 0.85;
-      state.globalMap.flyTo(marker.getLatLng(), state.globalMap.getZoom() > 3 ? state.globalMap.getZoom() : 4, {
-        animate: duration > 0,
-        duration,
-      });
-      marker.openPopup();
-      if (duration > 0) {
-        state.globalMap.once('moveend', () => adjustPopupPosition(marker, { animate: false }));
+      const map = state.globalMap;
+      const targetLatLng = marker.getLatLng();
+      const minZoom = 4;
+      const currentZoom = typeof map.getZoom === 'function' ? map.getZoom() : minZoom;
+      const targetZoom = currentZoom > minZoom ? currentZoom : minZoom;
+      const animate = !prefersReducedMotion.matches;
+
+      const openAndPositionPopup = () => {
+        marker.openPopup();
+      };
+
+      if (animate && typeof map.flyTo === 'function') {
+        const handleMoveEnd = () => {
+          map.off('moveend', handleMoveEnd);
+          window.requestAnimationFrame(openAndPositionPopup);
+        };
+        map.on('moveend', handleMoveEnd);
+        map.flyTo(targetLatLng, targetZoom, {
+          animate: true,
+          duration: 0.65,
+          easeLinearity: 0.25,
+        });
+      } else if (typeof map.setView === 'function') {
+        map.setView(targetLatLng, targetZoom, { animate: false });
+        window.requestAnimationFrame(openAndPositionPopup);
+      } else {
+        window.requestAnimationFrame(openAndPositionPopup);
       }
-      adjustPopupPosition(marker, { animate: false });
     }
   }
 
