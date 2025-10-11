@@ -981,8 +981,8 @@ body.has-mobile-nav-open {
 .leaflet-popup-content {
   font-size: clamp(1rem, 1.8vw, 1.1rem);
   line-height: 1.6;
-  width: clamp(320px, 60vw, 560px);
-  max-width: none;
+  width: 100%;
+  max-width: clamp(320px, 50vw, 480px);
   margin: 0;
   padding: clamp(var(--space-md), 2.4vw, var(--space-xl));
   box-sizing: border-box;
@@ -1005,7 +1005,8 @@ body.has-mobile-nav-open {
 .map-popup {
   display: grid;
   gap: clamp(var(--space-sm), 1.4vw, var(--space-md));
-  width: clamp(320px, 60vw, 560px);
+  width: 100%;
+  max-width: clamp(320px, 50vw, 480px);
   justify-items: center;
   animation: map-popup-rise var(--transition-long);
 }
