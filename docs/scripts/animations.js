@@ -11,6 +11,9 @@
     flipHandlers: new WeakMap(),
   };
 
+  const pendingCountUps = new Set();
+  let countUpObserver = null;
+
   const splitCache = new WeakSet();
   const configCache = new Map();
 
@@ -502,50 +505,133 @@
     }
   }
 
+  function markCountUpComplete(valueEl, target) {
+    if (!valueEl) return;
+    const finalValue = Number.isFinite(target)
+      ? Math.round(target).toLocaleString('es-ES')
+      : valueEl.textContent;
+    valueEl.textContent = finalValue;
+    valueEl.setAttribute('data-count-complete', 'true');
+  }
+
+  function startCountUp(element, CountUpCtor, reduceMotion, observer) {
+    const valueEl = element ? element.querySelector('.kpi-value') : null;
+    const fallbackText = valueEl ? valueEl.textContent : '0';
+    const target = Number.parseFloat(element?.dataset.target || fallbackText || '0');
+
+    if (!element || !valueEl) {
+      if (observer && element instanceof Element) {
+        observer.unobserve(element);
+      }
+      return;
+    }
+
+    if (!CountUpCtor || reduceMotion) {
+      markCountUpComplete(valueEl, target);
+      if (observer && element instanceof Element) {
+        observer.unobserve(element);
+      }
+      return;
+    }
+
+    try {
+      const counter = new CountUpCtor(valueEl, target, {
+        duration: 2.2,
+        separator: '.',
+        decimal: ',',
+      });
+
+      if (!counter.error) {
+        counter.start(() => {
+          valueEl.setAttribute('data-count-complete', 'true');
+        });
+      } else {
+        markCountUpComplete(valueEl, target);
+      }
+    } catch (error) {
+      markCountUpComplete(valueEl, target);
+    }
+
+    if (observer && element instanceof Element) {
+      observer.unobserve(element);
+    }
+  }
+
+  function attemptPendingCountUps(reduceMotion, { forceFallback = false } = {}) {
+    if (!pendingCountUps.size) {
+      return;
+    }
+
+    const CountUpCtor = reduceMotion ? null : resolveCountUpConstructor();
+    const hasConstructor = Boolean(CountUpCtor);
+
+    if (!hasConstructor && !reduceMotion && !forceFallback) {
+      return;
+    }
+
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+
+    pendingCountUps.forEach((element) => {
+      if (!element || !element.isConnected) {
+        pendingCountUps.delete(element);
+        return;
+      }
+
+      if (!reduceMotion) {
+        const rect = element.getBoundingClientRect();
+        const isVisible = rect.top < viewportHeight && rect.bottom > 0;
+        if (!isVisible) {
+          return;
+        }
+      }
+
+      pendingCountUps.delete(element);
+      delete element.dataset.countupPending;
+      const shouldUseReduceMotion = Boolean(reduceMotion || !hasConstructor);
+      const ctorToUse = shouldUseReduceMotion ? null : CountUpCtor;
+      startCountUp(element, ctorToUse, shouldUseReduceMotion, countUpObserver);
+    });
+  }
+
   function initCountUps(reduceMotion) {
     const kpis = document.querySelectorAll('.kpi');
     if (!kpis.length) return;
 
-    const observer = registerObserver(
-      new IntersectionObserver((entries, obs) => {
+    const handleReady = (event) => {
+      const detail = event && typeof event === 'object' ? event.detail : undefined;
+      const shouldFallback = detail === null || typeof detail === 'undefined';
+      attemptPendingCountUps(reduceMotion, { forceFallback: shouldFallback });
+    };
+
+    window.addEventListener('countup:ready', handleReady);
+    registerCleanup(() => window.removeEventListener('countup:ready', handleReady));
+
+    countUpObserver = registerObserver(
+      new IntersectionObserver((entries) => {
+        const CountUpCtor = reduceMotion ? null : resolveCountUpConstructor();
+
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const element = entry.target;
-          const valueEl = element.querySelector('.kpi-value');
-          const fallbackText = valueEl ? valueEl.textContent : '0';
-          const target = Number.parseFloat(element.dataset.target || fallbackText || '0');
-          const CountUp = resolveCountUpConstructor();
 
-          if (!valueEl) {
-            obs.unobserve(element);
+          if (!CountUpCtor && !reduceMotion) {
+            if (!element.dataset.countupPending) {
+              element.dataset.countupPending = 'true';
+            }
+            pendingCountUps.add(element);
             return;
           }
 
-          if (!CountUp || reduceMotion) {
-            valueEl.textContent = Number.isFinite(target)
-              ? Math.round(target).toLocaleString('es-ES')
-              : valueEl.textContent;
-            obs.unobserve(element);
-            return;
-          }
-
-          const counter = new CountUp(valueEl, target, {
-            duration: 2.2,
-            separator: '.',
-            decimal: ',',
-          });
-
-          if (!counter.error) {
-            counter.start(() => {
-              valueEl.setAttribute('data-count-complete', 'true');
-            });
-          }
-          obs.unobserve(element);
+          pendingCountUps.delete(element);
+          delete element.dataset.countupPending;
+          startCountUp(element, CountUpCtor, reduceMotion, countUpObserver);
         });
       }, { threshold: 0.6 })
     );
 
-    kpis.forEach((kpi) => observer.observe(kpi));
+    kpis.forEach((kpi) => countUpObserver.observe(kpi));
+
+    attemptPendingCountUps(reduceMotion);
   }
 
   function initLottieAnimations(reduceMotion) {
@@ -668,6 +754,14 @@
       }
     });
     state.flipButtons.clear();
+
+    pendingCountUps.forEach((element) => {
+      if (element && element.dataset) {
+        delete element.dataset.countupPending;
+      }
+    });
+    pendingCountUps.clear();
+    countUpObserver = null;
   }
 
   function init() {

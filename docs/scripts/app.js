@@ -37,6 +37,25 @@
     ),
   };
 
+  function dispatchCountUpReady(detail) {
+    try {
+      if (typeof window.CustomEvent === 'function') {
+        window.dispatchEvent(new CustomEvent('countup:ready', { detail }));
+        return;
+      }
+
+      if (typeof document.createEvent === 'function') {
+        const event = document.createEvent('CustomEvent');
+        if (event && typeof event.initCustomEvent === 'function') {
+          event.initCustomEvent('countup:ready', false, false, detail);
+          window.dispatchEvent(event);
+        }
+      }
+    } catch (error) {
+      // Silenciar errores al emitir el evento opcional
+    }
+  }
+
   function addCleanup(fn) {
     if (typeof fn === 'function') {
       state.cleanupFns.push(fn);
@@ -171,6 +190,7 @@
   function ensureCountUp() {
     const existingGlobal = normalizeCountUpGlobal();
     if (typeof existingGlobal !== 'undefined') {
+      dispatchCountUpReady(existingGlobal);
       return Promise.resolve(existingGlobal);
     }
 
@@ -204,10 +224,12 @@
       script.addEventListener('load', () => {
         assetState.countUpPromise = null;
         const global = normalizeCountUpGlobal();
+        dispatchCountUpReady(global);
         resolve(global);
       });
       script.addEventListener('error', () => {
         assetState.countUpPromise = null;
+        dispatchCountUpReady(null);
         reject(new Error('No se pudo cargar CountUp.'));
       });
       document.head.appendChild(script);
